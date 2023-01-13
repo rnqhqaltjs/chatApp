@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.view.LoginFragment"
+    android:background="@color/lsb">
+
+    <ImageView
+        android:id="@+id/chat_icon"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toTopOf="@+id/emailArea"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_chat_24"
+        app:tint="@color/white" />
+
+    <TextView
+        android:id="@+id/nav_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:layout_marginBottom="5dp"
+        android:text="아직 계정이 없으십니까?"
+        app:layout_constraintBottom_toTopOf="@+id/emailArea"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/signBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:text="가입하기"
+        android:textColor="#FFA048"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/emailArea"
+        app:layout_constraintStart_toEndOf="@+id/nav_register" />
+
+    <EditText
+        android:id="@+id/emailArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="아이디(이메일)"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/passwordArea" />
+
+    <EditText
+        android:id="@+id/passwordArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="비밀번호"
+        android:inputType="textPassword"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/loginBtn" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="로그인"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="20dp"
+        android:background="@drawable/button_round"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
