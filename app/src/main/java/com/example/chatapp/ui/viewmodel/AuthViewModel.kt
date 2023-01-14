@@ -18,4 +18,12 @@ class AuthViewModel() : ViewModel() {
         repository.registerUser(email, password)
     }
 
+    fun login(email: String, password: String) {
+        repository.loginUser(email, password)
+    }
+
+    fun logout(){
+        repository.logout()
+    }
+
 }
