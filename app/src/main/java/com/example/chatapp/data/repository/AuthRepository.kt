@@ -10,9 +10,14 @@ import com.google.firebase.auth.FirebaseUser
 class AuthRepository() {
     private lateinit var  application: Application
     private val auth  = FirebaseAuth.getInstance()
+
     private val _register = MutableLiveData<FirebaseUser>()
     val register: LiveData<FirebaseUser>
         get() = _register
+
+    private val _login = MutableLiveData<FirebaseUser>()
+    val login: LiveData<FirebaseUser>
+        get() = _login
 
     fun registerUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
@@ -31,7 +36,7 @@ class AuthRepository() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    _register.postValue(auth.currentUser)
+                    _login.postValue(auth.currentUser)
                 } else {
                     Toast.makeText(application,"로그인 실패",Toast.LENGTH_SHORT).show()
                  }

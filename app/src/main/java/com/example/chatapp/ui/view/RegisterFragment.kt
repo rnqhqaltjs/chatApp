@@ -34,7 +34,8 @@ class RegisterFragment : Fragment() {
 
         authViewModel.register.observe(viewLifecycleOwner) {
 
-            Toast.makeText(context,"회원가입 성공", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_registerFragment_to_home_navigation)
+            Toast.makeText(context,"회원가입 성공",Toast.LENGTH_SHORT).show()
         }
 
         binding.joinBtn.setOnClickListener {
