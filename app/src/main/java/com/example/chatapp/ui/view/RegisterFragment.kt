@@ -28,6 +28,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.joinBtn.setOnClickListener {
             authViewModel.register(binding.emailArea.text.toString(), binding.passwordArea1.text.toString())
         }

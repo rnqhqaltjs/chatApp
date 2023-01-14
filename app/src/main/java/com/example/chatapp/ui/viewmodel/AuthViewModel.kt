@@ -3,13 +3,15 @@ package com.example.chatapp.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.AuthRepository
+import com.example.chatapp.data.repository.AuthRepositoryImpl
+import com.google.firebase.auth.FirebaseUser
 
-class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
+class AuthViewModel() : ViewModel() {
+    private var repository: AuthRepository = AuthRepositoryImpl()
+    private val _register = MutableLiveData<FirebaseUser>()
 
-    private val _register = MutableLiveData<User<String>>()
-    val register: LiveData<User<String>>
+    val register: LiveData<FirebaseUser>
         get() = _register
 
     fun register(email: String, password: String) {
