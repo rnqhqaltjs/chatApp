@@ -6,9 +6,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
 class AuthRepository(
-    private val auth: FirebaseAuth
-) {
 
+) {
+    private val auth  = FirebaseAuth.getInstance()
     private val _register = MutableLiveData<FirebaseUser>()
     val register: LiveData<FirebaseUser>
         get() = _register
@@ -24,4 +24,5 @@ class AuthRepository(
                 }
             }
     }
+
 }
