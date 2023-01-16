@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,8 +44,10 @@ class LoginFragment : Fragment() {
 
     private fun observer(){
         authViewModel.login.observe(viewLifecycleOwner){
-            findNavController().navigate(R.id.action_loginFragment_to_home_navigation)
             Toast.makeText(context,"로그인 성공", Toast.LENGTH_SHORT).show()
+            val intent = Intent(activity, HomeActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
     }
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/fragment_search"
+    <item android:id="@+id/fragment_home"
         android:title="홈"
         android:icon="@drawable/ic_home_24" />
 
-    <item android:id="@+id/fragment_favorite"
+    <item android:id="@+id/fragment_chat"
         android:title="채팅방"
         android:icon="@drawable/ic_chat_24" />
 

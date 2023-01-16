@@ -33,8 +33,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         authViewModel.register.observe(viewLifecycleOwner) {
-
-            findNavController().navigate(R.id.action_registerFragment_to_home_navigation)
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             Toast.makeText(context,"회원가입 성공",Toast.LENGTH_SHORT).show()
         }
 

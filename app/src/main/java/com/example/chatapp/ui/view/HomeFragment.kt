@@ -5,10 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentHomeBinding
-import com.example.chatapp.databinding.FragmentLoginBinding
-import com.example.chatapp.ui.adapter.HomePagerAdapter
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -26,8 +23,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.viewPager2.adapter = HomePagerAdapter(this)
-        viewPager2SetupWithTabLayout(binding.tabLayout, binding.viewPager2)
 
     }
 
