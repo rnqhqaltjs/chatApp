@@ -1,6 +1,8 @@
 package com.example.chatapp.data.repository
 
 import android.app.Application
+import android.content.ContentValues.TAG
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -25,7 +27,7 @@ class AuthRepositoryImpl(
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    _register.postValue(auth.currentUser)
+                    Toast.makeText(application,"회원가입 성공",Toast.LENGTH_SHORT).show()
 
                 } else {
                     Toast.makeText(application,"회원가입 실패",Toast.LENGTH_SHORT).show()
@@ -38,9 +40,10 @@ class AuthRepositoryImpl(
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    _login.postValue(auth.currentUser)
+                    Toast.makeText(application,"로그인 성공",Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(application,"로그인 실패",Toast.LENGTH_SHORT).show()
+                    Log.w(TAG, "createUserWithEmail:failure", it.exception)
                  }
              }
     }
