@@ -2,14 +2,15 @@ package com.example.chatapp.ui.viewmodel
 
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repository.AuthRepository
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class AuthViewModel() : ViewModel() {
-
-    private var repository: AuthRepository = AuthRepository()
+class AuthViewModel(private var repository: AuthRepository) : ViewModel() {
 
     private val _register = repository.register
     val register: LiveData<FirebaseUser>
@@ -29,6 +30,15 @@ class AuthViewModel() : ViewModel() {
 
     fun logout(){
         repository.logout()
+    }
+
+    fun putID(value: String) = viewModelScope.launch(Dispatchers.IO) {
+        repository.putID(value,"key")
+
+    }
+
+    fun getID() = runBlocking {
+        repository.getID("key")
     }
 
 }

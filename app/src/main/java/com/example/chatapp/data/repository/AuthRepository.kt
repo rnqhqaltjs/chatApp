@@ -2,14 +2,21 @@ package com.example.chatapp.data.repository
 
 import android.app.Application
 import android.widget.Toast
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.first
 
 class AuthRepository() {
     private lateinit var  application: Application
     private val auth  = FirebaseAuth.getInstance()
+    private val dataStore: DataStore<Preferences> by preferencesDataStore(name = "user")
 
     private val _register = MutableLiveData<FirebaseUser>()
     val register: LiveData<FirebaseUser>
@@ -45,6 +52,25 @@ class AuthRepository() {
 
     fun logout(){
         auth.signOut()
+    }
+
+    suspend fun putID(key: String, value: String) {
+        val preferencesKey = stringPreferencesKey(key)
+        dataStore.edit { preferences ->
+            preferences[preferencesKey] = value
+        }
+    }
+
+    suspend fun getID(key: String): String? {
+        return try {
+            val preferencesKey = stringPreferencesKey(key)
+            val preferences = dataStore.data.first()
+            preferences[preferencesKey]
+
+        } catch (e: Exception){
+            e.printStackTrace()
+            null
+        }
     }
 
 
