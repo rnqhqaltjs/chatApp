@@ -18,7 +18,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +31,8 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        authViewModel = (activity as MainActivity).authViewModel
 
         authViewModel.register.observe(viewLifecycleOwner) {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)

@@ -17,7 +17,7 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val authViewModel: AuthViewModel by viewModels()
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +30,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        authViewModel = (activity as MainActivity).authViewModel
+
         observer()
 
         binding.loginBtn.setOnClickListener {
@@ -46,7 +48,7 @@ class LoginFragment : Fragment() {
 
     private fun observer(){
         authViewModel.login.observe(viewLifecycleOwner){
-            authViewModel.putID(binding.emailArea.text.toString())
+//            authViewModel.putID(binding.emailArea.text.toString())
             Toast.makeText(context,"로그인 성공", Toast.LENGTH_SHORT).show()
             val intent = Intent(activity, HomeActivity::class.java)
             startActivity(intent)
@@ -84,8 +86,8 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        authViewModel.getID()
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        authViewModel.getID()
+//    }
 }
