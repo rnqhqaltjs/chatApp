@@ -38,10 +38,45 @@ class RegisterFragment : Fragment() {
         }
 
         binding.joinBtn.setOnClickListener {
-            authViewModel.register(binding.emailArea.text.toString(), binding.passwordArea1.text.toString())
+            if(validation()){
+                authViewModel.register(binding.emailArea.text.toString(), binding.passwordArea1.text.toString())
+            }
         }
+    }
 
+    fun validation(): Boolean {
+        var isValid = true
+
+        val email: String = binding.emailArea.text.toString()
+        val password1: String = binding.passwordArea1.text.toString()
+        val password2: String = binding.passwordArea2.text.toString()
+
+        if (email.isEmpty()) {
+            isValid = false
+            Toast.makeText(requireContext(), "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
         }
+        if (email.length<10){
+            isValid = false
+            Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+        }
+        if (password1.isEmpty()){
+            isValid = false
+            Toast.makeText(requireContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        if (password2.isEmpty()){
+            isValid = false
+            Toast.makeText(requireContext(), "비밀번호 확인을 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        if (password1 != password2) {
+            isValid = false
+            Toast.makeText(requireContext(), "비밀번호가 서로 달라요.", Toast.LENGTH_SHORT).show()
+        }
+        if (password1.length < 6){
+            isValid = false
+            Toast.makeText(requireContext(), "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        return isValid
+    }
 
     override fun onDestroyView() {
         _binding = null
