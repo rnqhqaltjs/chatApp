@@ -16,34 +16,31 @@ class AuthRepositoryImpl(
     ):AuthRepository {
 
     private val _register = MutableLiveData<FirebaseUser>()
-    val register: LiveData<FirebaseUser>
+    override val register: LiveData<FirebaseUser>
         get() = _register
 
     private val _login = MutableLiveData<FirebaseUser>()
-    val login: LiveData<FirebaseUser>
+    override val login: LiveData<FirebaseUser>
         get() = _login
 
-    override fun registerUser(email: String, password: String) {
+    override suspend fun signup(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Toast.makeText(application,"회원가입 성공",Toast.LENGTH_SHORT).show()
-
+                    _register.postValue(auth.currentUser)
                 } else {
-                    Toast.makeText(application,"회원가입 실패",Toast.LENGTH_SHORT).show()
-
+                    Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    override fun loginUser(email: String, password: String){
+    override suspend fun login(email: String, password: String){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    Toast.makeText(application,"로그인 성공",Toast.LENGTH_SHORT).show()
+                    _login.postValue(auth.currentUser)
                 } else {
-                    Toast.makeText(application,"로그인 실패",Toast.LENGTH_SHORT).show()
-                    Log.w(TAG, "createUserWithEmail:failure", it.exception)
+                    Toast.makeText(application,"아이디 또는 비밀번호를 제대로 입력해주세요",Toast.LENGTH_SHORT).show()
                  }
              }
     }

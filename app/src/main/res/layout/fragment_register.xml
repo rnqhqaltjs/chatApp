@@ -16,8 +16,17 @@
         android:textColor="@color/black"
         android:textSize="50dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/emailArea"
+        app:layout_constraintBottom_toTopOf="@+id/nameArea"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameArea"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:hint="이름"
+        app:layout_constraintBottom_toTopOf="@+id/emailArea"
+        android:layout_margin="20dp"/>
 
     <EditText
         android:id="@+id/emailArea"

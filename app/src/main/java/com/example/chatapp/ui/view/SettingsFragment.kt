@@ -29,15 +29,15 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        authViewModel = (activity as MainActivity).authViewModel
-
-        binding.logout.setOnClickListener {
-            authViewModel.logout()
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-
-        }
+//        authViewModel = (activity as HomeActivity).authViewModel
+//
+//        binding.logout.setOnClickListener {
+//            authViewModel.logout()
+//            val intent = Intent(activity, MainActivity::class.java)
+//            startActivity(intent)
+//            activity?.finish()
+//
+//        }
 
     }
 
