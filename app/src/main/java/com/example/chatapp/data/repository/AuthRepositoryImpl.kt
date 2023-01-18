@@ -1,19 +1,32 @@
 package com.example.chatapp.data.repository
 
 import android.app.Application
-import android.content.ContentValues.TAG
-import android.util.Log
 import android.widget.Toast
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.chatapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.io.IOException
 
 class AuthRepositoryImpl(
     private val application: Application,
-//    private val dataStore: DataStore<Preferences>,
+    private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth
     ):AuthRepository {
+
+    companion object{
+        val EMAIL_KEY = stringPreferencesKey("EMAIL")
+    }
 
     private val _register = MutableLiveData<FirebaseUser>()
     override val register: LiveData<FirebaseUser>
@@ -49,24 +62,22 @@ class AuthRepositoryImpl(
         auth.signOut()
     }
 
-//    override suspend fun putID(key: String, value: String) {
-//        val preferencesKey = stringPreferencesKey(key)
-//        dataStore.edit { preferences ->
-//            preferences[preferencesKey] = value
-//        }
-//    }
+    override suspend fun putID(key: String, value: String) {
+        val preferenceKey = stringPreferencesKey(key)
+        dataStore.edit{
+            it[preferenceKey] = value
+        }
+    }
 
-//    override suspend fun getID(key: String) {
-//        return try {
-//            val preferencesKey = stringPreferencesKey(key)
-//            val preferences = dataStore.data.first()
-//            preferences[preferencesKey]
-//
-//        } catch (e: Exception){
-//            e.printStackTrace()
-//            null
-//        }
-//    }
-
+    override suspend fun getID(key: String): String?{
+        return  try {
+            val preferenceKey = stringPreferencesKey(key)
+            val preference = dataStore.data.first()
+            preference[preferenceKey]
+        }catch (e:Exception){
+            e.printStackTrace()
+            null
+        }
+    }
 
 }

@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
 
@@ -36,6 +37,7 @@ class LoginFragment : Fragment() {
         binding.loginBtn.setOnClickListener {
             if(validation()){
                 authViewModel.login(binding.emailArea.text.toString(), binding.passwordArea.text.toString())
+                authViewModel.putID(binding.emailArea.text.toString())
             }
         }
 
@@ -47,8 +49,7 @@ class LoginFragment : Fragment() {
 
     private fun observer(){
         authViewModel.login.observe(viewLifecycleOwner){
-//            authViewModel.putID(binding.emailArea.text.toString())
-//            Toast.makeText(context,"로그인 성공", Toast.LENGTH_SHORT).show()
+
             val intent = Intent(activity, HomeActivity::class.java)
             startActivity(intent)
             activity?.finish()
@@ -85,8 +86,8 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        authViewModel.getID()
-//    }
+    override fun onStart() {
+        super.onStart()
+        binding.emailArea.setText(authViewModel.getID())
+    }
 }
