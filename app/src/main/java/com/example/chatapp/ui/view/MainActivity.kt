@@ -13,6 +13,8 @@ import com.example.chatapp.ui.viewmodel.AuthViewModelProviderFactory
 import com.example.chatapp.util.Constants.DATASTORE_NAME
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbref: DatabaseReference
     lateinit var authViewModel: AuthViewModel
     private val Context.dataStore by preferencesDataStore(DATASTORE_NAME)
 
@@ -28,8 +31,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         auth = Firebase.auth
+        dbref = Firebase.database.reference
 
-        val authRepository = AuthRepositoryImpl(application,dataStore,auth)
+        val authRepository = AuthRepositoryImpl(application,dataStore,auth,dbref)
         val factory = AuthViewModelProviderFactory(authRepository)
         authViewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
 

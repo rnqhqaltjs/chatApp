@@ -18,6 +18,11 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
+    private val name = binding.nameArea.text.toString()
+    private val email = binding.emailArea.text.toString()
+    private val password1 = binding.passwordArea1.text.toString()
+    private val password2 = binding.passwordArea2.text.toString()
+
     private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(
@@ -41,7 +46,7 @@ class RegisterFragment : Fragment() {
 
         binding.joinBtn.setOnClickListener {
             if(validation()){
-                authViewModel.register(binding.emailArea.text.toString(), binding.passwordArea1.text.toString())
+                authViewModel.register(name, email, password1)
             }
         }
     }
@@ -49,10 +54,10 @@ class RegisterFragment : Fragment() {
     fun validation(): Boolean {
         var isValid = true
 
-        val email: String = binding.emailArea.text.toString()
-        val password1: String = binding.passwordArea1.text.toString()
-        val password2: String = binding.passwordArea2.text.toString()
-
+        if (name.isEmpty()) {
+            isValid = false
+            Toast.makeText(requireContext(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+        }
         if (email.isEmpty()) {
             isValid = false
             Toast.makeText(requireContext(), "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()

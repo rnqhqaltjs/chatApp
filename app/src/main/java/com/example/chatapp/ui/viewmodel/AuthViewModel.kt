@@ -22,8 +22,8 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         get() = _login
 
 
-    fun register(email: String, password: String) = viewModelScope.launch {
-        repository.signup(email, password)
+    fun register(name:String, email: String, password: String) = viewModelScope.launch {
+        repository.signup(name, email, password)
     }
 
     fun login(email: String, password: String) = viewModelScope.launch {
@@ -40,8 +40,8 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         }
     }
 
-    fun getID():String = runBlocking {
-            repository.getID(USER_NAME)!!
+    fun getID():String? = runBlocking {
+            repository.getID(USER_NAME)
          }
 
 }

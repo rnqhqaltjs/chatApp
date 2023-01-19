@@ -9,7 +9,7 @@ interface AuthRepository {
     val register: LiveData<FirebaseUser>
     val login: LiveData<FirebaseUser>
     suspend fun login(email: String, password: String)
-    suspend fun signup(email: String, password: String)
+    suspend fun signup(name:String, email: String, password: String)
     fun logout()
     suspend fun putID(key: String,value: String)
     suspend fun getID(key: String):String?
