@@ -18,11 +18,6 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-    private val name = binding.nameArea.text.toString()
-    private val email = binding.emailArea.text.toString()
-    private val password1 = binding.passwordArea1.text.toString()
-    private val password2 = binding.passwordArea2.text.toString()
-
     private lateinit var authViewModel: AuthViewModel
 
     override fun onCreateView(
@@ -46,12 +41,22 @@ class RegisterFragment : Fragment() {
 
         binding.joinBtn.setOnClickListener {
             if(validation()){
-                authViewModel.register(name, email, password1)
+                authViewModel.register(
+                    binding.nameArea.text.toString(),
+                    binding.emailArea.text.toString(),
+                    binding.passwordArea1.text.toString()
+                )
             }
         }
     }
 
     fun validation(): Boolean {
+
+        val name = binding.nameArea.text.toString()
+        val email = binding.emailArea.text.toString()
+        val password1 = binding.passwordArea1.text.toString()
+        val password2 = binding.passwordArea2.text.toString()
+
         var isValid = true
 
         if (name.isEmpty()) {

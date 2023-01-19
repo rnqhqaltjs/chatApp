@@ -11,10 +11,8 @@ class UserListViewHolder(
     fun bind(user: User) {
 
         itemView.apply {
-            binding.ivArticleImage.load(item.image)
-            binding.tvTitle.text = Html.fromHtml(title).toString()
-            binding.tvLprice.text = item.lprice.toString() + "원"
-            binding.tvCategory1.text = item.category1
+            binding.userName.text = user.name
+            binding.userEmail.text = user.email
         }
     }
 }

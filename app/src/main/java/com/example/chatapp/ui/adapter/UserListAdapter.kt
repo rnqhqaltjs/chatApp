@@ -16,8 +16,7 @@ class UserListAdapter : ListAdapter<User, UserListViewHolder>(UserDiffCallback) 
     }
 
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
-        val item = currentList[position]
-        holder.bind(item)
+        holder.bind(currentList[position])
     }
 
     companion object {
