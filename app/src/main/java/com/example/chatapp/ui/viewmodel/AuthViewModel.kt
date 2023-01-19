@@ -1,17 +1,13 @@
 package com.example.chatapp.ui.viewmodel
 
 
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.AuthRepository
 import com.example.chatapp.util.Constants.USER_NAME
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 

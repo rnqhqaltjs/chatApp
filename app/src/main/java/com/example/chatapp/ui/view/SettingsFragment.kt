@@ -2,21 +2,19 @@ package com.example.chatapp.ui.view
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.chatapp.R
+import androidx.fragment.app.Fragment
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
+import com.example.chatapp.ui.viewmodel.ChatViewModel
 
 class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var chatViewModel: ChatViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,10 +27,10 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        authViewModel = (activity as HomeActivity).authViewModel
-//
+        chatViewModel = (activity as HomeActivity).chatViewModel
+
 //        binding.logout.setOnClickListener {
-//            authViewModel.logout()
+//            chatViewModel.logout()
 //            val intent = Intent(activity, MainActivity::class.java)
 //            startActivity(intent)
 //            activity?.finish()
