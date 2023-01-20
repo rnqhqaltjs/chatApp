@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
 
         setupJetpackNavigation()
 
-        val chatRepository = ChatRepositoryImpl(auth,dbref)
+        val chatRepository = ChatRepositoryImpl(application,auth,dbref)
         val factory = ChatViewModelProviderFactory(chatRepository)
         chatViewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
 

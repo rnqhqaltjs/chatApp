@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.UserlistItemBinding
 
@@ -20,7 +21,7 @@ class UserListAdapter : ListAdapter<User, UserListViewHolder>(UserDiffCallback) 
     }
 
     companion object {
-            private val UserDiffCallback = object : DiffUtil.ItemCallback<User>() {
+        private val UserDiffCallback = object : DiffUtil.ItemCallback<User>() {
             override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem.uid == newItem.uid
             }

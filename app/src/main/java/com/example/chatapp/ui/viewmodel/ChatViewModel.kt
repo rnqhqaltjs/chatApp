@@ -1,15 +1,21 @@
 package com.example.chatapp.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
 import com.example.chatapp.ui.adapter.UserListAdapter
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.launch
 
 class ChatViewModel(private val repository: ChatRepository): ViewModel() {
 
-    fun getUserData(userList: ArrayList<User>, adapter: UserListAdapter) = viewModelScope.launch {
-        repository.getUserData(userList, adapter)
+    private val _current = repository.current
+    val current: LiveData<ArrayList<User>>
+        get() = _current
+
+    fun getUserData() = viewModelScope.launch {
+        repository.getUserData()
     }
 }

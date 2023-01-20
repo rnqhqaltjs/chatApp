@@ -5,20 +5,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.ui.adapter.UserListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    lateinit var adapter: UserListAdapter
+    lateinit var userlistadapter: UserListAdapter
 
     private lateinit var chatViewModel: ChatViewModel
-    private lateinit var userList: ArrayList<User>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,14 +40,25 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         chatViewModel = (activity as HomeActivity).chatViewModel
-        userList = ArrayList()
-        adapter = UserListAdapter()
 
-        binding.userRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.userRecyclerview.adapter = adapter
+        recyclerview()
+        chatViewModel.getUserData()
 
+        chatViewModel.current.observe(viewLifecycleOwner){
+            userlistadapter.submitList(it)
+        }
+
+    }
+
+    private fun recyclerview(){
+        userlistadapter = UserListAdapter()
+        binding.userRecyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+            adapter = userlistadapter
+        }
     }
 
     override fun onDestroyView() {
@@ -46,8 +66,4 @@ class HomeFragment : Fragment() {
         super.onDestroyView()
     }
 
-    override fun onStart() {
-        super.onStart()
-        chatViewModel.getUserData(userList, adapter)
-    }
 }
