@@ -18,4 +18,9 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
     fun getUserData() = viewModelScope.launch {
         repository.getUserData()
     }
+
+    fun logout(){
+        repository.logout()
+    }
+
 }

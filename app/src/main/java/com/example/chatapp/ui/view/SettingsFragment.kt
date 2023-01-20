@@ -29,13 +29,13 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
 
-//        binding.logout.setOnClickListener {
-//            chatViewModel.logout()
-//            val intent = Intent(activity, MainActivity::class.java)
-//            startActivity(intent)
-//            activity?.finish()
-//
-//        }
+        binding.logout.setOnClickListener {
+            chatViewModel.logout()
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
+
+        }
 
     }
 

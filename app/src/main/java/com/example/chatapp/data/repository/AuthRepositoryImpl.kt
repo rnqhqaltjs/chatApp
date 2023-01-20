@@ -65,10 +65,6 @@ class AuthRepositoryImpl(
              }
     }
 
-    override fun logout(){
-        auth.signOut()
-    }
-
     override suspend fun putID(key: String, value: String) {
         val preferenceKey = stringPreferencesKey(key)
         dataStore.edit{

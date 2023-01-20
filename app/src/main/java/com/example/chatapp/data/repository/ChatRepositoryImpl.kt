@@ -44,9 +44,13 @@ class ChatRepositoryImpl(
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(application,"실패", Toast.LENGTH_SHORT).show()
+                Toast.makeText(application,"유저 리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
                 //실패 시 실행
             }
         })
+    }
+
+    override fun logout(){
+        auth.signOut()
     }
 }

@@ -5,5 +5,6 @@ import com.example.chatapp.data.model.User
 
 interface ChatRepository {
     val current: LiveData<ArrayList<User>>
+    fun logout()
     suspend fun getUserData()
 }

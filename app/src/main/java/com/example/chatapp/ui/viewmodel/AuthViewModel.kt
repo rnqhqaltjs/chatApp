@@ -30,10 +30,6 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         repository.login(email, password)
     }
 
-    fun logout(){
-        repository.logout()
-    }
-
     fun putID(value:String){
         viewModelScope.launch(Dispatchers.IO) {
             repository.putID(USER_NAME, value)
@@ -41,7 +37,7 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     }
 
     fun getID():String? = runBlocking {
-            repository.getID(USER_NAME)
-         }
+        repository.getID(USER_NAME)
+    }
 
 }
