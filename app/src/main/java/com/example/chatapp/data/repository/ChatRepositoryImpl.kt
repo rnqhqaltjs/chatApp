@@ -32,7 +32,6 @@ class ChatRepositoryImpl(
                 val userList : ArrayList<User> = arrayListOf()
 
                 for(postSnapshot in snapshot.children){
-                    Toast.makeText(application,postSnapshot.getValue(User::class.java).toString(),Toast.LENGTH_SHORT).show()
                     //유저 정보
                     val currentUser = postSnapshot.getValue(User::class.java)
 

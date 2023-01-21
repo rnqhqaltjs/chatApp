@@ -14,10 +14,20 @@
         android:gravity="center"
         android:text="회원가입"
         android:textColor="@color/black"
-        android:textSize="50dp"
+        android:textSize="40dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/nameArea"
+        app:layout_constraintBottom_toTopOf="@+id/imageArea"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageArea"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/ic_photo_24"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/nameArea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/nameArea"
