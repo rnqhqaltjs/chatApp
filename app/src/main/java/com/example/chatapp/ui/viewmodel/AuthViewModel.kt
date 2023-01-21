@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.viewmodel
 
 
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +23,7 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
         get() = _login
 
 
-    fun register(name:String, email: String, image: String, password: String) = viewModelScope.launch {
+    fun register(name:String, email: String, image: Uri, password: String) = viewModelScope.launch {
         repository.signup(name, email, image, password)
     }
 
@@ -39,5 +40,5 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     fun getID():String? = runBlocking {
         repository.getID(USER_NAME)
     }
-
+    
 }

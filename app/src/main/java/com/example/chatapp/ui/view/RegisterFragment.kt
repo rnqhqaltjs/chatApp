@@ -59,6 +59,7 @@ class RegisterFragment : Fragment() {
                 authViewModel.register(
                     binding.nameArea.text.toString(),
                     binding.emailArea.text.toString(),
+                    imageUri!!,
                     binding.passwordArea1.text.toString()
                 )
             }

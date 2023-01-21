@@ -46,14 +46,22 @@ class AuthRepositoryImpl(
     override val login: LiveData<FirebaseUser>
         get() = _login
 
-    override suspend fun signup(name: String, email: String, image: String, password: String) {
+    override suspend fun signup(name: String, email: String, image: Uri, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
+            .addOnCompleteListener { it ->
                 if (it.isSuccessful) {
-                    _register.postValue(auth.currentUser)
-                    dbref.child("user")
-                        .child(auth.currentUser?.uid!!)
-                        .setValue(User(name,email,image,auth.currentUser?.uid!!))
+                    storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").putFile(image).addOnSuccessListener {
+                        var profileimage: Uri?
+                        storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
+                            .addOnSuccessListener {
+                                profileimage = it
+                                _register.postValue(auth.currentUser)
+                                dbref.child("user")
+                                    .child(auth.currentUser?.uid!!)
+                                    .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
+                            }
+                    }
+
 
                 } else {
                     Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
@@ -88,11 +96,6 @@ class AuthRepositoryImpl(
             e.printStackTrace()
             null
         }
-    }
-
-    override suspend fun getUserImage() {
-
-
     }
 
 }
