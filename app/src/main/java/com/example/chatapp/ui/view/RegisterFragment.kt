@@ -1,10 +1,17 @@
 package com.example.chatapp.ui.view
 
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +26,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var authViewModel: AuthViewModel
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +47,13 @@ class RegisterFragment : Fragment() {
             Toast.makeText(context,"회원가입 성공",Toast.LENGTH_SHORT).show()
         }
 
+        binding.imageArea.setOnClickListener {
+            val intentImage = Intent(Intent.ACTION_PICK)
+            intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
+            getContent.launch(intentImage)
+
+        }
+
         binding.joinBtn.setOnClickListener {
             if(validation()){
                 authViewModel.register(
@@ -49,8 +64,20 @@ class RegisterFragment : Fragment() {
             }
         }
     }
+    //이미지 등록
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if(result.resultCode == RESULT_OK) {
+                imageUri = result.data?.data //이미지 경로 원본
+                binding.imageArea.setImageURI(imageUri) //이미지 뷰를 바꿈
+                Log.d("image", "success")
+            }
+            else{
+                Log.d("image", "failure")
+            }
+        }
 
-    fun validation(): Boolean {
+    private fun validation(): Boolean {
 
         val name = binding.nameArea.text.toString()
         val email = binding.emailArea.text.toString()

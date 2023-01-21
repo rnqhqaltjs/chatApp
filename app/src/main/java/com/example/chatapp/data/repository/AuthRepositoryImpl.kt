@@ -1,7 +1,12 @@
 package com.example.chatapp.data.repository
 
+import android.app.Activity.RESULT_OK
 import android.app.Application
+import android.content.Intent
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -14,6 +19,7 @@ import com.example.chatapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -24,7 +30,8 @@ class AuthRepositoryImpl(
     private val application: Application,
     private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth,
-    private val dbref: DatabaseReference
+    private val dbref: DatabaseReference,
+    private val storage: FirebaseStorage
     ):AuthRepository {
 
     companion object{
@@ -39,14 +46,14 @@ class AuthRepositoryImpl(
     override val login: LiveData<FirebaseUser>
         get() = _login
 
-    override suspend fun signup(name: String, email: String, password: String) {
+    override suspend fun signup(name: String, email: String, image: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     _register.postValue(auth.currentUser)
                     dbref.child("user")
                         .child(auth.currentUser?.uid!!)
-                        .setValue(User(name,email,auth.currentUser?.uid!!))
+                        .setValue(User(name,email,image,auth.currentUser?.uid!!))
 
                 } else {
                     Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
@@ -81,6 +88,11 @@ class AuthRepositoryImpl(
             e.printStackTrace()
             null
         }
+    }
+
+    override suspend fun getUserImage() {
+
+
     }
 
 }
