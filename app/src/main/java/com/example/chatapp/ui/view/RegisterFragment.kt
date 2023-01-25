@@ -27,6 +27,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var authViewModel: AuthViewModel
     private var imageUri: Uri? = null
+    private var imageCheck = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,6 +72,7 @@ class RegisterFragment : Fragment() {
             if(result.resultCode == RESULT_OK) {
                 imageUri = result.data?.data //이미지 경로 원본
                 binding.imageArea.setImageURI(imageUri) //이미지 뷰를 바꿈
+                imageCheck = true
                 Log.d("image", "success")
             }
             else{
@@ -95,15 +97,15 @@ class RegisterFragment : Fragment() {
             isValid = false
             Toast.makeText(requireContext(), "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
         }
-        if (email.length<10){
+        if (email.length<10||!email.contains("@")) {
             isValid = false
             Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
         }
-        if (password1.isEmpty()){
+        if (password1.isEmpty()) {
             isValid = false
             Toast.makeText(requireContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
-        if (password2.isEmpty()){
+        if (password2.isEmpty()) {
             isValid = false
             Toast.makeText(requireContext(), "비밀번호 확인을 입력해주세요.", Toast.LENGTH_SHORT).show()
         }
@@ -111,9 +113,17 @@ class RegisterFragment : Fragment() {
             isValid = false
             Toast.makeText(requireContext(), "비밀번호가 서로 달라요.", Toast.LENGTH_SHORT).show()
         }
-        if (password1.length < 6){
+        if (password1.length < 6) {
             isValid = false
             Toast.makeText(requireContext(), "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        if (!imageCheck) {
+            isValid = false
+            Toast.makeText(requireContext(), "앱에서 사용할 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        if (email.length<10) {
+            isValid = false
+            Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
         }
         return isValid
     }
