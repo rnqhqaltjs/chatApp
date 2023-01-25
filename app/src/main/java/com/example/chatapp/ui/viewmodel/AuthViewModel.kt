@@ -22,7 +22,6 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     val login: LiveData<FirebaseUser>
         get() = _login
 
-
     fun register(name:String, email: String, image: Uri, password: String) = viewModelScope.launch {
         repository.signup(name, email, image, password)
     }
@@ -40,5 +39,5 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     fun getID():String? = runBlocking {
         repository.getID(USER_NAME)
     }
-    
+
 }

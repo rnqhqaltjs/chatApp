@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.adapter
 
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.UserlistItemBinding
 
@@ -11,6 +12,7 @@ class UserListViewHolder(
     fun bind(user: User) {
 
         itemView.apply {
+            binding.userImage.load(user.image)
             binding.userName.text = user.name
             binding.userEmail.text = user.email
         }
