@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_fragment_home_to_fragment_settings"
             app:destination="@id/fragment_settings" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_message"
+            app:destination="@id/fragment_message" />
     </fragment>
     <fragment
         android:id="@+id/fragment_chat"
@@ -39,5 +42,14 @@
         <action
             android:id="@+id/action_fragment_settings_to_fragment_chat"
             app:destination="@id/fragment_chat" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_message"
+        android:name="com.example.chatapp.ui.view.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" >
+        <action
+            android:id="@+id/action_fragment_message_to_fragment_home"
+            app:destination="@id/fragment_home" />
     </fragment>
 </navigation>
