@@ -57,7 +57,7 @@ class ChatRepositoryImpl(
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
         dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid!!, time)).addOnSuccessListener {
+            .setValue(Message(message, senderUid, time)).addOnSuccessListener {
                 dbref.child("chats").child(receiverRoom).child("messages").push()
                     .setValue(Message(message, senderUid, time))
             }
@@ -77,6 +77,7 @@ class ChatRepositoryImpl(
                     //유저 정보
                     val message = postSnapshot.getValue(Message::class.java)
                     messageList.add(message!!)
+                    Toast.makeText(application,senderUid, Toast.LENGTH_SHORT).show()
 
                 }
                 _currentmessageadd.value = messageList

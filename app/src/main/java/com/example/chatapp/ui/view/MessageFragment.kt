@@ -40,11 +40,10 @@ class MessageFragment : Fragment() {
 
         recyclerview()
 
+        chatViewModel.getMessageData(user.uid)
         chatViewModel.currentmessageadd.observe(viewLifecycleOwner){
             messageListAdapter.submitList(it)
-            chatViewModel.getMessageData(user.uid)
         }
-
 
         binding.sendBtn.setOnClickListener {
             chatViewModel.sendMessage(

@@ -15,25 +15,6 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
     private val receive = 1 //받는 타입
     private val send = 2 //보내는 타입
 
-    override fun getItemViewType(position: Int): Int {
-        return if (FirebaseAuth.getInstance().currentUser?.uid.equals(getItem(position).sendId)) {
-            send
-        } else {
-            receive
-        }
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder.itemViewType) {
-            send -> (holder as ReceiveMessageViewHolder).bind(
-                currentList[position]
-            )
-            receive -> (holder as SendMessageViewHolder).bind(
-                currentList[position]
-            )
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
 
@@ -49,6 +30,25 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
             else -> {
                 throw Exception("Error reading holder type")
             }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder.itemViewType) {
+            send -> (holder as ReceiveMessageViewHolder).bind(
+                currentList[position]
+            )
+            receive -> (holder as SendMessageViewHolder).bind(
+                currentList[position]
+            )
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (FirebaseAuth.getInstance().currentUser?.uid.equals(getItem(position).sendId)) {
+            send
+        } else {
+            receive
         }
     }
 
