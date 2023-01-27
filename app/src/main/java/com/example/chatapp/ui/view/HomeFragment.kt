@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.data.model.User
@@ -43,8 +44,8 @@ class HomeFragment : Fragment() {
         chatViewModel = (activity as HomeActivity).chatViewModel
 
         recyclerview()
-        chatViewModel.getUserData()
 
+        chatViewModel.getUserData()
         chatViewModel.current.observe(viewLifecycleOwner){
             userlistadapter.submitList(it)
         }
@@ -58,6 +59,10 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
             adapter = userlistadapter
+        }
+        userlistadapter.setOnItemClickListener {
+            val action = HomeFragmentDirections.actionFragmentHomeToFragmentMessage(it)
+            findNavController().navigate(action)
         }
     }
 

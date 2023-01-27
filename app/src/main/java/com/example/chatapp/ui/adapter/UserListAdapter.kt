@@ -17,8 +17,18 @@ class UserListAdapter : ListAdapter<User, UserListViewHolder>(UserDiffCallback) 
     }
 
     override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        val item = currentList[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(item) }
+        }
     }
+
+    private var onItemClickListener: ((User) -> Unit)? = null
+    fun setOnItemClickListener(listener: (User) -> Unit) {
+        onItemClickListener = listener
+    }
+
 
     companion object {
         private val UserDiffCallback = object : DiffUtil.ItemCallback<User>() {

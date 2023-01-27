@@ -1,10 +1,14 @@
 package com.example.chatapp.ui.view
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.chatapp.R
 import com.example.chatapp.data.repository.ChatRepositoryImpl
@@ -20,6 +24,7 @@ import com.google.firebase.ktx.Firebase
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -40,6 +45,16 @@ class HomeActivity : AppCompatActivity() {
         val factory = ChatViewModelProviderFactory(chatRepository)
         chatViewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if(destination.id == R.id.fragment_message) {
+
+                binding.bottomNavigationView.visibility = View.GONE
+            } else {
+
+                binding.bottomNavigationView.visibility = View.VISIBLE
+            }
+        }
+
     }
 
     private fun setupJetpackNavigation() {
@@ -48,6 +63,14 @@ class HomeActivity : AppCompatActivity() {
         navController = host.navController
         binding.bottomNavigationView.setupWithNavController(navController)
 
+        appBarConfiguration = AppBarConfiguration(
+            setOf(R.id.fragment_home, R.id.fragment_chat, R.id.fragment_settings)
+        )
+        setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
 }

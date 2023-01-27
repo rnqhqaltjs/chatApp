@@ -12,15 +12,10 @@ class UserListViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: User) {
-
         itemView.apply {
             binding.userImage.load(user.image)
             binding.userName.text = user.name
             binding.userEmail.text = user.email
-        }
-
-        itemView.setOnClickListener {
-            itemView.findNavController().navigate(R.id.action_fragment_home_to_fragment_message)
         }
     }
 }

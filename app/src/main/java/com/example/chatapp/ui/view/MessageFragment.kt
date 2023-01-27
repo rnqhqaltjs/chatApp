@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
 
 class MessageFragment : Fragment() {
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
+
+    private val args by navArgs<MessageFragmentArgs>()
 
     private lateinit var chatViewModel: ChatViewModel
 
@@ -27,6 +30,9 @@ class MessageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
 
+        val user = args.user
+
+        (activity as HomeActivity).supportActionBar?.title = user.name
     }
 
     override fun onDestroyView() {
