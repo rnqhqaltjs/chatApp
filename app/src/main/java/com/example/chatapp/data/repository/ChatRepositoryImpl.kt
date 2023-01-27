@@ -18,9 +18,13 @@ class ChatRepositoryImpl(
     private val dbref: DatabaseReference
 ): ChatRepository {
 
-    private val _current = MutableLiveData<ArrayList<User>>()
-    override val current: LiveData<ArrayList<User>>
-        get() = _current
+    private val _currentuseradd = MutableLiveData<ArrayList<User>>()
+    override val currentuseradd: LiveData<ArrayList<User>>
+        get() = _currentuseradd
+
+    private val _currentmessageadd = MutableLiveData<ArrayList<Message>>()
+    override val currentmessageadd: LiveData<ArrayList<Message>>
+        get() = _currentmessageadd
 
     override suspend fun getUserData() {
 
@@ -38,7 +42,7 @@ class ChatRepositoryImpl(
                         userList.add(currentUser!!)
                     }
                 }
-                _current.value = userList
+                _currentuseradd.value = userList
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -53,10 +57,36 @@ class ChatRepositoryImpl(
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
         dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid, time)).addOnSuccessListener {
+            .setValue(Message(message, senderUid!!, time)).addOnSuccessListener {
                 dbref.child("chats").child(receiverRoom).child("messages").push()
                     .setValue(Message(message, senderUid, time))
             }
+    }
+
+    override suspend fun getMessageData(receiverUid: String) {
+        val senderUid = auth.currentUser?.uid
+        val senderRoom = receiverUid + senderUid
+
+        dbref.child("chats").child(senderRoom).child("messages")
+            .addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val messageList : ArrayList<Message> = arrayListOf()
+                messageList.clear()
+
+                for(postSnapshot in snapshot.children){
+                    //유저 정보
+                    val message = postSnapshot.getValue(Message::class.java)
+                    messageList.add(message!!)
+
+                }
+                _currentmessageadd.value = messageList
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(application,"메시지를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                //실패 시 실행
+            }
+        })
     }
 
     override fun logout(){

@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getUserData()
-        chatViewModel.current.observe(viewLifecycleOwner){
+        chatViewModel.currentuseradd.observe(viewLifecycleOwner){
             userlistadapter.submitList(it)
         }
 
