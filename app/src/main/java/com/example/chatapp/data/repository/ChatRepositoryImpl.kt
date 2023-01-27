@@ -4,10 +4,9 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
-import com.example.chatapp.ui.adapter.UserListAdapter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -47,6 +46,17 @@ class ChatRepositoryImpl(
                 //실패 시 실행
             }
         })
+    }
+
+    override suspend fun sendMessage(message:String, receiverUid: String, time:String) {
+        val senderUid = auth.currentUser?.uid
+        val senderRoom = receiverUid + senderUid
+        val receiverRoom = senderUid + receiverUid
+        dbref.child("chats").child(senderRoom).child("messages").push()
+            .setValue(Message(message, senderUid, time)).addOnSuccessListener {
+                dbref.child("chats").child(receiverRoom).child("messages").push()
+                    .setValue(Message(message, senderUid, time))
+            }
     }
 
     override fun logout(){

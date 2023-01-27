@@ -7,4 +7,5 @@ interface ChatRepository {
     val current: LiveData<ArrayList<User>>
     fun logout()
     suspend fun getUserData()
+    suspend fun sendMessage(message:String, receiverUid:String, time:String)
 }
