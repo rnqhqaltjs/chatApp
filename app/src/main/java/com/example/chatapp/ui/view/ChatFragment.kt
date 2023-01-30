@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentChatBinding
@@ -33,6 +34,10 @@ class ChatFragment : Fragment() {
         chatViewModel = (activity as HomeActivity).chatViewModel
 
         recyclerview()
+        chatViewModel.getChatData()
+        chatViewModel.currentchatadd.observe(viewLifecycleOwner){
+            chatListAdapter.submitList(it)
+        }
 
     }
 

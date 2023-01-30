@@ -4,6 +4,7 @@ import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +26,10 @@ class ChatRepositoryImpl(
     private val _currentmessageadd = MutableLiveData<ArrayList<Message>>()
     override val currentmessageadd: LiveData<ArrayList<Message>>
         get() = _currentmessageadd
+
+    private val _currentchatadd = MutableLiveData<ArrayList<Chat>>()
+    override val currentchatadd: LiveData<ArrayList<Chat>>
+        get() = _currentchatadd
 
     override suspend fun getUserData() {
 
@@ -88,6 +93,27 @@ class ChatRepositoryImpl(
                 //실패 시 실행
             }
         })
+    }
+
+    override suspend fun getChatData() {
+        val senderUid = auth.currentUser?.uid
+
+        dbref.child("chats").child("2yIyVizjgrRaTOuQhAKp98GM8x135DFdvUhpOLMB7vCtzva4RMDrgm72").child("messages")
+            .orderByKey().limitToLast(1).addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatList : ArrayList<Chat> = arrayListOf()
+
+                    val chat = snapshot.getValue(Chat::class.java)
+                    chatList.add(chat!!)
+
+                    _currentchatadd.value = chatList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                    //실패 시 실행
+                }
+            })
     }
 
     override fun logout(){

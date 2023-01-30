@@ -34,6 +34,9 @@
         <action
             android:id="@+id/action_fragment_chat_to_fragment_settings"
             app:destination="@id/fragment_settings" />
+        <action
+            android:id="@+id/action_fragment_chat_to_fragment_message"
+            app:destination="@id/fragment_message" />
     </fragment>
     <fragment
         android:id="@+id/fragment_settings"
@@ -58,5 +61,8 @@
         <argument
             android:name="user"
             app:argType="com.example.chatapp.data.model.User" />
+        <action
+            android:id="@+id/action_fragment_message_to_fragment_chat"
+            app:destination="@id/fragment_chat" />
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@ package com.example.chatapp.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
@@ -18,6 +19,10 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
     val currentmessageadd: LiveData<ArrayList<Message>>
         get() = _currentmessageadd
 
+    private val _currentchatadd = repository.currentchatadd
+    val currentchatadd: LiveData<ArrayList<Chat>>
+        get() = _currentchatadd
+
     fun getUserData() = viewModelScope.launch {
         repository.getUserData()
     }
@@ -32,6 +37,10 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {
         repository.getMessageData(receiverUid)
+    }
+
+    fun getChatData() = viewModelScope.launch {
+        repository.getChatData()
     }
 
 }

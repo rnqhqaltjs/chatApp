@@ -29,7 +29,6 @@ class UserListAdapter : ListAdapter<User, UserListViewHolder>(UserDiffCallback) 
         onItemClickListener = listener
     }
 
-
     companion object {
         private val UserDiffCallback = object : DiffUtil.ItemCallback<User>() {
             override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {

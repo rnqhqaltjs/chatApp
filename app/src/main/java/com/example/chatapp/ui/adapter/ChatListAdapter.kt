@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.chatapp.data.model.Chat
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.ChatlistItemBinding
 
 class ChatListAdapter : ListAdapter<Chat, ChatListViewHolder>(ChatDiffCallback) {
@@ -16,7 +17,16 @@ class ChatListAdapter : ListAdapter<Chat, ChatListViewHolder>(ChatDiffCallback) 
     }
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        val item = currentList[position]
+        holder.bind(item)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(item) }
+        }
+    }
+
+    private var onItemClickListener: ((Chat) -> Unit)? = null
+    fun setOnItemClickListener(listener: (Chat) -> Unit) {
+        onItemClickListener = listener
     }
 
     companion object {

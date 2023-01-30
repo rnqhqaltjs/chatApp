@@ -6,4 +6,6 @@ data class Chat(
     var lastmessage: String,
     var time: String,
     var image: String
-)
+) {
+    constructor(): this("", "", "", "", "")
+}
