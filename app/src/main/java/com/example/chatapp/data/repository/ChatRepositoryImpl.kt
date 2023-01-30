@@ -52,14 +52,15 @@ class ChatRepositoryImpl(
         })
     }
 
-    override suspend fun sendMessage(message:String, receiverUid: String, time:String) {
+    override suspend fun sendMessage(message:String, receiverUid: String, time:String, image:String) {
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
+
         dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid, time)).addOnSuccessListener {
+            .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
                 dbref.child("chats").child(receiverRoom).child("messages").push()
-                    .setValue(Message(message, senderUid, time))
+                    .setValue(Message(message, senderUid, time, image))
             }
     }
 

@@ -5,14 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentChatBinding
+import com.example.chatapp.ui.adapter.ChatListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
 
 class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
-//    lateinit var chatListAdapter: ChatListAdapter
+    lateinit var chatListAdapter: ChatListAdapter
 
     private lateinit var chatViewModel: ChatViewModel
 
@@ -29,22 +32,22 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
 
-//        recyclerview()
+        recyclerview()
 
     }
 
-//    private fun recyclerview(){
-//        chatListAdapter = ChatListAdapter()
-//        binding.chatRecyclerview.apply {
-//            setHasFixedSize(true)
-//            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//            addItemDecoration(
-//                DividerItemDecoration(requireContext(),
-//                    DividerItemDecoration.VERTICAL)
-//            )
-//            adapter = chatListAdapter
-//        }
-//    }
+    private fun recyclerview(){
+        chatListAdapter = ChatListAdapter()
+        binding.chatRecyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(
+                DividerItemDecoration(requireContext(),
+                    DividerItemDecoration.VERTICAL)
+            )
+            adapter = chatListAdapter
+        }
+    }
 
     override fun onDestroyView() {
         _binding = null

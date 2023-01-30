@@ -26,8 +26,8 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
         repository.logout()
     }
 
-    fun sendMessage(message:String, receiverUid:String, time: String) = viewModelScope.launch {
-        repository.sendMessage(message, receiverUid, time)
+    fun sendMessage(message:String, receiverUid:String, time: String, image: String) = viewModelScope.launch {
+        repository.sendMessage(message, receiverUid, time, image)
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {

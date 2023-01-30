@@ -9,6 +9,6 @@ interface ChatRepository {
     val currentmessageadd: LiveData<ArrayList<Message>>
     fun logout()
     suspend fun getUserData()
-    suspend fun sendMessage(message:String, receiverUid:String, time:String)
+    suspend fun sendMessage(message:String, receiverUid:String, time:String, image:String)
     suspend fun getMessageData(receiverUid:String)
 }
