@@ -77,7 +77,6 @@ class ChatRepositoryImpl(
                     //유저 정보
                     val message = postSnapshot.getValue(Message::class.java)
                     messageList.add(message!!)
-                    Toast.makeText(application,senderUid, Toast.LENGTH_SHORT).show()
 
                 }
                 _currentmessageadd.value = messageList

@@ -14,7 +14,7 @@ class ReceiveMessageViewHolder(
     fun bind(message: Message) {
         itemView.apply {
             binding.receiveMessageText.text = message.message
-            binding.receiveMessageTime.text = SimpleDateFormat("HH:mm:ss").format(message.time)
+            binding.receiveMessageTime.text = SimpleDateFormat("HH:mm:ss").format(message.time?.toLong())
         }
     }
 }

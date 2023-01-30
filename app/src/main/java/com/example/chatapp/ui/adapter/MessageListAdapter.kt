@@ -35,8 +35,8 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
-            send -> (holder as ReceiveMessageViewHolder).bind(getItem(position))
-            receive -> (holder as SendMessageViewHolder).bind(getItem(position))
+            send -> (holder as SendMessageViewHolder).bind(getItem(position))
+            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position))
         }
     }
 
