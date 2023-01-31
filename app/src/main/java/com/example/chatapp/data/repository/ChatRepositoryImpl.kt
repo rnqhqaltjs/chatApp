@@ -98,14 +98,21 @@ class ChatRepositoryImpl(
     override suspend fun getChatData() {
         val senderUid = auth.currentUser?.uid
 
-        dbref.child("chats").child("2yIyVizjgrRaTOuQhAKp98GM8x135DFdvUhpOLMB7vCtzva4RMDrgm72").child("messages")
-            .orderByKey().limitToLast(1).addValueEventListener(object: ValueEventListener {
+        dbref.child("chats").orderByChild()
+            .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val chatList : ArrayList<Chat> = arrayListOf()
 
-                    val chat = snapshot.getValue(Chat::class.java)
-                    chatList.add(chat!!)
+                    for(postSnapshot in snapshot.children){
+                        //유저 정보
+                        val message = postSnapshot.getValue(Message::class.java)
+                        Toast.makeText(application,message?.message, Toast.LENGTH_SHORT).show()
+                        if (message != null) {
+                            chatList.add(Chat(message.sendId,message.sendId,
+                                message.message, message.time, message.image))
+                        }
 
+                    }
                     _currentchatadd.value = chatList
                 }
 
