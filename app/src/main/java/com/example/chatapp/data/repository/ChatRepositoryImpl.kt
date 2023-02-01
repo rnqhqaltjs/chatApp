@@ -61,11 +61,6 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
-        var chatRoomUid : String? = null
-
-        val chat = Chat()
-        chat.users?.put(senderUid!!, true)
-        chat.users?.put(receiverUid, true)
 
         dbref.child("chats").child(senderRoom).child("messages").push()
             .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
@@ -78,44 +73,41 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
 
-        dbref.child("chats").child(senderRoom)
+        dbref.child("chats").child(senderRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val messageList : ArrayList<Message> = arrayListOf()
-                messageList.clear()
-
-                for(postSnapshot in snapshot.children){
-                    //유저 정보
-                    val message = postSnapshot.getValue(Message::class.java)
-                    messageList.add(message!!)
-
-                }
-                _currentmessageadd.value = messageList
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(application,"메시지를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
-                //실패 시 실행
-            }
-        })
-    }
-
-    override suspend fun getChatData() {
-
-        val uid = auth.currentUser?.uid
-
-        dbref.child("chats").orderByChild(uid!!).equalTo(true)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val chatList : ArrayList<Chat> = arrayListOf()
-                    val chatkeys : ArrayList<String> = arrayListOf()
-                    chatList.clear()
+                    val messageList : ArrayList<Message> = arrayListOf()
+                    messageList.clear()
 
                     for(postSnapshot in snapshot.children){
                         //유저 정보
-                        val chat = postSnapshot.getValue(Chat::class.java)
-                        chatList.add(chat!!)
-                        chatkeys.add(postSnapshot.key!!)
+                        val message = postSnapshot.getValue(Message::class.java)
+                        messageList.add(message!!)
+
+                    }
+                    _currentmessageadd.value = messageList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(application,"메시지를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                    //실패 시 실행
+                }
+            })
+    }
+
+    override suspend fun getChatData() {
+        val senderUid = auth.currentUser?.uid
+
+        dbref.child("chats")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatList : ArrayList<Chat> = arrayListOf()
+
+                    for(postSnapshot in snapshot.children){
+                        //유저 정보
+                        val message = postSnapshot.getValue(Message::class.java)
+                        Toast.makeText(application,message?.message, Toast.LENGTH_SHORT).show()
+
 
                     }
                     _currentchatadd.value = chatList
