@@ -12,10 +12,13 @@ class ChatListViewHolder(
 
     fun bind(chat: Chat) {
 
+        val message = chat.messages?.values
+            ?.sortedWith(compareBy { it.time })?.last()
+
         itemView.apply {
-            binding.chatImage.load(chat.image)
-            binding.chatName.text = chat.name
-            binding.chatLastmessage.text = chat.lastmessage
+//            binding.chatImage.load()
+//            binding.chatName.text = chat.name
+            binding.chatLastmessage.text = message?.message
         }
     }
 }

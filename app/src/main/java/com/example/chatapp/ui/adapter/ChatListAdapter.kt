@@ -32,7 +32,7 @@ class ChatListAdapter : ListAdapter<Chat, ChatListViewHolder>(ChatDiffCallback) 
     companion object {
         private val ChatDiffCallback = object : DiffUtil.ItemCallback<Chat>() {
             override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
-                return oldItem.time == newItem.time
+                return oldItem.messages == newItem.messages
             }
 
             override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {

@@ -59,13 +59,16 @@ class ChatRepositoryImpl(
 
     override suspend fun sendMessage(message:String, receiverUid: String, time:String, image:String) {
         val senderUid = auth.currentUser?.uid
-        val senderRoom = receiverUid + senderUid
-        val receiverRoom = senderUid + receiverUid
+        var chatRoomUid : String? = null
 
-        dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
-                dbref.child("chats").child(receiverRoom).child("messages").push()
-                    .setValue(Message(message, senderUid, time, image))
+        val chat = Chat()
+        chat.users?.put(senderUid!!, true)
+        chat.users?.put(receiverUid, true)
+
+        dbref.child("chatrooms").push().setValue(chat)
+            .addOnSuccessListener {
+                dbref.child("chatrooms").child("comments").push()
+                    .setValue(Message(message, senderUid!!, time, image))
             }
     }
 
@@ -73,7 +76,7 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
 
-        dbref.child("chats").child(senderRoom).child("messages")
+        dbref.child("chats").child(senderRoom)
             .addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val messageList : ArrayList<Message> = arrayListOf()
@@ -96,21 +99,21 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getChatData() {
-        val senderUid = auth.currentUser?.uid
 
-        dbref.child("chats").orderByChild()
-            .addValueEventListener(object: ValueEventListener {
+        val uid = auth.currentUser?.uid
+
+        dbref.child("chats").orderByChild(uid!!).equalTo(true)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val chatList : ArrayList<Chat> = arrayListOf()
+                    val chatkeys : ArrayList<String> = arrayListOf()
+                    chatList.clear()
 
                     for(postSnapshot in snapshot.children){
                         //유저 정보
-                        val message = postSnapshot.getValue(Message::class.java)
-                        Toast.makeText(application,message?.message, Toast.LENGTH_SHORT).show()
-                        if (message != null) {
-                            chatList.add(Chat(message.sendId,message.sendId,
-                                message.message, message.time, message.image))
-                        }
+                        val chat = postSnapshot.getValue(Chat::class.java)
+                        chatList.add(chat!!)
+                        chatkeys.add(postSnapshot.key!!)
 
                     }
                     _currentchatadd.value = chatList
