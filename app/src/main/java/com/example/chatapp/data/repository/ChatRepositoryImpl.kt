@@ -130,7 +130,7 @@ class ChatRepositoryImpl(
         val uid = auth.currentUser?.uid
 
         dbref.child("user").child(uid!!)
-            .addValueEventListener(object: ValueEventListener {
+            .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userProfile = snapshot.getValue(User::class.java)
 

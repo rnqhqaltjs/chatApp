@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
 import coil.load
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
@@ -36,7 +37,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
-
+        
         chatViewModel.getProfileData({
             binding.profileImage.load(it)},
             {
@@ -50,10 +51,6 @@ class SettingsFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            if(binding.profileName.text != null){
-
-            }
-
         }
 
         binding.logout.setOnClickListener {
@@ -68,7 +65,8 @@ class SettingsFragment : Fragment() {
 
     //이미지 변경
     private val getContent =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
                 imageUri = result.data?.data //이미지 경로 원본
                 binding.profileImage.setImageURI(imageUri) //이미지 뷰를 바꿈
