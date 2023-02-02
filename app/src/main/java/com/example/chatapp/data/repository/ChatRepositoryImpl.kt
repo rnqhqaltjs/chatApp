@@ -1,7 +1,9 @@
 package com.example.chatapp.data.repository
 
 import android.app.Application
+import android.net.Uri
 import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.Chat
@@ -127,14 +129,13 @@ class ChatRepositoryImpl(
         val uid = auth.currentUser?.uid
 
         dbref.child("user").child(uid!!)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
+            .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    val userProfile = snapshot.getValue(User::class.java)
 
-                    for(postSnapshot in snapshot.children){
-                        val userProfile = postSnapshot.getValue(User::class.java)
-                        image.invoke(userProfile!!.image)
-                        name.invoke(userProfile.name)
-                    }
+                    Toast.makeText(application,userProfile!!.name, Toast.LENGTH_SHORT).show()
+                    image.invoke(userProfile.image)
+                    name.invoke(userProfile.name)
                 }
 
                 override fun onCancelled(error: DatabaseError) {

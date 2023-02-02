@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.load
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
 
@@ -29,13 +30,14 @@ class SettingsFragment : Fragment() {
         chatViewModel = (activity as HomeActivity).chatViewModel
 
         chatViewModel.getProfileData({
-            binding.profileImage.
-        },{
-            binding.profileName.text.toString()
+            binding.profileImage.load(it)},
+            {
+            binding.profileName.setText(it)
+        })
+
+        binding.saveButton.setOnClickListener {
+
         }
-        )
-
-
 
         binding.logout.setOnClickListener {
             chatViewModel.logout()
