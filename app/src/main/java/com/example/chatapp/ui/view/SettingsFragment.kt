@@ -28,6 +28,15 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
 
+        chatViewModel.getProfileData({
+            binding.profileImage.
+        },{
+            binding.profileName.text.toString()
+        }
+        )
+
+
+
         binding.logout.setOnClickListener {
             chatViewModel.logout()
             val intent = Intent(activity, MainActivity::class.java)

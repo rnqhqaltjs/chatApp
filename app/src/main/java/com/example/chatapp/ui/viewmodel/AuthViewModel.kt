@@ -22,7 +22,7 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
     val login: LiveData<FirebaseUser>
         get() = _login
 
-    fun register(name:String, email: String, image: Uri, password: String) = viewModelScope.launch {
+    fun register(name:String, email: String, image: ByteArray, password: String) = viewModelScope.launch {
         repository.signup(name, email, image, password)
     }
 

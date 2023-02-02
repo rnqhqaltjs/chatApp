@@ -46,11 +46,11 @@ class AuthRepositoryImpl(
     override val login: LiveData<FirebaseUser>
         get() = _login
 
-    override suspend fun signup(name: String, email: String, image: Uri, password: String) {
+    override suspend fun signup(name: String, email: String, image: ByteArray, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { it ->
                 if (it.isSuccessful) {
-                    storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").putFile(image)
+                    storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
                         .addOnSuccessListener {
                         var profileimage: Uri?
 

@@ -62,11 +62,18 @@ class ChatRepositoryImpl(
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
 
+        val lastMsgObj: HashMap<String, Any> = HashMap()
+        lastMsgObj["lastMsg"] = Message(message, senderUid!!, time, image).message
+        dbref.child("chats").child(senderRoom).updateChildren(lastMsgObj)
+        dbref.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
+
         dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
+            .setValue(Message(message, senderUid, time, image)).addOnSuccessListener {
                 dbref.child("chats").child(receiverRoom).child("messages").push()
                     .setValue(Message(message, senderUid, time, image))
             }
+
+
     }
 
     override suspend fun getMessageData(receiverUid: String) {
@@ -104,13 +111,30 @@ class ChatRepositoryImpl(
                     val chatList : ArrayList<Chat> = arrayListOf()
 
                     for(postSnapshot in snapshot.children){
-                        //유저 정보
-                        val message = postSnapshot.getValue(Message::class.java)
-                        Toast.makeText(application,message?.message, Toast.LENGTH_SHORT).show()
-
 
                     }
                     _currentchatadd.value = chatList
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                    //실패 시 실행
+                }
+            })
+    }
+
+    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) {
+        val uid = auth.currentUser?.uid
+
+        dbref.child("user").child(uid!!)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+
+                    for(postSnapshot in snapshot.children){
+                        val userProfile = postSnapshot.getValue(User::class.java)
+                        image.invoke(userProfile!!.image)
+                        name.invoke(userProfile.name)
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {

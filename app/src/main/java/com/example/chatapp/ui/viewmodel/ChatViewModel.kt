@@ -43,4 +43,8 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
         repository.getChatData()
     }
 
+    fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) = viewModelScope.launch {
+        repository.getProfileData(image, name)
+    }
+
 }

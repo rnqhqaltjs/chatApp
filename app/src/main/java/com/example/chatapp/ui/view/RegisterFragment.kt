@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentRegisterBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
+import com.example.chatapp.util.convertFileToByteArray
 
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
@@ -60,7 +61,7 @@ class RegisterFragment : Fragment() {
                 authViewModel.register(
                     binding.nameArea.text.toString(),
                     binding.emailArea.text.toString(),
-                    imageUri!!,
+                    convertFileToByteArray(requireContext(),imageUri!!),
                     binding.passwordArea1.text.toString()
                 )
             }
