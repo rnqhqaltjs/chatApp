@@ -65,13 +65,13 @@ class ChatRepositoryImpl(
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
 
-        val lastMsgObj: HashMap<String, Any> = HashMap()
-        lastMsgObj["lastMsg"] = Message(message, senderUid!!, time, image).message
-        dbref.child("chats").child(senderRoom).updateChildren(lastMsgObj)
-        dbref.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
+//        val lastMsgObj: HashMap<String, Any> = HashMap()
+//        lastMsgObj["lastMsg"] = Message(message, senderUid!!, time, image).message
+//        dbref.child("chats").child(senderRoom).updateChildren(lastMsgObj)
+//        dbref.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
 
         dbref.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid, time, image)).addOnSuccessListener {
+            .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
                 dbref.child("chats").child(receiverRoom).child("messages").push()
                     .setValue(Message(message, senderUid, time, image))
             }
@@ -134,8 +134,7 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userProfile = snapshot.getValue(User::class.java)
 
-                    Toast.makeText(application,userProfile!!.name, Toast.LENGTH_SHORT).show()
-                    image.invoke(userProfile.image)
+                    image.invoke(userProfile!!.image)
                     name.invoke(userProfile.name)
                 }
 
