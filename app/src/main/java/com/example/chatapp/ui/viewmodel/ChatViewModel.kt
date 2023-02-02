@@ -48,4 +48,8 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
         repository.getProfileData(image, name)
     }
 
+    fun profileImageChange(image: ByteArray) = viewModelScope.launch {
+        repository.profileImageChange(image)
+    }
+
 }

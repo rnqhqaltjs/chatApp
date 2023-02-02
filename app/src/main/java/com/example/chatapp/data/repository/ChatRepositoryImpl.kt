@@ -3,7 +3,6 @@ package com.example.chatapp.data.repository
 import android.app.Application
 import android.net.Uri
 import android.widget.Toast
-import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.Chat
@@ -14,11 +13,13 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
 
 class ChatRepositoryImpl(
     private val application: Application,
     private val auth: FirebaseAuth,
-    private val dbref: DatabaseReference
+    private val dbref: DatabaseReference,
+    private val storage: FirebaseStorage
 ): ChatRepository {
 
     private val _currentuseradd = MutableLiveData<ArrayList<User>>()
@@ -143,6 +144,20 @@ class ChatRepositoryImpl(
                     //실패 시 실행
                 }
             })
+    }
+
+    override suspend fun profileImageChange(image: ByteArray) {
+        val uid = auth.currentUser?.uid
+
+        storage.reference.child("userImages/$uid/photo").delete().addOnSuccessListener {
+            storage.reference.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
+                storage.reference.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
+                    val photoUri : Uri = it
+                    dbref.child("users/$uid/image").setValue(photoUri.toString())
+                    Toast.makeText(application, "프로필사진이 변경되었습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     override fun logout(){

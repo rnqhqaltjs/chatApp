@@ -20,6 +20,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 
 class HomeActivity : AppCompatActivity() {
 
@@ -31,6 +33,7 @@ class HomeActivity : AppCompatActivity() {
     }
     private lateinit var auth: FirebaseAuth
     private lateinit var dbref: DatabaseReference
+    private lateinit var storage: FirebaseStorage
     lateinit var chatViewModel: ChatViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +41,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
         dbref = Firebase.database.reference
+        storage = Firebase.storage
 
         setupJetpackNavigation()
 
-        val chatRepository = ChatRepositoryImpl(application,auth,dbref)
+        val chatRepository = ChatRepositoryImpl(application,auth,dbref,storage)
         val factory = ChatViewModelProviderFactory(chatRepository)
         chatViewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
 
