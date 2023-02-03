@@ -8,6 +8,7 @@ import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ChatViewModel(private val repository: ChatRepository): ViewModel() {
@@ -50,6 +51,10 @@ class ChatViewModel(private val repository: ChatRepository): ViewModel() {
 
     fun profileImageChange(image: ByteArray) = viewModelScope.launch {
         repository.profileImageChange(image)
+    }
+
+    fun profileNameChange(name: String) = viewModelScope.launch {
+        repository.profileNameChange(name)
     }
 
 }

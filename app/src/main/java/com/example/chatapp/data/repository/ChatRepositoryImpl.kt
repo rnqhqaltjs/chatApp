@@ -152,11 +152,17 @@ class ChatRepositoryImpl(
             storage.reference.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
                 storage.reference.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
                     val photoUri : Uri = it
-                    dbref.child("users/$uid/image").setValue(photoUri.toString())
+                    dbref.child("user/$uid/image").setValue(photoUri.toString())
                     Toast.makeText(application, "프로필사진이 변경되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    override suspend fun profileNameChange(name: String) {
+        val uid = auth.currentUser?.uid
+        dbref.child("user/$uid/name").setValue(name)
+        Toast.makeText(application, "프로필이름이 변경되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     override fun logout(){

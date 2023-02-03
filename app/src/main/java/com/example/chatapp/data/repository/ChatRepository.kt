@@ -17,4 +17,5 @@ interface ChatRepository {
     suspend fun getChatData()
     suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit))
     suspend fun profileImageChange(image: ByteArray)
+    suspend fun profileNameChange(name: String)
 }

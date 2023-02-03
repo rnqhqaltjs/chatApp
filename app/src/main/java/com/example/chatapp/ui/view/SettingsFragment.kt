@@ -37,7 +37,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         chatViewModel = (activity as HomeActivity).chatViewModel
-        
+
         chatViewModel.getProfileData({
             binding.profileImage.load(it)},
             {
@@ -51,6 +51,10 @@ class SettingsFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
+            if(binding.profileName.text.isNotEmpty()){
+                chatViewModel.profileNameChange(binding.profileName.text.toString())
+            }
+
         }
 
         binding.logout.setOnClickListener {
