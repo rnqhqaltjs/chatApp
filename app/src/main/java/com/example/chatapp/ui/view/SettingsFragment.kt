@@ -82,6 +82,10 @@ class SettingsFragment : Fragment() {
             }
         }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
