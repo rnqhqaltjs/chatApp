@@ -9,10 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import coil.load
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
@@ -51,8 +51,11 @@ class SettingsFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            if(binding.profileName.text.isNotEmpty()){
+            if(binding.profileName.text.isNotEmpty() && imageUri!=null){
                 chatViewModel.profileNameChange(binding.profileName.text.toString())
+                chatViewModel.profileImageChange(convertFileToByteArray(requireContext(),imageUri!!))
+            } else if (binding.profileName.text.isEmpty()){
+                Toast.makeText(requireContext(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -74,7 +77,6 @@ class SettingsFragment : Fragment() {
             if(result.resultCode == Activity.RESULT_OK) {
                 imageUri = result.data?.data //이미지 경로 원본
                 binding.profileImage.setImageURI(imageUri) //이미지 뷰를 바꿈
-                chatViewModel.profileImageChange(convertFileToByteArray(requireContext(),imageUri!!))
                 Log.d("image", "success")
             }
             else{
