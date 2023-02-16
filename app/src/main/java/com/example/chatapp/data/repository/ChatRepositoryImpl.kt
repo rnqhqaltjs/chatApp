@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
+import com.example.chatapp.util.LoadingDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -54,10 +54,12 @@ class SettingsFragment : Fragment() {
             if(binding.profileName.text.isNotEmpty() && imageUri!=null){
                 chatViewModel.profileNameChange(binding.profileName.text.toString())
                 chatViewModel.profileImageChange(convertFileToByteArray(requireContext(),imageUri!!))
+                imageUri = null
             } else if (binding.profileName.text.isEmpty()){
                 Toast.makeText(requireContext(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+            } else if (imageUri == null) {
+                chatViewModel.profileNameChange(binding.profileName.text.toString())
             }
-
         }
 
         binding.logout.setOnClickListener {
@@ -65,7 +67,6 @@ class SettingsFragment : Fragment() {
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             activity?.finish()
-
         }
 
     }
