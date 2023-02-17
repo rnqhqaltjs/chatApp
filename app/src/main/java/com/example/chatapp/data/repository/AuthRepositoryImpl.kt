@@ -1,30 +1,20 @@
 package com.example.chatapp.data.repository
 
-import android.app.Activity.RESULT_OK
 import android.app.Application
-import android.content.Intent
 import android.net.Uri
-import android.provider.MediaStore
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.room.Database
 import com.example.chatapp.data.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.FirebaseStorage
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import java.io.IOException
 
 class AuthRepositoryImpl(
     private val application: Application,
@@ -33,10 +23,6 @@ class AuthRepositoryImpl(
     private val dbref: DatabaseReference,
     private val storage: FirebaseStorage
     ):AuthRepository {
-
-    companion object{
-        val EMAIL_KEY = stringPreferencesKey("EMAIL")
-    }
 
     private val _register = MutableLiveData<FirebaseUser>()
     override val register: LiveData<FirebaseUser>
