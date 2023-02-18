@@ -1,7 +1,6 @@
 package com.example.chatapp.ui.viewmodel
 
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +10,11 @@ import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
+class AuthViewModel @Inject constructor(
+    private val repository: AuthRepository
+    ) : ViewModel() {
 
     private val _register = repository.register
     val register: LiveData<FirebaseUser>

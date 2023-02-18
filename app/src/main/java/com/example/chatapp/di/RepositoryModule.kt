@@ -5,6 +5,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.chatapp.data.repository.AuthRepository
 import com.example.chatapp.data.repository.AuthRepositoryImpl
+import com.example.chatapp.data.repository.ChatRepository
+import com.example.chatapp.data.repository.ChatRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
@@ -28,5 +30,16 @@ object RepositoryModule {
         storage: StorageReference
     ): AuthRepository {
         return AuthRepositoryImpl(application, dataStore, auth, database, storage)
+    }
+
+    @Provides
+    @Singleton
+    fun provideChatRepository(
+        application: Application,
+        auth: FirebaseAuth,
+        database: DatabaseReference,
+        storage: StorageReference
+    ): ChatRepository {
+        return ChatRepositoryImpl(application, auth, database, storage)
     }
 }

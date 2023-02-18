@@ -8,8 +8,11 @@ import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ChatViewModel(private val repository: ChatRepository): ViewModel() {
+class ChatViewModel @Inject constructor(
+    private val repository: ChatRepository
+    ): ViewModel() {
 
     private val _currentuseradd = repository.currentuseradd
     val currentuseradd: LiveData<ArrayList<User>>
