@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentMessageBinding
@@ -22,7 +22,7 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     lateinit var messageListAdapter: MessageListAdapter
 
-    private val chatViewModel by activityViewModels<ChatViewModel>()
+    private val chatViewModel by viewModels<ChatViewModel>()
     private val time = System.currentTimeMillis()
 
     override fun onCreateView(
