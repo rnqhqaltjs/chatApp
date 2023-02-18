@@ -14,14 +14,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.first
 
 class AuthRepositoryImpl(
     private val application: Application,
     private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth,
-    private val dbref: DatabaseReference,
-    private val storage: FirebaseStorage
+    private val database: DatabaseReference,
+    private val storage: StorageReference
     ):AuthRepository {
 
     private val _register = MutableLiveData<FirebaseUser>()
@@ -36,16 +37,16 @@ class AuthRepositoryImpl(
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { it ->
                 if (it.isSuccessful) {
-                    storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
+                    storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
                         .addOnSuccessListener {
                         var profileimage: Uri?
 
-                        storage.reference.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
+                        storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
                             .addOnSuccessListener {
                                 profileimage = it
 
                                 _register.postValue(auth.currentUser)
-                                dbref.child("user")
+                                database.child("user")
                                     .child(auth.currentUser?.uid!!)
                                     .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
                             }

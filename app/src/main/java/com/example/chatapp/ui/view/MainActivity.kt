@@ -15,7 +15,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 
 private val Context.dataStore by preferencesDataStore(DATASTORE_NAME)
@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
     private lateinit var auth: FirebaseAuth
-    private lateinit var dbref: DatabaseReference
-    private lateinit var storage: FirebaseStorage
+    private lateinit var database: DatabaseReference
+    private lateinit var storage: StorageReference
     lateinit var authViewModel: AuthViewModel
 
 
@@ -35,10 +35,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         auth = Firebase.auth
-        dbref = Firebase.database.reference
-        storage = Firebase.storage
+        database = Firebase.database.reference
+        storage = Firebase.storage.reference
 
-        val authRepository = AuthRepositoryImpl(application,dataStore,auth,dbref,storage)
+        val authRepository = AuthRepositoryImpl(application,dataStore,auth,database,storage)
         val factory = AuthViewModelProviderFactory(authRepository)
         authViewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
 
