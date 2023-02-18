@@ -22,7 +22,9 @@ import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentRegisterBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
 import com.example.chatapp.util.convertFileToByteArray
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!

@@ -7,11 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repository.AuthRepository
 import com.example.chatapp.util.Constants.USER_NAME
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val repository: AuthRepository
     ) : ViewModel() {

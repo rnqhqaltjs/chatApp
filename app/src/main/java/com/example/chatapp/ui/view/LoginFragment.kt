@@ -14,7 +14,9 @@ import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!

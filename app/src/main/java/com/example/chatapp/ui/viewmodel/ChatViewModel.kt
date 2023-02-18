@@ -7,9 +7,11 @@ import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ChatViewModel @Inject constructor(
     private val repository: ChatRepository
     ): ViewModel() {

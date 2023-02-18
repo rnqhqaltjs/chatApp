@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MessageFragment : Fragment() {
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
@@ -19,7 +22,7 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     lateinit var messageListAdapter: MessageListAdapter
 
-    private lateinit var chatViewModel: ChatViewModel
+    private val chatViewModel by activityViewModels<ChatViewModel>()
     private val time = System.currentTimeMillis()
 
     override fun onCreateView(
@@ -34,7 +37,6 @@ class MessageFragment : Fragment() {
     @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel = (activity as HomeActivity).chatViewModel
         val user = args.user
         (activity as HomeActivity).supportActionBar?.title = user.name
 

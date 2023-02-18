@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentChatBinding
 import com.example.chatapp.ui.adapter.ChatListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
