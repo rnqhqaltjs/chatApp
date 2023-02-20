@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,7 +21,7 @@ class ChatFragment : Fragment() {
 
     lateinit var chatListAdapter: ChatListAdapter
 
-    private val chatViewModel by viewModels<ChatViewModel>()
+    private val chatViewModel by activityViewModels<ChatViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

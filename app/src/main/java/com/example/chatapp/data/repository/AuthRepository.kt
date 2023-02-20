@@ -1,10 +1,7 @@
 package com.example.chatapp.data.repository
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
-import com.example.chatapp.data.model.User
 import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {
     val register: LiveData<FirebaseUser>
