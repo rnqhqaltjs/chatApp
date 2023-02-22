@@ -17,7 +17,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.first
 
 class AuthRepositoryImpl(
-    private val application: Application,
+//    private val application: Application,
     private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth,
     private val database: DatabaseReference,
@@ -52,7 +52,7 @@ class AuthRepositoryImpl(
                     }
 
                 } else {
-                    Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -63,7 +63,7 @@ class AuthRepositoryImpl(
                 if (it.isSuccessful) {
                     _login.postValue(auth.currentUser)
                 } else {
-                    Toast.makeText(application,"아이디 또는 비밀번호를 제대로 입력해주세요",Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(application,"아이디 또는 비밀번호를 제대로 입력해주세요",Toast.LENGTH_SHORT).show()
                  }
              }
     }
