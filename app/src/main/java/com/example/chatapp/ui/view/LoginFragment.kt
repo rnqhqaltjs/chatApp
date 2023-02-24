@@ -12,10 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
-import com.example.chatapp.util.UiState
-import com.example.chatapp.util.hide
-import com.example.chatapp.util.show
-import com.example.chatapp.util.toast
+import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -59,7 +56,7 @@ class LoginFragment : Fragment() {
         authViewModel.login.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
-                    binding.loginBtn.text = "..."
+                    binding.loginBtn.text = ""
                     binding.loginProgress.show()
                 }
                 is UiState.Failure -> {
@@ -83,24 +80,23 @@ class LoginFragment : Fragment() {
     private fun validation(): Boolean {
         var isValid = true
 
-        val email: String = binding.emailArea.text.toString()
-        val password: String = binding.passwordArea.text.toString()
-
-        if (email.isEmpty()) {
+        if (binding.emailArea.text.isNullOrEmpty()) {
             isValid = false
-            Toast.makeText(requireContext(), "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+            toast("이메일을 입력해주세요")
+        } else {
+            if (!binding.emailArea.text.toString().isValidEmail()){
+                isValid = false
+                toast("올바른 이메일을 입력해주세요")
+            }
         }
-        if (email.length<10){
+        if (binding.passwordArea.text.isEmpty()){
             isValid = false
-            Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
-        }
-        if (password.isEmpty()){
-            isValid = false
-            Toast.makeText(requireContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
-        }
-        if (password.length < 6){
-            isValid = false
-            Toast.makeText(requireContext(), "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+            toast("비밀번호를 입력해주세요.")
+        } else {
+            if (binding.passwordArea.text.toString().length < 6){
+                isValid = false
+                toast("비밀번호를 6자리 이상으로 입력해주세요.")
+            }
         }
         return isValid
     }

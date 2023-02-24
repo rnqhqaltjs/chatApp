@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentRegisterBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
-import com.example.chatapp.util.convertFileToByteArray
+import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,19 +43,15 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        authViewModel.register.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
-            Toast.makeText(context,"회원가입 성공",Toast.LENGTH_SHORT).show()
-        }
+        observer()
 
         binding.imageArea.setOnClickListener {
             val intentImage = Intent(Intent.ACTION_PICK)
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
-
         }
 
-        binding.joinBtn.setOnClickListener {
+        binding.registerBtn.setOnClickListener {
             if(validation()){
                 authViewModel.register(
                     binding.nameArea.text.toString(),
@@ -80,50 +76,64 @@ class RegisterFragment : Fragment() {
             }
         }
 
+    private fun observer() {
+        authViewModel.register.observe(viewLifecycleOwner) { state ->
+            when(state){
+                is UiState.Loading -> {
+                    binding.registerBtn.text = ""
+                    binding.registerProgress.show()
+                }
+                is UiState.Failure -> {
+                    binding.registerBtn.text = "회원가입 하기"
+                    binding.registerProgress.hide()
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    binding.registerBtn.text = "회원가입 하기"
+                    binding.registerProgress.hide()
+                    toast(state.data)
+                    findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+                }
+            }
+        }
+    }
+
     private fun validation(): Boolean {
-
-        val name = binding.nameArea.text.toString()
-        val email = binding.emailArea.text.toString()
-        val password1 = binding.passwordArea1.text.toString()
-        val password2 = binding.passwordArea2.text.toString()
-
         var isValid = true
 
-        if (name.isEmpty()) {
+        if (binding.nameArea.text.isNullOrEmpty()) {
             isValid = false
-            Toast.makeText(requireContext(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
+            toast("이름을 입력해주세요")
         }
-        if (email.isEmpty()) {
+        if (binding.emailArea.text.isNullOrEmpty()){
             isValid = false
-            Toast.makeText(requireContext(), "이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+            toast("이메일을 입력해주세요")
+        }else{
+            if (!binding.emailArea.text.toString().isValidEmail()){
+                isValid = false
+                toast("올바른 이메일 주소를 입력해주세요")
+            }
         }
-        if (email.length<10||!email.contains("@")) {
+        if (binding.passwordArea1.text.isNullOrEmpty()){
             isValid = false
-            Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+            toast("비밀번호를 입력해주세요")
+        }else{
+            if (binding.passwordArea1.text.toString().length < 6){
+                isValid = false
+                toast("비밀번호를 6자리 이상으로 입력해주세요")
+            }
         }
-        if (password1.isEmpty()) {
+        if (binding.passwordArea2.text.isNullOrEmpty()){
             isValid = false
-            Toast.makeText(requireContext(), "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            toast("비밀번호 확인을 입력해주세요")
         }
-        if (password2.isEmpty()) {
+        if (binding.passwordArea1.text != binding.passwordArea2.text) {
             isValid = false
-            Toast.makeText(requireContext(), "비밀번호 확인을 입력해주세요.", Toast.LENGTH_SHORT).show()
-        }
-        if (password1 != password2) {
-            isValid = false
-            Toast.makeText(requireContext(), "비밀번호가 서로 달라요.", Toast.LENGTH_SHORT).show()
-        }
-        if (password1.length < 6) {
-            isValid = false
-            Toast.makeText(requireContext(), "비밀번호를 6자리 이상으로 입력해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "비밀번호가 서로 달라요", Toast.LENGTH_SHORT).show()
         }
         if (!imageCheck) {
             isValid = false
-            Toast.makeText(requireContext(), "앱에서 사용할 사진을 등록해주세요.", Toast.LENGTH_SHORT).show()
-        }
-        if (email.length<10) {
-            isValid = false
-            Toast.makeText(requireContext(),"올바른 이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "앱에서 사용할 사진을 등록해주세요", Toast.LENGTH_SHORT).show()
         }
         return isValid
     }

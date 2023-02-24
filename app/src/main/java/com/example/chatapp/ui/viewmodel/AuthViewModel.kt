@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +30,10 @@ class AuthViewModel @Inject constructor(
         get() = _login
 
     fun register(name:String, email: String, image: ByteArray, password: String) = viewModelScope.launch {
-        repository.signup(name, email, image, password)
+        _register.value = UiState.Loading
+        repository.signup(name, email, image, password){
+            _register.value = it
+        }
     }
 
     fun login(email: String, password: String) = viewModelScope.launch {
@@ -39,13 +43,11 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun putID(value:String){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.putID(USER_NAME, value)
-        }
+    fun putID(value:String) = viewModelScope.launch(Dispatchers.IO) {
+        repository.putID(USER_NAME, value)
     }
 
-    fun getID():String? = runBlocking {
+    fun getID() = runBlocking {
         repository.getID(USER_NAME)
     }
 

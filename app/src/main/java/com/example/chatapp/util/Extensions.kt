@@ -45,6 +45,8 @@ fun Context.createDialog(layout: Int, cancelable: Boolean): Dialog {
     return dialog
 }
 
+fun String.isValidEmail() =
+    isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
 
 fun convertFileToByteArray(context: Context, uri: Uri): ByteArray {
     val inputStream: InputStream? = context.contentResolver.openInputStream(uri)

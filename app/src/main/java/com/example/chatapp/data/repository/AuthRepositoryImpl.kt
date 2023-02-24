@@ -11,8 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.first
@@ -25,7 +24,13 @@ class AuthRepositoryImpl(
     private val storage: StorageReference
     ):AuthRepository {
 
-    override suspend fun signup(name: String, email: String, image: ByteArray, password: String) {
+    override suspend fun signup(
+        name: String,
+        email: String,
+        image: ByteArray,
+        password: String,
+        result: (UiState<String>) -> Unit
+    ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { it ->
                 if (it.isSuccessful) {
@@ -43,14 +48,28 @@ class AuthRepositoryImpl(
                                     .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
                             }
                     }
-
+                    result.invoke(UiState.Success("로그인 성공"))
                 } else {
-                    Toast.makeText(application,"중복된 이메일입니다",Toast.LENGTH_SHORT).show()
+                        try {
+                            throw it.exception ?: java.lang.Exception("Invalid authentication")
+                        } catch (e: FirebaseAuthWeakPasswordException) {
+                            result.invoke(UiState.Failure("비밀번호를 6자리 이상으로 입력해주세요"))
+                        } catch (e: FirebaseAuthInvalidCredentialsException) {
+                            result.invoke(UiState.Failure("올바른 이메일을 입력해주세요"))
+                        } catch (e: FirebaseAuthUserCollisionException) {
+                            result.invoke(UiState.Failure("이미 사용중인 이메일입니다"))
+                        } catch (e: Exception) {
+                            result.invoke(UiState.Failure(e.message))
+                        }
                 }
             }
     }
 
-    override suspend fun login(email: String, password: String, result: (UiState<String>)->Unit){
+    override suspend fun login(
+        email: String,
+        password: String,
+        result: (UiState<String>)->Unit
+    ){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
