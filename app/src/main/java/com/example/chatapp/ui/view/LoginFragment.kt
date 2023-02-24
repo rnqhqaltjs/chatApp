@@ -12,6 +12,10 @@ import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.ui.viewmodel.AuthViewModel
+import com.example.chatapp.util.UiState
+import com.example.chatapp.util.hide
+import com.example.chatapp.util.show
+import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,7 +41,10 @@ class LoginFragment : Fragment() {
 
         binding.loginBtn.setOnClickListener {
             if(validation()){
-                authViewModel.login(binding.emailArea.text.toString(), binding.passwordArea.text.toString())
+                authViewModel.login(
+                    email = binding.emailArea.text.toString(),
+                    password = binding.passwordArea.text.toString()
+                )
                 authViewModel.putID(binding.emailArea.text.toString())
             }
         }
@@ -49,11 +56,27 @@ class LoginFragment : Fragment() {
     }
 
     private fun observer(){
-        authViewModel.login.observe(viewLifecycleOwner){
+        authViewModel.login.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                    binding.loginBtn.text = "..."
+                    binding.loginProgress.show()
+                }
+                is UiState.Failure -> {
+                    binding.loginBtn.text = "로그인"
+                    binding.loginProgress.hide()
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    binding.loginBtn.text = "로그인"
+                    binding.loginProgress.hide()
+                    toast(state.data)
+                    val intent = Intent(activity, HomeActivity::class.java)
+                    startActivity(intent)
+                    activity?.finish()
+                }
+            }
 
-            val intent = Intent(activity, HomeActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
         }
     }
 

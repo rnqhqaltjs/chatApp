@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.User
+import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -24,14 +25,6 @@ class AuthRepositoryImpl(
     private val storage: StorageReference
     ):AuthRepository {
 
-    private val _register = MutableLiveData<FirebaseUser>()
-    override val register: LiveData<FirebaseUser>
-        get() = _register
-
-    private val _login = MutableLiveData<FirebaseUser>()
-    override val login: LiveData<FirebaseUser>
-        get() = _login
-
     override suspend fun signup(name: String, email: String, image: ByteArray, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { it ->
@@ -44,7 +37,7 @@ class AuthRepositoryImpl(
                             .addOnSuccessListener {
                                 profileimage = it
 
-                                _register.postValue(auth.currentUser)
+//                                _register.postValue(auth.currentUser)
                                 database.child("user")
                                     .child(auth.currentUser?.uid!!)
                                     .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
@@ -57,15 +50,17 @@ class AuthRepositoryImpl(
             }
     }
 
-    override suspend fun login(email: String, password: String){
+    override suspend fun login(email: String, password: String, result: (UiState<String>)->Unit){
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    _login.postValue(auth.currentUser)
+                    result.invoke(UiState.Success("로그인 성공"))
                 } else {
                     Toast.makeText(application,"아이디 또는 비밀번호를 제대로 입력해주세요",Toast.LENGTH_SHORT).show()
                  }
-             }
+             }.addOnFailureListener {
+                 result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
+            }
     }
 
     override suspend fun putID(key: String, value: String) {
