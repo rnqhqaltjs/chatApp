@@ -10,6 +10,7 @@ import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.LoadingDialog
+import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,10 +26,6 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
-    private val _currentuseradd = MutableLiveData<ArrayList<User>>()
-    override val currentuseradd: LiveData<ArrayList<User>>
-        get() = _currentuseradd
-
     private val _currentmessageadd = MutableLiveData<ArrayList<Message>>()
     override val currentmessageadd: LiveData<ArrayList<Message>>
         get() = _currentmessageadd
@@ -37,10 +34,9 @@ class ChatRepositoryImpl(
     override val currentchatadd: LiveData<ArrayList<Chat>>
         get() = _currentchatadd
 
-    override suspend fun getUserData() {
+    override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
 
         database.child("user").addValueEventListener(object: ValueEventListener {
-
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 val userList : ArrayList<User> = arrayListOf()
@@ -52,14 +48,11 @@ class ChatRepositoryImpl(
                     if(auth.currentUser?.uid != currentUser?.uid){
                         userList.add(currentUser!!)
                     }
+                    result.invoke(UiState.Success(userList))
                 }
-                _currentuseradd.value = userList
             }
-
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(application,"유저 리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
-                //실패 시 실행
-                Log.e("MainActivity", error.toException().toString())
+                result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
             }
         })
     }

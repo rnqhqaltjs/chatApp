@@ -1,12 +1,14 @@
 package com.example.chatapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
+import com.example.chatapp.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -16,8 +18,8 @@ class ChatViewModel @Inject constructor(
     private val repository: ChatRepository
     ): ViewModel() {
 
-    private val _currentuseradd = repository.currentuseradd
-    val currentuseradd: LiveData<ArrayList<User>>
+    private val _currentuseradd = MutableLiveData<UiState<List<User>>>()
+    val currentuseradd: LiveData<UiState<List<User>>>
         get() = _currentuseradd
 
     private val _currentmessageadd = repository.currentmessageadd
@@ -29,7 +31,10 @@ class ChatViewModel @Inject constructor(
         get() = _currentchatadd
 
     fun getUserData() = viewModelScope.launch {
-        repository.getUserData()
+        _currentuseradd.value = UiState.Loading
+        repository.getUserData {
+            _currentuseradd.value = it
+        }
     }
 
     fun logout(){

@@ -42,7 +42,6 @@ class AuthRepositoryImpl(
                             .addOnSuccessListener {
                                 profileimage = it
 
-//                                _register.postValue(auth.currentUser)
                                 database.child("user")
                                     .child(auth.currentUser?.uid!!)
                                     .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
@@ -51,7 +50,7 @@ class AuthRepositoryImpl(
                     result.invoke(UiState.Success("로그인 성공"))
                 } else {
                         try {
-                            throw it.exception ?: java.lang.Exception("Invalid authentication")
+                            throw it.exception ?: java.lang.Exception("유효하지 않은 인증")
                         } catch (e: FirebaseAuthWeakPasswordException) {
                             result.invoke(UiState.Failure("비밀번호를 6자리 이상으로 입력해주세요"))
                         } catch (e: FirebaseAuthInvalidCredentialsException) {
@@ -74,9 +73,7 @@ class AuthRepositoryImpl(
             .addOnCompleteListener {
                 if (it.isSuccessful) {
                     result.invoke(UiState.Success("로그인 성공"))
-                } else {
-                    Toast.makeText(application,"아이디 또는 비밀번호를 제대로 입력해주세요",Toast.LENGTH_SHORT).show()
-                 }
+                }
              }.addOnFailureListener {
                  result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
             }

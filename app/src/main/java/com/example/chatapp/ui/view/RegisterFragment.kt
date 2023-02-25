@@ -129,11 +129,11 @@ class RegisterFragment : Fragment() {
         }
         if (binding.passwordArea1.text != binding.passwordArea2.text) {
             isValid = false
-            Toast.makeText(requireContext(), "비밀번호가 서로 달라요", Toast.LENGTH_SHORT).show()
+            toast("비밀번호가 서로 달라요")
         }
         if (!imageCheck) {
             isValid = false
-            Toast.makeText(requireContext(), "앱에서 사용할 사진을 등록해주세요", Toast.LENGTH_SHORT).show()
+            toast("앱에서 사용할 사진을 등록해주세요")
         }
         return isValid
     }

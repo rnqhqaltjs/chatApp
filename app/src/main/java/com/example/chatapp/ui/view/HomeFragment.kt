@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.ui.adapter.UserListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.example.chatapp.util.UiState
+import com.example.chatapp.util.hide
+import com.example.chatapp.util.show
+import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -39,8 +44,18 @@ class HomeFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getUserData()
-        chatViewModel.currentuseradd.observe(viewLifecycleOwner){
-            userlistadapter.submitList(it)
+        chatViewModel.currentuseradd.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                }
+                is UiState.Failure -> {
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    userlistadapter.submitList(state.data)
+                }
+            }
+
         }
 
     }
