@@ -11,6 +11,7 @@ import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -48,7 +49,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun getID() = runBlocking {
-        repository.getID(USER_NAME)
+        repository.getID(USER_NAME).first()
     }
 
 }

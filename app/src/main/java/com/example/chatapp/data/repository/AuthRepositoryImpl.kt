@@ -4,13 +4,19 @@ import android.net.Uri
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.chatapp.data.model.User
+import com.example.chatapp.util.Constants.USER_NAME
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import java.io.IOException
 
 class AuthRepositoryImpl(
     private val dataStore: DataStore<Preferences>,
@@ -76,20 +82,35 @@ class AuthRepositoryImpl(
 
     override suspend fun putID(key: String, value: String) {
         val preferenceKey = stringPreferencesKey(key)
-        dataStore.edit{
-            it[preferenceKey] = value
+        dataStore.edit{ prefs ->
+            prefs[preferenceKey] = value
         }
     }
 
-    override suspend fun getID(key: String): String?{
-        return  try {
-            val preferenceKey = stringPreferencesKey(key)
-            val preference = dataStore.data.first()
-            preference[preferenceKey]
-        }catch (e:Exception){
-            e.printStackTrace()
-            null
-        }
+    override suspend fun getID(key: String): Flow<String> {
+        val preferenceKey = stringPreferencesKey(key)
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { prefs ->
+                prefs[preferenceKey] ?: USER_NAME
+            }
     }
 
+//    override suspend fun getID(key: String): String?{
+//        return  try {
+//            val preferenceKey = stringPreferencesKey(key)
+//            val preference = dataStore.data.first()
+//            preference[preferenceKey]
+//        }catch (e:Exception){
+//            e.printStackTrace()
+//            null
+//        }
+//    }
 }
