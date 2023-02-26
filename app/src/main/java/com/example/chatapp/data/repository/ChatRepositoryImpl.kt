@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
+import com.example.chatapp.ui.view.HomeFragment
 import com.example.chatapp.util.LoadingDialog
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
@@ -31,14 +32,11 @@ class ChatRepositoryImpl(
         get() = _currentchatadd
 
     override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
-
         database.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
                 val userList : ArrayList<User> = arrayListOf()
 
                 for(postSnapshot in snapshot.children){
-                    //유저 정보
                     val currentUser = postSnapshot.getValue(User::class.java)
 
                     if(auth.currentUser?.uid != currentUser?.uid){

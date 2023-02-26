@@ -13,6 +13,7 @@ import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
 import com.example.chatapp.util.UiState
+import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
 import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,11 +50,14 @@ class MessageFragment : Fragment() {
         chatViewModel.currentmessageadd.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
+                    binding.messageProgress.show()
                 }
                 is UiState.Failure -> {
+                    binding.messageProgress.hide()
                     toast(state.error)
                 }
                 is UiState.Success -> {
+                    binding.messageProgress.hide()
                     messageListAdapter.submitList(state.data)
                 }
             }

@@ -48,11 +48,11 @@ class HomeFragment : Fragment() {
                     binding.homeProgress.show()
                 }
                 is UiState.Failure -> {
-//                    binding.homeProgress.hide()
+                    binding.homeProgress.hide()
                     toast(state.error)
                 }
                 is UiState.Success -> {
-//                    binding.homeProgress.hide()
+                    binding.homeProgress.hide()
                     userlistadapter.submitList(state.data)
                 }
             }
