@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.example.chatapp.util.UiState
+import com.example.chatapp.util.show
+import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -43,8 +46,17 @@ class MessageFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getMessageData(user.uid)
-        chatViewModel.currentmessageadd.observe(viewLifecycleOwner){
-            messageListAdapter.submitList(it)
+        chatViewModel.currentmessageadd.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                }
+                is UiState.Failure -> {
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    messageListAdapter.submitList(state.data)
+                }
+            }
         }
 
         binding.sendBtn.setOnClickListener {

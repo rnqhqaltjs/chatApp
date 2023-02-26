@@ -1,14 +1,10 @@
 package com.example.chatapp.data.repository
 
-import android.app.Application
 import android.net.Uri
-import android.widget.Toast
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.*
@@ -17,14 +13,28 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.first
 
 class AuthRepositoryImpl(
-    private val application: Application,
     private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth,
     private val database: DatabaseReference,
     private val storage: StorageReference
-    ):AuthRepository {
+):AuthRepository {
 
-    override suspend fun signup(
+    override suspend fun loginUser(
+        email: String,
+        password: String,
+        result: (UiState<String>)->Unit
+    ){
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    result.invoke(UiState.Success("로그인 성공"))
+                }
+            }.addOnFailureListener {
+                result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
+            }
+    }
+
+    override suspend fun registerUser(
         name: String,
         email: String,
         image: ByteArray,
@@ -61,21 +71,6 @@ class AuthRepositoryImpl(
                             result.invoke(UiState.Failure(e.message))
                         }
                 }
-            }
-    }
-
-    override suspend fun login(
-        email: String,
-        password: String,
-        result: (UiState<String>)->Unit
-    ){
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    result.invoke(UiState.Success("로그인 성공"))
-                }
-             }.addOnFailureListener {
-                 result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
             }
     }
 

@@ -22,8 +22,8 @@ class ChatViewModel @Inject constructor(
     val currentuseradd: LiveData<UiState<List<User>>>
         get() = _currentuseradd
 
-    private val _currentmessageadd = repository.currentmessageadd
-    val currentmessageadd: LiveData<ArrayList<Message>>
+    private val _currentmessageadd = MutableLiveData<UiState<List<Message>>>()
+    val currentmessageadd: LiveData<UiState<List<Message>>>
         get() = _currentmessageadd
 
     private val _currentchatadd = repository.currentchatadd
@@ -46,7 +46,10 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {
-        repository.getMessageData(receiverUid)
+        _currentmessageadd.value = UiState.Loading
+        repository.getMessageData(receiverUid){
+            _currentmessageadd.value = it
+        }
     }
 
     fun getChatData() = viewModelScope.launch {

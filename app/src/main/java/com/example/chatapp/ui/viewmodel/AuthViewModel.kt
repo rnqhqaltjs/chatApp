@@ -31,14 +31,14 @@ class AuthViewModel @Inject constructor(
 
     fun register(name:String, email: String, image: ByteArray, password: String) = viewModelScope.launch {
         _register.value = UiState.Loading
-        repository.signup(name, email, image, password){
+        repository.registerUser(name, email, image, password){
             _register.value = it
         }
     }
 
     fun login(email: String, password: String) = viewModelScope.launch {
         _login.value = UiState.Loading
-        repository.login(email, password){
+        repository.loginUser(email, password){
             _login.value = it
         }
     }

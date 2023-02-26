@@ -23,13 +23,12 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        application: Application,
         dataStore: DataStore<Preferences>,
         auth: FirebaseAuth,
         database: DatabaseReference,
         storage: StorageReference
     ): AuthRepository {
-        return AuthRepositoryImpl(application, dataStore, auth, database, storage)
+        return AuthRepositoryImpl(dataStore, auth, database, storage)
     }
 
     @Provides

@@ -1,13 +1,11 @@
 package com.example.chatapp.ui.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,17 +45,18 @@ class HomeFragment : Fragment() {
         chatViewModel.currentuseradd.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
+                    binding.homeProgress.show()
                 }
                 is UiState.Failure -> {
+//                    binding.homeProgress.hide()
                     toast(state.error)
                 }
                 is UiState.Success -> {
+//                    binding.homeProgress.hide()
                     userlistadapter.submitList(state.data)
                 }
             }
-
         }
-
     }
 
     private fun recyclerview(){

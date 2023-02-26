@@ -1,6 +1,5 @@
 package com.example.chatapp.di
 
-import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -17,12 +16,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Provides
-    @Singleton
-    fun provideApplicationContext(application: Application): Context {
-        return application
-    }
 
     // DataStore
     @Singleton

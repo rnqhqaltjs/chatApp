@@ -26,10 +26,6 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
-    private val _currentmessageadd = MutableLiveData<ArrayList<Message>>()
-    override val currentmessageadd: LiveData<ArrayList<Message>>
-        get() = _currentmessageadd
-
     private val _currentchatadd = MutableLiveData<ArrayList<Chat>>()
     override val currentchatadd: LiveData<ArrayList<Chat>>
         get() = _currentchatadd
@@ -76,7 +72,10 @@ class ChatRepositoryImpl(
 
     }
 
-    override suspend fun getMessageData(receiverUid: String) {
+    override suspend fun getMessageData(
+        receiverUid: String,
+        result: (UiState<List<Message>>) -> Unit
+    ) {
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
 
@@ -92,12 +91,11 @@ class ChatRepositoryImpl(
                         messageList.add(message!!)
 
                     }
-                    _currentmessageadd.value = messageList
+                    result.invoke(UiState.Success(messageList))
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(application,"메시지를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
-                    //실패 시 실행
+                    result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
                 }
             })
     }
