@@ -127,7 +127,7 @@ class RegisterFragment : Fragment() {
             isValid = false
             toast("비밀번호 확인을 입력해주세요")
         }
-        if (binding.passwordArea1.text != binding.passwordArea2.text) {
+        if (binding.passwordArea1.text.toString() != binding.passwordArea2.text.toString()) {
             isValid = false
             toast("비밀번호가 서로 달라요")
         }
