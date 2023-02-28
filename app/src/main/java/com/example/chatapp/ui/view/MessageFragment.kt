@@ -68,7 +68,6 @@ class MessageFragment : Fragment() {
                 binding.messageEdit.text.toString(),
                 user.uid,
                 time.toString(),
-                user.image
             )
             //입력값 초기화
             binding.messageEdit.setText("")

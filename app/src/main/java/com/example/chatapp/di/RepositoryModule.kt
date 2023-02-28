@@ -34,11 +34,10 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideChatRepository(
-        application: Application,
         auth: FirebaseAuth,
         database: DatabaseReference,
         storage: StorageReference
     ): ChatRepository {
-        return ChatRepositoryImpl(application, auth, database, storage)
+        return ChatRepositoryImpl(auth, database, storage)
     }
 }

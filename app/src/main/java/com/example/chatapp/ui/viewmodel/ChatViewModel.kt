@@ -41,8 +41,8 @@ class ChatViewModel @Inject constructor(
         repository.logout()
     }
 
-    fun sendMessage(message:String, receiverUid:String, time: String, image: String) = viewModelScope.launch {
-        repository.sendMessage(message, receiverUid, time, image)
+    fun sendMessage(message:String, receiverUid:String, time: String) = viewModelScope.launch {
+        repository.sendMessage(message, receiverUid, time)
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {

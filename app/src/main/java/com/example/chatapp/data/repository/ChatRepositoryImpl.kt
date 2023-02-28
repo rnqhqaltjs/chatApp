@@ -21,7 +21,6 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class ChatRepositoryImpl(
-    private val application: Application,
     private val auth: FirebaseAuth,
     private val database: DatabaseReference,
     private val storage: StorageReference
@@ -51,7 +50,7 @@ class ChatRepositoryImpl(
         })
     }
 
-    override suspend fun sendMessage(message:String, receiverUid: String, time:String, image:String) {
+    override suspend fun sendMessage(message:String, receiverUid: String, time:String) {
         val senderUid = auth.currentUser?.uid
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
@@ -68,8 +67,6 @@ class ChatRepositoryImpl(
                         }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
-                    //실패 시 실행
                 }
             })
 
@@ -94,14 +91,12 @@ class ChatRepositoryImpl(
                     messageList.clear()
 
                     for(postSnapshot in snapshot.children){
-                        //유저 정보
                         val message = postSnapshot.getValue(Message::class.java)
                         messageList.add(message!!)
 
                     }
                     result.invoke(UiState.Success(messageList))
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
                 }
@@ -121,9 +116,7 @@ class ChatRepositoryImpl(
                     }
                     _currentchatadd.value = chatList
                 }
-
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
                     //실패 시 실행
                 }
             })
@@ -140,9 +133,7 @@ class ChatRepositoryImpl(
                     image.invoke(userProfile!!.image)
                     name.invoke(userProfile.name)
                 }
-
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
                     //실패 시 실행
                 }
             })
@@ -156,7 +147,6 @@ class ChatRepositoryImpl(
                 storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
                     val photoUri : Uri = it
                     database.child("user/$uid/image").setValue(photoUri.toString())
-                    Toast.makeText(application, "프로필사진이 변경되었습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -165,7 +155,6 @@ class ChatRepositoryImpl(
     override suspend fun profileNameChange(name: String) {
         val uid = auth.currentUser?.uid
         database.child("user/$uid/name").setValue(name)
-        Toast.makeText(application, "프로필이름이 변경되었습니다.", Toast.LENGTH_SHORT).show()
     }
 
     override fun logout(){
