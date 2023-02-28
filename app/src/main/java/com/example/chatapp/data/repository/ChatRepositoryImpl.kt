@@ -56,17 +56,27 @@ class ChatRepositoryImpl(
         val senderRoom = receiverUid + senderUid
         val receiverRoom = senderUid + receiverUid
 
+        database.child("user").child(senderUid!!)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userProfile = snapshot.getValue(User::class.java)
+
+                    database.child("chats").child(senderRoom).child("messages").push()
+                        .setValue(Message(message, senderUid, time, userProfile!!.image)).addOnSuccessListener {
+                            database.child("chats").child(receiverRoom).child("messages").push()
+                                .setValue(Message(message, senderUid, time, userProfile.image))
+                        }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(application,"채팅리스트를 불러오는데 실패했습니다", Toast.LENGTH_SHORT).show()
+                    //실패 시 실행
+                }
+            })
+
 //        val lastMsgObj: HashMap<String, Any> = HashMap()
 //        lastMsgObj["lastMsg"] = Message(message, senderUid!!, time, image).message
 //        dbref.child("chats").child(senderRoom).updateChildren(lastMsgObj)
 //        dbref.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
-
-        database.child("chats").child(senderRoom).child("messages").push()
-            .setValue(Message(message, senderUid!!, time, image)).addOnSuccessListener {
-                database.child("chats").child(receiverRoom).child("messages").push()
-                    .setValue(Message(message, senderUid, time, image))
-            }
-
 
     }
 
