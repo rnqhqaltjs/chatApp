@@ -14,6 +14,5 @@ interface ChatRepository {
     suspend fun getMessageData(receiverUid:String, result: (UiState<List<Message>>) -> Unit)
     suspend fun getChatData()
     suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit))
-    suspend fun profileImageChange(image: ByteArray)
-    suspend fun profileNameChange(name: String)
+    suspend fun profileChange(name:String, image: ByteArray, result: (UiState<String>)->Unit)
 }

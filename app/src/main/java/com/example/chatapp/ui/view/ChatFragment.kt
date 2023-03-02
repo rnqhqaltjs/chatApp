@@ -37,7 +37,7 @@ class ChatFragment : Fragment() {
 
         recyclerview()
         chatViewModel.getChatData()
-        chatViewModel.currentchatadd.observe(viewLifecycleOwner){
+        chatViewModel.chatobserve.observe(viewLifecycleOwner){
             chatListAdapter.submitList(it)
         }
 

@@ -139,7 +139,7 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun profileImageChange(image: ByteArray) {
+    override suspend fun profileChange(name: String, image: ByteArray, result: (UiState<String>)->Unit) {
         val uid = auth.currentUser?.uid
 
         storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
@@ -147,14 +147,13 @@ class ChatRepositoryImpl(
                 storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
                     val photoUri : Uri = it
                     database.child("user/$uid/image").setValue(photoUri.toString())
+                    database.child("user/$uid/name").setValue(name)
                 }
             }
+            result.invoke(UiState.Success("프로필 변경 완료"))
+        }.addOnFailureListener {
+            result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
         }
-    }
-
-    override suspend fun profileNameChange(name: String) {
-        val uid = auth.currentUser?.uid
-        database.child("user/$uid/name").setValue(name)
     }
 
     override fun logout(){

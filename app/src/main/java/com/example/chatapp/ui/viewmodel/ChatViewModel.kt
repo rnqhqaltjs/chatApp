@@ -18,22 +18,26 @@ class ChatViewModel @Inject constructor(
     private val repository: ChatRepository
     ): ViewModel() {
 
-    private val _currentuseradd = MutableLiveData<UiState<List<User>>>()
-    val currentuseradd: LiveData<UiState<List<User>>>
-        get() = _currentuseradd
+    private val _userobserve = MutableLiveData<UiState<List<User>>>()
+    val userobserve: LiveData<UiState<List<User>>>
+        get() = _userobserve
 
-    private val _currentmessageadd = MutableLiveData<UiState<List<Message>>>()
-    val currentmessageadd: LiveData<UiState<List<Message>>>
-        get() = _currentmessageadd
+    private val _messageobserve = MutableLiveData<UiState<List<Message>>>()
+    val messageobserve: LiveData<UiState<List<Message>>>
+        get() = _messageobserve
 
-    private val _currentchatadd = repository.currentchatadd
-    val currentchatadd: LiveData<ArrayList<Chat>>
-        get() = _currentchatadd
+    private val _chatobserve = repository.currentchatadd
+    val chatobserve: LiveData<ArrayList<Chat>>
+        get() = _chatobserve
+
+    private val _profileobserve = MutableLiveData<UiState<String>>()
+    val profileobserve: LiveData<UiState<String>>
+        get() = _profileobserve
 
     fun getUserData() = viewModelScope.launch {
-        _currentuseradd.value = UiState.Loading
+        _userobserve.value = UiState.Loading
         repository.getUserData {
-            _currentuseradd.value = it
+            _userobserve.value = it
         }
     }
 
@@ -46,9 +50,9 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {
-        _currentmessageadd.value = UiState.Loading
+        _messageobserve.value = UiState.Loading
         repository.getMessageData(receiverUid){
-            _currentmessageadd.value = it
+            _messageobserve.value = it
         }
     }
 
@@ -60,12 +64,11 @@ class ChatViewModel @Inject constructor(
         repository.getProfileData(image, name)
     }
 
-    fun profileImageChange(image: ByteArray) = viewModelScope.launch {
-        repository.profileImageChange(image)
-    }
-
-    fun profileNameChange(name: String) = viewModelScope.launch {
-        repository.profileNameChange(name)
+    fun profileChange(name: String, image: ByteArray) = viewModelScope.launch {
+        _profileobserve.value = UiState.Loading
+        repository.profileChange(name, image){
+            _profileobserve.value = it
+        }
     }
 
 }

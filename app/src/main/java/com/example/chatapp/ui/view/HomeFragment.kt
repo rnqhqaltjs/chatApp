@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getUserData()
-        chatViewModel.currentuseradd.observe(viewLifecycleOwner){ state ->
+        chatViewModel.userobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.homeProgress.show()

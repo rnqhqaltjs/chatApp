@@ -12,14 +12,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import coil.load
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
-import com.example.chatapp.util.convertFileToByteArray
+import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class SettingsFragment : Fragment() {
@@ -41,11 +42,12 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatViewModel.getProfileData({
-            binding.profileImage.load(it)},
-            {
-            binding.profileName.setText(it)
-        })
+        observer()
+
+        chatViewModel.getProfileData(
+            { binding.profileImage.load(it) },
+            { binding.profileName.setText(it) }
+        )
 
         binding.profileImage.setOnClickListener {
             val intentImage = Intent(Intent.ACTION_PICK)
@@ -54,14 +56,11 @@ class SettingsFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            if(binding.profileName.text.isNotEmpty() && imageUri!=null){
-                chatViewModel.profileNameChange(binding.profileName.text.toString())
-                chatViewModel.profileImageChange(convertFileToByteArray(requireContext(),imageUri!!))
-                imageUri = null
-            } else if (binding.profileName.text.isEmpty()){
-                Toast.makeText(requireContext(), "이름을 입력해주세요", Toast.LENGTH_SHORT).show()
-            } else if (imageUri == null) {
-                chatViewModel.profileNameChange(binding.profileName.text.toString())
+            if(binding.profileName.text.isNotEmpty()){
+                chatViewModel.profileChange(
+                    name = binding.profileName.text.toString(),
+                    image = convertFileToByteArray(requireContext(),imageUri!!)
+                )
             }
         }
 
@@ -87,6 +86,24 @@ class SettingsFragment : Fragment() {
                 Log.d("image", "failure")
             }
         }
+
+    private fun observer(){
+        chatViewModel.profileobserve.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                    binding.profileProgress.show()
+                }
+                is UiState.Failure -> {
+                    binding.profileProgress.hide()
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    binding.profileProgress.hide()
+                    toast(state.data)
+                }
+            }
+        }
+    }
 
     override fun onDestroyView() {
         _binding = null

@@ -47,7 +47,7 @@ class MessageFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getMessageData(user.uid)
-        chatViewModel.currentmessageadd.observe(viewLifecycleOwner){ state ->
+        chatViewModel.messageobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.messageProgress.show()
