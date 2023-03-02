@@ -42,6 +42,24 @@ class HomeFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getUserData()
+        observer()
+    }
+
+    private fun recyclerview(){
+        userlistadapter = UserListAdapter()
+        binding.userRecyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+            adapter = userlistadapter
+        }
+        userlistadapter.setOnItemClickListener {
+            val action = HomeFragmentDirections.actionFragmentHomeToFragmentMessage(it)
+            findNavController().navigate(action)
+        }
+    }
+
+    private fun observer(){
         chatViewModel.userobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
@@ -56,20 +74,6 @@ class HomeFragment : Fragment() {
                     userlistadapter.submitList(state.data)
                 }
             }
-        }
-    }
-
-    private fun recyclerview(){
-        userlistadapter = UserListAdapter()
-        binding.userRecyclerview.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
-            adapter = userlistadapter
-        }
-        userlistadapter.setOnItemClickListener {
-            val action = HomeFragmentDirections.actionFragmentHomeToFragmentMessage(it)
-            findNavController().navigate(action)
         }
     }
 

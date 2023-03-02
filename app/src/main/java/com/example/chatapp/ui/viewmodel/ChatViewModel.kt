@@ -64,7 +64,7 @@ class ChatViewModel @Inject constructor(
         repository.getProfileData(image, name)
     }
 
-    fun profileChange(name: String, image: ByteArray) = viewModelScope.launch {
+    fun profileChange(name: String, image: ByteArray?) = viewModelScope.launch {
         _profileobserve.value = UiState.Loading
         repository.profileChange(name, image){
             _profileobserve.value = it

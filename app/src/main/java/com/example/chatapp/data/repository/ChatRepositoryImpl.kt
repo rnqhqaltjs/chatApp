@@ -139,20 +139,28 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun profileChange(name: String, image: ByteArray, result: (UiState<String>)->Unit) {
+    override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>)->Unit) {
         val uid = auth.currentUser?.uid
 
-        storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
-            storage.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
-                storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
-                    val photoUri : Uri = it
-                    database.child("user/$uid/image").setValue(photoUri.toString())
-                    database.child("user/$uid/name").setValue(name)
+        if (image != null) {
+            storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
+                storage.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
+                    storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
+                        val photoUri : Uri = it
+                        database.child("user/$uid/image").setValue(photoUri.toString())
+                        database.child("user/$uid/name").setValue(name)
+                    }
                 }
+                result.invoke(UiState.Success("프로필 변경 완료"))
+                Log.d("uistate", "success")
+            }.addOnFailureListener {
+                result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
+                Log.d("uistate", "fa")
             }
+        } else {
+            database.child("user/$uid/name").setValue(name)
             result.invoke(UiState.Success("프로필 변경 완료"))
-        }.addOnFailureListener {
-            result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
+            Log.d("uistate", "success")
         }
     }
 
