@@ -26,10 +26,6 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
-    private val _currentchatadd = MutableLiveData<ArrayList<Chat>>()
-    override val currentchatadd: LiveData<ArrayList<Chat>>
-        get() = _currentchatadd
-
     override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
         database.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -63,16 +59,16 @@ class ChatRepositoryImpl(
         database.child("user").child(senderUid!!)
             .addListenerForSingleValueEvent(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val userProfile = snapshot.getValue(User::class.java)
+                    val userSender = snapshot.getValue(User::class.java)
 
-                    val theMessage = Message(message, senderUid, time, userProfile!!.image)
+                    val theMessage = Message(message, senderUid, time, userSender!!.image)
                     val latestUserMessageForSender = Chat(theMessage, userReceiver)
-                    val latestUserMessageForReceiver = Chat(theMessage, userProfile)
+                    val latestUserMessageForReceiver = Chat(theMessage, userSender)
 
                     database.child("chats").child(senderRoom).child("messages").push()
                         .setValue(theMessage).addOnSuccessListener {
                             database.child("chats").child(receiverRoom).child("messages").push()
-                                .setValue(Message(message, senderUid, time, userProfile.image)).addOnSuccessListener {
+                                .setValue(theMessage).addOnSuccessListener {
 
                                     database.child(("latestUsersAndMessages")).child(senderUid)
                                         .child(receiverUid)
@@ -83,19 +79,11 @@ class ChatRepositoryImpl(
                                                 .setValue(latestUserMessageForReceiver)
                                         }
                                 }
-
-//                            val lastMsgObj: HashMap<String, Any> = HashMap()
-//                            lastMsgObj["lastMsg"] = Message(message, senderUid, time, userProfile.image).message
-//                            database.child("chats").child(senderRoom).updateChildren(lastMsgObj)
-//                            database.child("chats").child(receiverRoom).updateChildren(lastMsgObj)
                         }
                 }
                 override fun onCancelled(error: DatabaseError) {
                 }
             })
-
-
-
     }
 
     override suspend fun getMessageData(
@@ -124,7 +112,7 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun getChatData() {
+    override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {
         val senderUid = auth.currentUser?.uid
 
         database.child("latestUsersAndMessages").child(senderUid!!)
@@ -136,12 +124,13 @@ class ChatRepositoryImpl(
                     for(postSnapshot in snapshot.children){
                         val chat = postSnapshot.getValue(Chat::class.java)
                         chatList.add(chat!!)
-
+                        chatList.sortBy { it.message.time }
+                        chatList.reverse()
                     }
-                    _currentchatadd.value = chatList
+                    result.invoke(UiState.Success(chatList))
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    //실패 시 실행
+                    result.invoke(UiState.Failure("채팅리스트를 불러오는데 실패했습니다"))
                 }
             })
     }

@@ -26,8 +26,8 @@ class ChatViewModel @Inject constructor(
     val messageobserve: LiveData<UiState<List<Message>>>
         get() = _messageobserve
 
-    private val _chatobserve = repository.currentchatadd
-    val chatobserve: LiveData<ArrayList<Chat>>
+    private val _chatobserve = MutableLiveData<UiState<List<Chat>>>()
+    val chatobserve: LiveData<UiState<List<Chat>>>
         get() = _chatobserve
 
     private val _profileobserve = MutableLiveData<UiState<String>>()
@@ -57,7 +57,10 @@ class ChatViewModel @Inject constructor(
     }
 
     fun getChatData() = viewModelScope.launch {
-        repository.getChatData()
+        _chatobserve.value = UiState.Loading
+        repository.getChatData {
+            _chatobserve.value = it
+        }
     }
 
     fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) = viewModelScope.launch {
