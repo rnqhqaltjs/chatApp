@@ -152,15 +152,12 @@ class ChatRepositoryImpl(
                     }
                 }
                 result.invoke(UiState.Success("프로필 변경 완료"))
-                Log.d("uistate", "success")
             }.addOnFailureListener {
                 result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
-                Log.d("uistate", "fa")
             }
         } else {
             database.child("user/$uid/name").setValue(name)
             result.invoke(UiState.Success("프로필 변경 완료"))
-            Log.d("uistate", "success")
         }
     }
 
