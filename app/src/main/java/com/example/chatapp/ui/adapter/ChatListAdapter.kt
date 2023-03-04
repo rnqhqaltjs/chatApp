@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.chatapp.data.model.Chat
-import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.ChatlistItemBinding
 
 class ChatListAdapter : ListAdapter<Chat, ChatListViewHolder>(ChatDiffCallback) {
@@ -32,7 +31,7 @@ class ChatListAdapter : ListAdapter<Chat, ChatListViewHolder>(ChatDiffCallback) 
     companion object {
         private val ChatDiffCallback = object : DiffUtil.ItemCallback<Chat>() {
             override fun areItemsTheSame(oldItem: Chat, newItem: Chat): Boolean {
-                return oldItem.messages == newItem.messages
+                return oldItem.message.time == newItem.message.time
             }
 
             override fun areContentsTheSame(oldItem: Chat, newItem: Chat): Boolean {

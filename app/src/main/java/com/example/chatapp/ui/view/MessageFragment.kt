@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
@@ -54,6 +55,7 @@ class MessageFragment : Fragment() {
                 binding.messageEdit.text.toString(),
                 user.uid,
                 time.toString(),
+                user
             )
             //입력값 초기화
             binding.messageEdit.setText("")
