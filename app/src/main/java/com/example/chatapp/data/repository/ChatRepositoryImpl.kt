@@ -1,6 +1,7 @@
 package com.example.chatapp.data.repository
 
 import android.net.Uri
+import android.util.Log
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
@@ -78,10 +79,33 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun seenMessage(
+    override suspend fun getMessageData(
         receiverUid: String,
         result: (UiState<List<Message>>) -> Unit
     ) {
+        val senderUid = auth.currentUser?.uid
+        val senderRoom = senderUid + receiverUid
+
+        database.child("chats").child(senderRoom).child("messages")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val messageList : ArrayList<Message> = arrayListOf()
+                    messageList.clear()
+
+                    for(postSnapshot in snapshot.children){
+                        val message = postSnapshot.getValue(Message::class.java)
+                        messageList.add(message!!)
+                        seenMessage(receiverUid)
+                    }
+                    result.invoke(UiState.Success(messageList))
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
+                }
+            })
+    }
+
+    override fun seenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
         val seenObj: HashMap<String, Any> = HashMap()
@@ -101,34 +125,6 @@ class ChatRepositoryImpl(
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure(error.message))
-                }
-            })
-
-    }
-
-    override suspend fun getMessageData(
-        receiverUid: String,
-        result: (UiState<List<Message>>) -> Unit
-    ) {
-        val senderUid = auth.currentUser?.uid
-        val senderRoom = senderUid + receiverUid
-
-        database.child("chats").child(senderRoom).child("messages")
-            .addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val messageList : ArrayList<Message> = arrayListOf()
-                    messageList.clear()
-
-                    for(postSnapshot in snapshot.children){
-                        val message = postSnapshot.getValue(Message::class.java)
-                        messageList.add(message!!)
-
-                    }
-                    result.invoke(UiState.Success(messageList))
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
                 }
             })
     }

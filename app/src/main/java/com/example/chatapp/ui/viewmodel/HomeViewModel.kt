@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
@@ -14,18 +13,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ChatViewModel @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val repository: ChatRepository
-    ): ViewModel() {
+): ViewModel() {
 
-    private val _chatobserve = MutableLiveData<UiState<List<Chat>>>()
-    val chatobserve: LiveData<UiState<List<Chat>>>
-        get() = _chatobserve
+    private val _userobserve = MutableLiveData<UiState<List<User>>>()
+    val userobserve: LiveData<UiState<List<User>>>
+        get() = _userobserve
 
-    fun getChatData() = viewModelScope.launch {
-        _chatobserve.value = UiState.Loading
-        repository.getChatData {
-            _chatobserve.value = it
+    fun getUserData() = viewModelScope.launch {
+        _userobserve.value = UiState.Loading
+        repository.getUserData {
+            _userobserve.value = it
         }
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.chatapp.ui.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.example.chatapp.ui.viewmodel.MessageViewModel
 import com.example.chatapp.util.UiState
 import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
@@ -27,7 +29,7 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     lateinit var messageListAdapter: MessageListAdapter
 
-    private val chatViewModel by viewModels<ChatViewModel>()
+    private val chatViewModel by viewModels<MessageViewModel>()
     private val time = System.currentTimeMillis()
 
     override fun onCreateView(
@@ -48,19 +50,20 @@ class MessageFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getMessageData(user.uid)
-        chatViewModel.seenMessage(user.uid)
         observer()
 
         binding.sendBtn.setOnClickListener {
-            chatViewModel.sendMessage(
-                binding.messageEdit.text.toString(),
-                user.uid,
-                time.toString(),
-                user
-            )
-            //입력값 초기화
-            binding.messageEdit.setText("")
-
+            val message= binding.messageEdit.text.toString()
+            if(message.isNotEmpty()){
+                chatViewModel.sendMessage(
+                    binding.messageEdit.text.toString(),
+                    user.uid,
+                    time.toString(),
+                    user
+                )
+                //입력값 초기화
+                binding.messageEdit.setText("")
+            }
         }
     }
 
@@ -87,6 +90,7 @@ class MessageFragment : Fragment() {
                 is UiState.Success -> {
                     binding.messageProgress.hide()
                     messageListAdapter.submitList(state.data)
+                    binding.messageRecyclerView.scrollToPosition(messageListAdapter.itemCount -1)
                 }
             }
         }

@@ -13,9 +13,11 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import coil.load
 import com.example.chatapp.databinding.FragmentSettingsBinding
 import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.example.chatapp.ui.viewmodel.SettingsViewModel
 import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +26,7 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    private val chatViewModel by activityViewModels<ChatViewModel>()
+    private val chatViewModel by viewModels<SettingsViewModel>()
     private var imageUri: Uri? = null
 
     override fun onCreateView(

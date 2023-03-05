@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.ui.adapter.UserListAdapter
-import com.example.chatapp.ui.viewmodel.ChatViewModel
+import com.example.chatapp.ui.viewmodel.HomeViewModel
 import com.example.chatapp.util.UiState
 import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
 
     lateinit var userlistadapter: UserListAdapter
 
-    private val chatViewModel by activityViewModels<ChatViewModel>()
+    private val chatViewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
