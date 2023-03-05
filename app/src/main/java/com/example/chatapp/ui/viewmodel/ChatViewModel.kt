@@ -49,6 +49,12 @@ class ChatViewModel @Inject constructor(
         repository.sendMessage(message, receiverUid, time, userReceiver)
     }
 
+    fun seenMessage(receiverUid: String) = viewModelScope.launch {
+        repository.seenMessage(receiverUid){
+            _messageobserve.value = it
+        }
+    }
+
     fun getMessageData(receiverUid:String) = viewModelScope.launch {
         _messageobserve.value = UiState.Loading
         repository.getMessageData(receiverUid){

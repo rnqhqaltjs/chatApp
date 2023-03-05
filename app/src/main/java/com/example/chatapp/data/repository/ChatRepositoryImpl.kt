@@ -78,12 +78,41 @@ class ChatRepositoryImpl(
             })
     }
 
+    override suspend fun seenMessage(
+        receiverUid: String,
+        result: (UiState<List<Message>>) -> Unit
+    ) {
+        val senderUid = auth.currentUser?.uid
+        val receiverRoom = receiverUid + senderUid
+        val seenObj: HashMap<String, Any> = HashMap()
+        seenObj["seen"] = true
+
+        database.child("chats").child(receiverRoom).child("messages")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val messageList : ArrayList<Message> = arrayListOf()
+                    messageList.clear()
+
+                    for(postSnapshot in snapshot.children){
+                        val message = postSnapshot.getValue(Message::class.java)
+                        messageList.add(message!!)
+                        postSnapshot.ref.updateChildren(seenObj)
+
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(UiState.Failure(error.message))
+                }
+            })
+
+    }
+
     override suspend fun getMessageData(
         receiverUid: String,
         result: (UiState<List<Message>>) -> Unit
     ) {
         val senderUid = auth.currentUser?.uid
-        val senderRoom = receiverUid + senderUid
+        val senderRoom = senderUid + receiverUid
 
         database.child("chats").child(senderRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {

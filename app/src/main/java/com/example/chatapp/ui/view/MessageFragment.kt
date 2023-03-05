@@ -48,6 +48,7 @@ class MessageFragment : Fragment() {
         recyclerview()
 
         chatViewModel.getMessageData(user.uid)
+        chatViewModel.seenMessage(user.uid)
         observer()
 
         binding.sendBtn.setOnClickListener {
