@@ -15,7 +15,7 @@ class ReceiveMessageViewHolder(
     fun bind(message: Message) {
         itemView.apply {
             binding.receiveMessageText.text = message.message
-            binding.receiveMessageTime.text = SimpleDateFormat("HH:mm:ss").format(message.time.toLong())
+            binding.receiveMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
             binding.messageImage.load(message.image)
         }
     }

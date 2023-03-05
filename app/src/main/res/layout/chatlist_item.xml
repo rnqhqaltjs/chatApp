@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp">
@@ -19,9 +20,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         android:text="name"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/chat_image"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,12 +33,21 @@
         android:id="@+id/chat_lastmessage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
         android:text="lastmessage"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/chat_image"
         app:layout_constraintTop_toBottomOf="@id/chat_name" />
+
+    <TextView
+        android:id="@+id/chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="time"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_name"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

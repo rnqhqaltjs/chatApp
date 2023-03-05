@@ -5,7 +5,7 @@ data class Chat(
     var user: User
 ){
     constructor(): this(
-        Message("","","",""),
+        Message("","","","",false),
         User("","","","")
     )
 }

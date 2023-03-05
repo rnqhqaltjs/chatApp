@@ -1,23 +1,15 @@
 package com.example.chatapp.data.repository
 
-import android.app.Application
 import android.net.Uri
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
-import com.example.chatapp.ui.view.HomeFragment
-import com.example.chatapp.util.LoadingDialog
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class ChatRepositoryImpl(
@@ -61,7 +53,7 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userSender = snapshot.getValue(User::class.java)
 
-                    val theMessage = Message(message, senderUid, time, userSender!!.image)
+                    val theMessage = Message(message, senderUid, time, userSender!!.image,false)
                     val latestUserMessageForSender = Chat(theMessage, userReceiver)
                     val latestUserMessageForReceiver = Chat(theMessage, userSender)
 

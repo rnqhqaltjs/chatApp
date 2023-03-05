@@ -14,7 +14,7 @@ class SendMessageViewHolder(
     fun bind(message: Message) {
         itemView.apply {
             binding.sendMessageText.text = message.message
-            binding.sendMessageTime.text = SimpleDateFormat("HH:mm:ss").format(message.time.toLong())
+            binding.sendMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
         }
     }
 }
