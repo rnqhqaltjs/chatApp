@@ -95,7 +95,6 @@ class ChatRepositoryImpl(
                     for(postSnapshot in snapshot.children){
                         val message = postSnapshot.getValue(Message::class.java)
                         messageList.add(message!!)
-                        seenMessage(receiverUid)
                     }
                     result.invoke(UiState.Success(messageList))
                 }
@@ -103,6 +102,7 @@ class ChatRepositoryImpl(
                     result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
                 }
             })
+        seenMessage(receiverUid)
     }
 
     override fun seenMessage(receiverUid: String) {

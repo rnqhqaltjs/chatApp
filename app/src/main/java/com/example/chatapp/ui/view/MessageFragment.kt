@@ -53,8 +53,7 @@ class MessageFragment : Fragment() {
         observer()
 
         binding.sendBtn.setOnClickListener {
-            val message= binding.messageEdit.text.toString()
-            if(message.isNotEmpty()){
+            if(binding.messageEdit.text.toString().isNotEmpty()){
                 chatViewModel.sendMessage(
                     binding.messageEdit.text.toString(),
                     user.uid,
