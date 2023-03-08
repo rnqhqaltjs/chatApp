@@ -113,12 +113,8 @@ class ChatRepositoryImpl(
         database.child("chats").child(receiverRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val messageList : ArrayList<Message> = arrayListOf()
-                    messageList.clear()
 
                     for(postSnapshot in snapshot.children){
-                        val message = postSnapshot.getValue(Message::class.java)
-                        messageList.add(message!!)
                         postSnapshot.ref.updateChildren(seenObj)
 
                         database.child("latestUsersAndMessages")

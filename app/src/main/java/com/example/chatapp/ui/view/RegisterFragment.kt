@@ -79,16 +79,16 @@ class RegisterFragment : Fragment() {
             when(state){
                 is UiState.Loading -> {
                     binding.registerBtn.text = ""
-                    binding.registerProgress.show()
+                    binding.registerProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
                     binding.registerBtn.text = "회원가입 하기"
-                    binding.registerProgress.hide()
+                    binding.registerProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
                     binding.registerBtn.text = "회원가입 하기"
-                    binding.registerProgress.hide()
+                    binding.registerProgress.hide(requireActivity())
                     toast(state.data)
                     findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
                 }

@@ -65,14 +65,14 @@ class ChatFragment : Fragment() {
         chatViewModel.chatobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
-                    binding.chatProgress.show()
+                    binding.chatProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
-                    binding.chatProgress.hide()
+                    binding.chatProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
-                    binding.chatProgress.hide()
+                    binding.chatProgress.hide(requireActivity())
                     chatlistadapter.submitList(state.data)
                 }
             }

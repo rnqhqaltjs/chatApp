@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.adapter
 
 
+import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.chatapp.data.model.Chat
@@ -18,6 +19,9 @@ class ChatListViewHolder(
             binding.chatName.text = chat.user.name
             binding.chatLastmessage.text = chat.message.message
             binding.chatTime.text = getLastMessageTimeString(chat.message.time.toLong())
+            if(!chat.message.seen) {
+                binding.chatLastmessage.setTextColor(Color.parseColor("#ff0000"))
+            }
         }
     }
 }

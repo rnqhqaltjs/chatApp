@@ -63,14 +63,14 @@ class HomeFragment : Fragment() {
         chatViewModel.userobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
-                    binding.homeProgress.show()
+                    binding.homeProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
-                    binding.homeProgress.hide()
+                    binding.homeProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
-                    binding.homeProgress.hide()
+                    binding.homeProgress.hide(requireActivity())
                     userlistadapter.submitList(state.data)
                 }
             }

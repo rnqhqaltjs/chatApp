@@ -56,16 +56,16 @@ class LoginFragment : Fragment() {
             when(state){
                 is UiState.Loading -> {
                     binding.loginBtn.text = ""
-                    binding.loginProgress.show()
+                    binding.loginProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
                     binding.loginBtn.text = "로그인"
-                    binding.loginProgress.hide()
+                    binding.loginProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
                     binding.loginBtn.text = "로그인"
-                    binding.loginProgress.hide()
+                    binding.loginProgress.hide(requireActivity())
                     toast(state.data)
                     val intent = Intent(activity, HomeActivity::class.java)
                     startActivity(intent)

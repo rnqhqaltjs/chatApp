@@ -88,14 +88,14 @@ class SettingsFragment : Fragment() {
         chatViewModel.profileobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
-                    binding.profileProgress.show()
+                    binding.profileProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
-                    binding.profileProgress.hide()
+                    binding.profileProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
-                    binding.profileProgress.hide()
+                    binding.profileProgress.hide(requireActivity())
                     toast(state.data)
                 }
             }
