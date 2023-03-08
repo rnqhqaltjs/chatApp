@@ -1,7 +1,6 @@
 package com.example.chatapp.data.repository
 
 import android.net.Uri
-import android.util.Log
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User

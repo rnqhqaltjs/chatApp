@@ -1,8 +1,6 @@
 package com.example.chatapp.ui.view
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
-import com.example.chatapp.ui.viewmodel.ChatViewModel
 import com.example.chatapp.ui.viewmodel.MessageViewModel
 import com.example.chatapp.util.UiState
 import com.example.chatapp.util.hide
@@ -41,7 +37,6 @@ class MessageFragment : Fragment() {
         return binding.root
     }
 
-    @SuppressLint("SimpleDateFormat")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val user = args.user
