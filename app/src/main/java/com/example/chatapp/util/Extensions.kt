@@ -1,21 +1,25 @@
 package com.example.chatapp.util
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.text.SimpleDateFormat
 
-fun View.hide(){
+fun View.hide(activity: Activity){
+    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     visibility = View.GONE
 }
 
-fun View.show(){
+fun View.show(activity: Activity){
+    activity.window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     visibility = View.VISIBLE
 }
 

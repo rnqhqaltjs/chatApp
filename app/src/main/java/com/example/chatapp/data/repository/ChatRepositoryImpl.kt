@@ -121,6 +121,11 @@ class ChatRepositoryImpl(
                         messageList.add(message!!)
                         postSnapshot.ref.updateChildren(seenObj)
 
+                        database.child("latestUsersAndMessages")
+                            .child(senderUid!!)
+                            .child(receiverUid)
+                            .child("message")
+                            .updateChildren(seenObj)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
