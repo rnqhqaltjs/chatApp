@@ -1,10 +1,10 @@
 package com.example.chatapp.ui.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repository.ChatRepository
+import com.example.chatapp.util.SingleLiveEvent
 import com.example.chatapp.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ class SettingsViewModel @Inject constructor(
     private val repository: ChatRepository
 ): ViewModel() {
 
-    private val _profileobserve = MutableLiveData<UiState<String>>()
+    private val _profileobserve = SingleLiveEvent<UiState<String>>()
     val profileobserve: LiveData<UiState<String>>
         get() = _profileobserve
 
