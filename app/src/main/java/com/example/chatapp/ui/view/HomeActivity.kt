@@ -41,14 +41,11 @@ class HomeActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.fragment_message) {
-
                 binding.bottomNavigationView.visibility = View.GONE
             } else {
-
                 binding.bottomNavigationView.visibility = View.VISIBLE
             }
         }
-
     }
 
     private fun setupJetpackNavigation() {
