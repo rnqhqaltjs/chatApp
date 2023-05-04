@@ -6,6 +6,6 @@ data class Chat(
 ){
     constructor(): this(
         Message("","","","",false),
-        User("","","","")
+        User("","","","", "")
     )
 }

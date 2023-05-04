@@ -1,6 +1,8 @@
 package com.example.chatapp.data.repository
 
+import android.content.ContentValues.TAG
 import android.net.Uri
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -11,6 +13,7 @@ import com.example.chatapp.util.Constants.USER_NAME
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.*
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -22,7 +25,7 @@ class AuthRepositoryImpl(
     private val dataStore: DataStore<Preferences>,
     private val auth: FirebaseAuth,
     private val database: DatabaseReference,
-    private val storage: StorageReference
+    private val storage: StorageReference,
 ):AuthRepository {
 
     override suspend fun loginUser(
@@ -50,20 +53,31 @@ class AuthRepositoryImpl(
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { it ->
                 if (it.isSuccessful) {
-                    storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
-                        .addOnSuccessListener {
-                        var profileimage: Uri?
+                    //FCM 불러오기
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                        // 실패
+                        if (!task.isSuccessful) {
+                            Log.d(TAG, "Fetching FCM registration token failed", task.exception)
+                            return@addOnCompleteListener
+                        }
+                        // 받아온 새로운 토큰
+                        val token = task.result
 
-                        storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
+                        storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
                             .addOnSuccessListener {
-                                profileimage = it
+                                var profileimage: Uri?
 
-                                database.child("user")
-                                    .child(auth.currentUser?.uid!!)
-                                    .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!))
+                                storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
+                                    .addOnSuccessListener {
+                                        profileimage = it
+
+                                        database.child("user")
+                                            .child(auth.currentUser?.uid!!)
+                                            .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!,token))
+                                    }
                             }
+                        result.invoke(UiState.Success("로그인 성공"))
                     }
-                    result.invoke(UiState.Success("로그인 성공"))
                 } else {
                         try {
                             throw it.exception ?: java.lang.Exception("유효하지 않은 인증")
