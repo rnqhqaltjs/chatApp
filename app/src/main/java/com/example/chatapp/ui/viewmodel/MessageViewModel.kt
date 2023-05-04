@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.model.Message
+import com.example.chatapp.data.model.NotificationBody
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
 import com.example.chatapp.util.UiState
@@ -21,6 +22,9 @@ class MessageViewModel @Inject constructor(
     val messageobserve: LiveData<UiState<List<Message>>>
         get() = _messageobserve
 
+    private val _notifyobserve = MutableLiveData<UiState<String>>()
+    val notifyobserve: LiveData<UiState<String>> = _notifyobserve
+
     fun sendMessage(message:String, receiverUid:String, time: String, userReceiver: User) = viewModelScope.launch {
         repository.sendMessage(message, receiverUid, time, userReceiver)
     }
@@ -29,6 +33,13 @@ class MessageViewModel @Inject constructor(
         _messageobserve.value = UiState.Loading
         repository.getMessageData(receiverUid){
             _messageobserve.value = it
+        }
+    }
+
+    fun sendNotification(message:String, userReceiver: User) = viewModelScope.launch {
+        _notifyobserve.value = UiState.Loading
+        repository.sendNotification(message, userReceiver){
+            _notifyobserve.value = it
         }
     }
 

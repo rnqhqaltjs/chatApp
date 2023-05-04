@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 
 fun View.hide(activity: Activity){
@@ -87,4 +89,18 @@ fun getLastMessageTimeString(lastTimeStamp: Long): String {           //마지�
         return ""
     }
 }
+fun getBitmapFromUrl(urlString: String): Bitmap? {
+    return try {
+        val url = URL(urlString)
+        val connection = url.openConnection() as HttpURLConnection
+        connection.doInput = true
+        connection.connect()
+        val input = connection.inputStream
+        BitmapFactory.decodeStream(input)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
 

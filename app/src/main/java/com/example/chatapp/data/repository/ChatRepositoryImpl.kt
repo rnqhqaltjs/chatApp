@@ -1,8 +1,10 @@
 package com.example.chatapp.data.repository
 
 import android.net.Uri
+import com.example.chatapp.data.api.RetrofitInstance
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
+import com.example.chatapp.data.model.NotificationBody
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
@@ -11,6 +13,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class ChatRepositoryImpl(
     private val auth: FirebaseAuth,
@@ -194,5 +198,41 @@ class ChatRepositoryImpl(
 
     override fun logout(){
         auth.signOut()
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun sendNotification(
+        message:String,
+        userReceiver: User,
+        result: (UiState<String>) -> Unit
+    ) {
+        val senderUid = auth.currentUser?.uid
+        try {
+            val userSender = suspendCancellableCoroutine { continuation ->
+                database.child("user").child(senderUid!!)
+                    .addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val user = snapshot.getValue(User::class.java)
+                            continuation.resume(user, null)
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            continuation.resume(null, null)
+                        }
+                    })
+            }
+
+            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image)
+            val body = NotificationBody(userReceiver.token, data)
+
+            val response = RetrofitInstance.api.sendNotification(body)
+
+            if (response.isSuccessful) {
+                result(UiState.Success("메시지 전송 성공"))
+            } else {
+                result(UiState.Failure("푸시 메시지 전송에 실패했습니다"))
+            }
+        } catch (e: Exception) {
+            result(UiState.Failure(e.message))
+        }
     }
 }

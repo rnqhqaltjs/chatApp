@@ -55,6 +55,7 @@ class MessageFragment : Fragment() {
                     time.toString(),
                     user
                 )
+                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }
@@ -85,6 +86,19 @@ class MessageFragment : Fragment() {
                     binding.messageProgress.hide(requireActivity())
                     messageListAdapter.submitList(state.data)
                     binding.messageRecyclerView.scrollToPosition(messageListAdapter.itemCount -1)
+                }
+            }
+        }
+
+        chatViewModel.notifyobserve.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                }
+                is UiState.Failure -> {
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    toast(state.data)
                 }
             }
         }

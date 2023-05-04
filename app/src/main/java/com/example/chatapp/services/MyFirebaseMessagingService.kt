@@ -5,15 +5,24 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.toBitmap
+import coil.Coil
+import coil.request.ImageRequest
 import com.example.chatapp.R
 import com.example.chatapp.ui.view.MainActivity
+import com.example.chatapp.util.getBitmapFromUrl
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     /** 푸시 알림으로 보낼 수 있는 메세지는 2가지
@@ -28,28 +37,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     /** 메시지 수신 메서드(포그라운드) */
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        if (remoteMessage.notification != null) {
-            //알림생성
-            sendNotification(remoteMessage)
-
-        } else {
-            Log.e(TAG, "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
+        Log.d(TAG, "notify title: ${remoteMessage.notification?.title}")
+        // 다른 기기에서 서버로 보냈을 때
+        if(remoteMessage.data.isNotEmpty()){
+            val name = remoteMessage.data["name"]!!
+            val message = remoteMessage.data["message"]!!
+            val image = remoteMessage.data["image"]!!
+            val icon = getBitmapFromUrl(image)
+            sendNotification(name, message, icon!!)
         }
     }
 
     /** 알림 생성 메서드 */
-    private fun sendNotification(remoteMessage: RemoteMessage) {
+    private fun sendNotification(name: String, message: String, icon: Bitmap){
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
         // 일회용 PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임
         val intent = Intent(this, MainActivity::class.java)
-        //각 key, value 추가
-        for (key in remoteMessage.data.keys) {
-            intent.putExtra(key, remoteMessage.data.getValue(key))
-        }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남김(A-B-C-D-B => A-B)
         val pendingIntent =
             PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
@@ -61,9 +70,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         // 알림에 대한 UI 정보, 작업
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-            .setSmallIcon(R.mipmap.ic_launcher) // 아이콘 설정
-            .setContentTitle(remoteMessage.notification?.title) // 제목
-            .setContentText(remoteMessage.notification?.body) // 메시지 내용
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setLargeIcon(icon) // 아이콘 설정
+            .setContentTitle(name) // 제목
+            .setContentText(message) // 메시지 내용
             .setAutoCancel(true) // 알람클릭시 삭제여부
             .setSound(soundUri)  // 알림 소리
             .setContentIntent(pendingIntent) // 알림 실행 시 Intent
@@ -80,12 +90,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(uniId, notificationBuilder.build())
     }
 
-    /** Token 가져오기 */
-    fun getFirebaseToken() {
-        //비동기 방식
-        FirebaseMessaging.getInstance().token.addOnSuccessListener {
-            Log.d(TAG, "token=${it}")
-        }
         //		  //동기방식
 //        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
 //                if (!task.isSuccessful) {
@@ -95,5 +99,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 //                var deviceToken = task.result
 //                Log.e(TAG, "token=${deviceToken}")
 //            })
-    }
 }
