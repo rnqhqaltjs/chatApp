@@ -77,27 +77,28 @@ class LoginFragment : Fragment() {
     }
 
     private fun validation(): Boolean {
-        var isValid = true
+        val email = binding.emailArea.text.toString()
+        val password = binding.passwordArea.text.toString()
 
-        if (binding.emailArea.text.isNullOrEmpty()) {
-            isValid = false
-            toast("이메일을 입력해주세요")
-        } else {
-            if (!binding.emailArea.text.toString().isValidEmail()){
-                isValid = false
+        return when {
+            email.isEmpty() -> {
+                toast("이메일을 입력해주세요")
+                false
+            }
+            !email.isValidEmail() -> {
                 toast("올바른 이메일을 입력해주세요")
+                false
             }
-        }
-        if (binding.passwordArea.text.isEmpty()){
-            isValid = false
-            toast("비밀번호를 입력해주세요.")
-        } else {
-            if (binding.passwordArea.text.toString().length < 6){
-                isValid = false
+            password.isEmpty() -> {
+                toast("비밀번호를 입력해주세요.")
+                false
+            }
+            password.length < 6 -> {
                 toast("비밀번호를 6자리 이상으로 입력해주세요.")
+                false
             }
+            else -> true
         }
-        return isValid
     }
 
     override fun onDestroyView() {

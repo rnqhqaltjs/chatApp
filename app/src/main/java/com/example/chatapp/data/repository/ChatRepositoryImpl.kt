@@ -1,6 +1,8 @@
 package com.example.chatapp.data.repository
 
+import android.content.ContentValues
 import android.net.Uri
+import android.util.Log
 import com.example.chatapp.data.api.RetrofitInstance
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
@@ -12,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -26,15 +29,33 @@ class ChatRepositoryImpl(
         database.child("user").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val userList : ArrayList<User> = arrayListOf()
+                val uid = auth.currentUser?.uid
 
                 for(postSnapshot in snapshot.children){
                     val currentUser = postSnapshot.getValue(User::class.java)
 
-                    if(auth.currentUser?.uid != currentUser?.uid){
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                        // 실패
+                        if (!task.isSuccessful) {
+                            Log.d(
+                                ContentValues.TAG,
+                                "Fetching FCM registration token failed",
+                                task.exception
+                            )
+                            return@addOnCompleteListener
+                        }
+                        // 받아온 새로운 토큰
+                        val token = task.result
+
+                        if(currentUser!!.token != token) {
+                            database.child("user/$uid/token").setValue(token)
+                        }
+                    }
+                    if(currentUser?.uid != uid){
                         userList.add(currentUser!!)
                     }
-                    result.invoke(UiState.Success(userList))
                 }
+                result.invoke(UiState.Success(userList))
             }
             override fun onCancelled(error: DatabaseError) {
                 result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))

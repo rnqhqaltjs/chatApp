@@ -10,19 +10,11 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.drawable.toBitmap
-import coil.Coil
-import coil.request.ImageRequest
 import com.example.chatapp.R
 import com.example.chatapp.ui.view.MainActivity
 import com.example.chatapp.util.getBitmapFromUrl
-import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     /** 푸시 알림으로 보낼 수 있는 메세지는 2가지
@@ -37,7 +29,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     /** 메시지 수신 메서드(포그라운드) */
-    @OptIn(DelicateCoroutinesApi::class)
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
         Log.d(TAG, "notify title: ${remoteMessage.notification?.title}")
@@ -47,6 +38,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val message = remoteMessage.data["message"]!!
             val image = remoteMessage.data["image"]!!
             val icon = getBitmapFromUrl(image)
+
             sendNotification(name, message, icon!!)
         }
     }
@@ -90,13 +82,4 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(uniId, notificationBuilder.build())
     }
 
-        //		  //동기방식
-//        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-//                if (!task.isSuccessful) {
-//                    Log.d(TAG, "Fetching FCM registration token failed ${task.exception}")
-//                    return@OnCompleteListener
-//                }
-//                var deviceToken = task.result
-//                Log.e(TAG, "token=${deviceToken}")
-//            })
 }
