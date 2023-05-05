@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.adapter
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.data.model.Message
@@ -12,12 +13,19 @@ class SendMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message) {
+    fun bind(message: Message, isDateHeaderNeeded: Boolean) {
         itemView.apply {
             binding.sendMessageText.text = message.message
             binding.sendMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
             if(message.seen) {
                 binding.sendMessageSeen.isVisible = true
+            }
+
+            if (isDateHeaderNeeded) {
+                binding.sendMessageDate.visibility = View.VISIBLE
+                binding.sendMessageDate.text = SimpleDateFormat("yyyy년 MM월 dd일").format(message.time.toLong())
+            } else {
+                binding.sendMessageDate.visibility = View.GONE
             }
         }
     }

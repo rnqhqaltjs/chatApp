@@ -1,6 +1,7 @@
 package com.example.chatapp.ui.adapter
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.chatapp.data.model.Message
@@ -12,23 +13,18 @@ class ReceiveMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message) {
+    fun bind(message: Message, isDateHeaderNeeded: Boolean) {
         itemView.apply {
             binding.receiveMessageText.text = message.message
             binding.receiveMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
             binding.messageImage.load(message.image)
+
+            if (isDateHeaderNeeded) {
+                binding.receiveMessageDate.visibility = View.VISIBLE
+                binding.receiveMessageDate.text = SimpleDateFormat("yyyy년 MM월 dd일").format(message.time.toLong())
+            } else {
+                binding.receiveMessageDate.visibility = View.GONE
+            }
         }
     }
-
-    // Function to check if two times have the same minute
-//    private fun isSameMinute(time1: String, time2: String): Boolean {
-//        val lastTimeString = SimpleDateFormat("yyyyMMddHHmmss").format(time1.toLong())
-//        val newTimeString = SimpleDateFormat("yyyyMMddHHmmss").format(time2.toLong())
-//        val lastHour = lastTimeString.substring(8, 10).toInt()
-//        val lastMinute = lastTimeString.substring(10, 12).toInt()
-//
-//        val newHour = newTimeString.substring(8, 10).toInt()
-//        val newMinute = newTimeString.substring(10, 12).toInt()
-//        return lastHour == newHour && lastMinute == newMinute
-//    }
 }
