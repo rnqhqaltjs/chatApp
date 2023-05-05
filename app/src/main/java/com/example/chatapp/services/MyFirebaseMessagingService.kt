@@ -46,14 +46,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     /** 알림 생성 메서드 */
     private fun sendNotification(name: String, message: String, icon: Bitmap){
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시
-        val uniId: Int = (System.currentTimeMillis() / 7).toInt()
+//        val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
         // 일회용 PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임
         val intent = Intent(this, MainActivity::class.java)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남김(A-B-C-D-B => A-B)
         val pendingIntent =
-            PendingIntent.getActivity(this, uniId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         // 알림 채널 이름
         val channelId = "my_channel"
@@ -79,7 +79,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         // 알림 생성
-        notificationManager.notify(uniId, notificationBuilder.build())
+        notificationManager.notify(0, notificationBuilder.build())
     }
 
 }
