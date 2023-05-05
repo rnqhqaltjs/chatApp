@@ -19,4 +19,16 @@ class ReceiveMessageViewHolder(
             binding.messageImage.load(message.image)
         }
     }
+
+    // Function to check if two times have the same minute
+//    private fun isSameMinute(time1: String, time2: String): Boolean {
+//        val lastTimeString = SimpleDateFormat("yyyyMMddHHmmss").format(time1.toLong())
+//        val newTimeString = SimpleDateFormat("yyyyMMddHHmmss").format(time2.toLong())
+//        val lastHour = lastTimeString.substring(8, 10).toInt()
+//        val lastMinute = lastTimeString.substring(10, 12).toInt()
+//
+//        val newHour = newTimeString.substring(8, 10).toInt()
+//        val newMinute = newTimeString.substring(10, 12).toInt()
+//        return lastHour == newHour && lastMinute == newMinute
+//    }
 }

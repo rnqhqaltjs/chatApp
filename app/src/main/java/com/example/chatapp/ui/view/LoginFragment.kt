@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentLoginBinding
 import com.example.chatapp.ui.viewmodel.LoginViewModel
 import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
@@ -108,6 +110,8 @@ class LoginFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        binding.emailArea.setText(authViewModel.getID())
+        lifecycleScope.launch {
+            binding.emailArea.setText(authViewModel.getID())
+        }
     }
 }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +36,7 @@ class LoginViewModel @Inject constructor(
         repository.putID(USER_NAME, value)
     }
 
-    fun getID() = runBlocking {
+    suspend fun getID(): String = withContext(Dispatchers.IO) {
         repository.getID(USER_NAME).first()
     }
 
