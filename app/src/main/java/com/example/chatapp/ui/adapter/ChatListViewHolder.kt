@@ -20,6 +20,7 @@ class ChatListViewHolder(
 
         itemView.apply {
             binding.chatImage.load(chat.user.image)
+            binding.chatImage.clipToOutline = true
             binding.chatName.text = chat.user.name
             binding.chatLastmessage.text = chat.message.message
             binding.chatTime.text = getLastMessageTimeString(chat.message.time.toLong())

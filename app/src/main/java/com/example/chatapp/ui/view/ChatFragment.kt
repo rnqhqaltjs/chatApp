@@ -49,10 +49,6 @@ class ChatFragment : Fragment() {
         binding.chatRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(
-                DividerItemDecoration(requireContext(),
-                    DividerItemDecoration.VERTICAL)
-            )
             adapter = chatlistadapter
         }
         chatlistadapter.setOnItemClickListener {

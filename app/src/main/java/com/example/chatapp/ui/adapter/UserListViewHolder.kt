@@ -12,6 +12,7 @@ class UserListViewHolder(
     fun bind(user: User) {
         itemView.apply {
             binding.userImage.load(user.image)
+            binding.userImage.clipToOutline = true
             binding.userName.text = user.name
             binding.userEmail.text = user.email
         }

@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/fragment_home"
-        android:title="홈"
+        android:title=""
         android:icon="@drawable/ic_home_24" />
 
     <item android:id="@+id/fragment_chat"
-        android:title="채팅방"
+        android:title=""
         android:icon="@drawable/ic_chat_24" />
 
     <item android:id="@+id/fragment_settings"
-        android:title="설정"
+        android:title=""
         android:icon="@drawable/ic_settings_24" />
 </menu>

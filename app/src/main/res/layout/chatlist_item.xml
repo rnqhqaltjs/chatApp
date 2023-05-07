@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
 
     <ImageView
         android:id="@+id/chat_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:scaleType="fitXY"
+        android:background="@drawable/image_rounded"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/ic_chat_24"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/chat_name"

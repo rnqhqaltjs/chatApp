@@ -2,4 +2,8 @@
     <string name="app_name">chatApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="home">친구</string>
+    <string name="chat">채팅</string>
+    <string name="settings">설정</string>
 </resources>
