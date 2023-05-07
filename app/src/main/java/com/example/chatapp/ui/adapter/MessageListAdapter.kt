@@ -36,9 +36,10 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         when (holder.itemViewType) {
-            send -> (holder as SendMessageViewHolder).bind(getItem(position), isDateHeaderNeeded(position))
-            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position), isDateHeaderNeeded(position))
+            send -> (holder as SendMessageViewHolder).bind(getItem(position), isDateHeaderNeeded(position), isLastSeen(position), isFirstTime(position))
+            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position), isDateHeaderNeeded(position), isFirstTime(position))
         }
     }
 
@@ -61,6 +62,39 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
         val previousDate = SimpleDateFormat("yyyyMMdd", Locale.getDefault()).format(Date(previousMessage.time.toLong()))
 
         return currentDate != previousDate
+    }
+
+    private fun isLastSeen(position: Int): Boolean {
+        if (position == currentList.size - 1) return true
+
+        val currentMessage = getItem(position)
+        val nextMessage = getItem(position + 1)
+
+        // 현재 메시지의 seen이 true이고, 다음 메시지가 없거나 seen이 false인 경우
+        val isLastSeen = currentMessage.seen && (nextMessage == null || !nextMessage.seen)
+
+        // send 아이템 중에서 마지막 seen 아이템인지 확인
+        if (isLastSeen && FirebaseAuth.getInstance().currentUser?.uid.equals(currentMessage.sendId)) {
+            for (i in position + 1 until currentList.size) {
+                val item = getItem(i)
+                if (item.sendId != currentMessage.sendId) break
+                if (item.seen) return false
+            }
+        }
+
+        return isLastSeen
+    }
+    private fun isFirstTime(position: Int): Boolean {
+        if (position == 0) return true
+
+        val currentMessage = getItem(position)
+        val previousMessage = getItem(position - 1)
+
+        // 현재 메시지와 이전 메시지의 년월일시분이 모두 같은지 확인
+        val currentDateTime = SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault()).format(Date(currentMessage.time.toLong()))
+        val previousDateTime = SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault()).format(Date(previousMessage.time.toLong()))
+
+        return currentDateTime != previousDateTime
     }
 
     companion object {

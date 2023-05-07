@@ -13,17 +13,28 @@ class ReceiveMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message, isDateHeaderNeeded: Boolean) {
+    fun bind(message: Message, isDateHeaderNeeded: Boolean, isFirstTime: Boolean) {
         itemView.apply {
             binding.receiveMessageText.text = message.message
-            binding.receiveMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
             binding.messageImage.load(message.image)
+            binding.messageImage.clipToOutline = true
+
+            if(isFirstTime) {
+                binding.receiveMessageTime.visibility = View.VISIBLE
+                binding.receiveMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
+            } else {
+                binding.receiveMessageDate.visibility = View.GONE
+            }
 
             if (isDateHeaderNeeded) {
                 binding.receiveMessageDate.visibility = View.VISIBLE
+                binding.leftLine.visibility = View.VISIBLE
+                binding.rightLine.visibility = View.VISIBLE
                 binding.receiveMessageDate.text = SimpleDateFormat("yyyy년 MM월 dd일").format(message.time.toLong())
             } else {
                 binding.receiveMessageDate.visibility = View.GONE
+                binding.leftLine.visibility = View.GONE
+                binding.rightLine.visibility = View.GONE
             }
         }
     }

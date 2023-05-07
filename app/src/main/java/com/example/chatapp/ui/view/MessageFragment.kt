@@ -98,7 +98,6 @@ class MessageFragment : Fragment() {
                     toast(state.error)
                 }
                 is UiState.Success -> {
-                    toast(state.data)
                 }
             }
         }
