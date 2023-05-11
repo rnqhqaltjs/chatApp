@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.MessageViewModel
-import com.example.chatapp.util.UiState
-import com.example.chatapp.util.hide
-import com.example.chatapp.util.show
-import com.example.chatapp.util.toast
+import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,8 +65,8 @@ class MessageFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = messageListAdapter
-        }
 
+        }
     }
 
     private fun observer(){
@@ -85,7 +82,14 @@ class MessageFragment : Fragment() {
                 is UiState.Success -> {
                     binding.messageProgress.hide(requireActivity())
                     messageListAdapter.submitList(state.data)
-                    binding.messageRecyclerView.scrollToPosition(messageListAdapter.itemCount -1)
+
+                    //메시지 마지막 아이템으로 이동
+                    if (messageListAdapter.itemCount > 0) {
+                        binding.messageRecyclerView.postDelayed({
+                            binding.messageRecyclerView.smoothScrollToPosition(messageListAdapter.itemCount - 1)
+                        }, 100)
+                    }
+
                 }
             }
         }
