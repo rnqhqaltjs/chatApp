@@ -129,7 +129,8 @@ class ChatRepositoryImpl(
         seenMessage(receiverUid)
     }
 
-    private var MessageSeenListener: ValueEventListener? = null
+    override var MessageSeenListener: ValueEventListener? = null
+    override var LatestMessageSeenListener: ValueEventListener? = null
 
     override fun seenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
@@ -143,14 +144,18 @@ class ChatRepositoryImpl(
 
                     for(postSnapshot in snapshot.children){
                         postSnapshot.ref.updateChildren(seenObj)
-
-                        database.child("latestUsersAndMessages")
-                            .child(senderUid!!)
-                            .child(receiverUid)
-                            .child("message")
-                            .updateChildren(seenObj)
                     }
 
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+        LatestMessageSeenListener = database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
+            .child("message")
+            .addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.ref.updateChildren(seenObj)
                 }
                 override fun onCancelled(error: DatabaseError) {
                 }
@@ -160,8 +165,18 @@ class ChatRepositoryImpl(
     override fun removeSeenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
-        database.child("chats").child(receiverRoom).child("messages")
-            .removeEventListener(MessageSeenListener!!)
+        if (MessageSeenListener != null) {
+            database.child("chats").child(receiverRoom).child("messages")
+                .removeEventListener(MessageSeenListener!!)
+            MessageSeenListener = null
+        }
+
+        if (LatestMessageSeenListener != null) {
+            database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
+                .child("message")
+                .removeEventListener(LatestMessageSeenListener!!)
+            LatestMessageSeenListener = null
+        }
     }
 
     override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {

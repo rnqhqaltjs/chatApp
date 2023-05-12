@@ -13,11 +13,15 @@ class SendMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message, isDateHeaderNeeded: Boolean, isLastSeen: Boolean, isFirstTime: Boolean) {
+    fun bind(message: Message, isFirstDate: Boolean, isFirstTime: Boolean) {
         itemView.apply {
             binding.sendMessageText.text = message.message
 
-            binding.sendMessageSeen.isVisible = isLastSeen && message.seen
+            if(message.seen){
+                binding.sendMessageDate.visibility = View.GONE
+            } else {
+                binding.sendMessageTime.visibility = View.VISIBLE
+            }
 
             if(isFirstTime) {
                 binding.sendMessageTime.visibility = View.VISIBLE
@@ -26,7 +30,7 @@ class SendMessageViewHolder(
                 binding.sendMessageDate.visibility = View.GONE
             }
 
-            if (isDateHeaderNeeded) {
+            if (isFirstDate) {
                 binding.sendMessageDate.visibility = View.VISIBLE
                 binding.leftLine.visibility = View.VISIBLE
                 binding.rightLine.visibility = View.VISIBLE
