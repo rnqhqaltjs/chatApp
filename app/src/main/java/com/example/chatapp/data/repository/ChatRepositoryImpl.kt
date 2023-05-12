@@ -129,14 +129,16 @@ class ChatRepositoryImpl(
         seenMessage(receiverUid)
     }
 
+    private var MessageSeenListener: ValueEventListener? = null
+
     override fun seenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
         val seenObj: HashMap<String, Any> = HashMap()
         seenObj["seen"] = true
 
-        database.child("chats").child(receiverRoom).child("messages")
-            .addListenerForSingleValueEvent(object: ValueEventListener {
+        MessageSeenListener = database.child("chats").child(receiverRoom).child("messages")
+            .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
 
                     for(postSnapshot in snapshot.children){
@@ -153,6 +155,13 @@ class ChatRepositoryImpl(
                 override fun onCancelled(error: DatabaseError) {
                 }
             })
+    }
+
+    override fun removeSeenMessage(receiverUid: String) {
+        val senderUid = auth.currentUser?.uid
+        val receiverRoom = receiverUid + senderUid
+        database.child("chats").child(receiverRoom).child("messages")
+            .removeEventListener(MessageSeenListener!!)
     }
 
     override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {

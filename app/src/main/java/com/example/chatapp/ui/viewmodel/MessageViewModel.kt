@@ -43,4 +43,8 @@ class MessageViewModel @Inject constructor(
         }
     }
 
+    fun removeSeenMessage(receiverUid: String) {
+        repository.removeSeenMessage(receiverUid)
+    }
+
 }

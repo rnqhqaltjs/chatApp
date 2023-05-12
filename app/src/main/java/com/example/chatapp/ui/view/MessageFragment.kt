@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.adapter.MessageListAdapter
 import com.example.chatapp.ui.viewmodel.MessageViewModel
@@ -25,6 +26,8 @@ class MessageFragment : Fragment() {
     private val chatViewModel by viewModels<MessageViewModel>()
     private val time = System.currentTimeMillis()
 
+    private lateinit var user: User // 클래스 변수로 user 선언
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,7 +39,7 @@ class MessageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val user = args.user
+        user = args.user
         (activity as HomeActivity).supportActionBar?.title = user.name
 
         recyclerview()
@@ -105,6 +108,11 @@ class MessageFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        chatViewModel.removeSeenMessage(user.uid)
+        super.onPause()
     }
 
     override fun onDestroyView() {

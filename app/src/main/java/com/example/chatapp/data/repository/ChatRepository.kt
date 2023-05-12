@@ -16,4 +16,5 @@ interface ChatRepository {
     suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit))
     suspend fun profileChange(name:String, image: ByteArray?, result: (UiState<String>)->Unit)
     suspend fun sendNotification(message:String, userReceiver: User, result: (UiState<String>) -> Unit)
+    fun removeSeenMessage(receiverUid: String)
 }
