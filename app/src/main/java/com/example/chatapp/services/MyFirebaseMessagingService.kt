@@ -31,7 +31,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     /** 메시지 수신 메서드(포그라운드) */
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 
-        Log.d(TAG, "notify title: ${remoteMessage.notification?.title}")
+        //Log.d(TAG, "notify title: ${remoteMessage.notification?.title}")
         // 다른 기기에서 서버로 보냈을 때
         if(remoteMessage.data.isNotEmpty()){
             val name = remoteMessage.data["name"]!!

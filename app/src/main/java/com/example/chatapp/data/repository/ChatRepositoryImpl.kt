@@ -141,11 +141,9 @@ class ChatRepositoryImpl(
         MessageSeenListener = database.child("chats").child(receiverRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-
                     for(postSnapshot in snapshot.children){
                         postSnapshot.ref.updateChildren(seenObj)
                     }
-
                 }
                 override fun onCancelled(error: DatabaseError) {
                 }
@@ -155,7 +153,9 @@ class ChatRepositoryImpl(
             .child("message")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.ref.updateChildren(seenObj)
+                    if(snapshot.exists()) {
+                        snapshot.ref.updateChildren(seenObj)
+                    }
                 }
                 override fun onCancelled(error: DatabaseError) {
                 }

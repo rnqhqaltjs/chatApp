@@ -44,6 +44,7 @@ class LoginFragment : Fragment() {
                     password = binding.passwordArea.text.toString()
                 )
                 authViewModel.putID(binding.emailArea.text.toString())
+                authViewModel.saveLoginBox(binding.sessionSaveBox.isChecked)
             }
         }
 
@@ -112,6 +113,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         lifecycleScope.launch {
             binding.emailArea.setText(authViewModel.getID())
+            //binding.sessionSaveBox.isChecked = authViewModel.getLoginBox()
         }
     }
 }

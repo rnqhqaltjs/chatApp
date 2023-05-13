@@ -4,11 +4,9 @@ import android.content.ContentValues.TAG
 import android.net.Uri
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.*
 import com.example.chatapp.data.model.User
+import com.example.chatapp.util.Constants.CHECK_BOX
 import com.example.chatapp.util.Constants.USER_NAME
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.*
@@ -114,6 +112,29 @@ class AuthRepositoryImpl(
             }
             .map { prefs ->
                 prefs[preferenceKey] ?: USER_NAME
+            }
+    }
+
+    override suspend fun saveLoginBox(key: String, value: Boolean) {
+        val preferenceKey = booleanPreferencesKey(key)
+        dataStore.edit{ prefs ->
+            prefs[preferenceKey] = value
+        }
+    }
+
+    override suspend fun getLoginBox(): Flow<Boolean> {
+        val preferenceKey = booleanPreferencesKey("saveIsLoginKeepAlive")
+        return dataStore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map { prefs ->
+                prefs[preferenceKey] ?: false
             }
     }
 
