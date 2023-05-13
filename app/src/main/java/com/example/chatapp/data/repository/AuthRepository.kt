@@ -9,5 +9,5 @@ interface AuthRepository {
     suspend fun putID(key: String,value: String)
     suspend fun getID(key: String): Flow<String>
     suspend fun saveLoginBox(key: String, value: Boolean)
-    suspend fun getLoginBox(): Flow<Boolean>
+    suspend fun getLoginBox(key: String): Flow<Boolean>
 }

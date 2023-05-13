@@ -122,8 +122,8 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun getLoginBox(): Flow<Boolean> {
-        val preferenceKey = booleanPreferencesKey("saveIsLoginKeepAlive")
+    override suspend fun getLoginBox(key: String): Flow<Boolean> {
+        val preferenceKey = booleanPreferencesKey(key)
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {

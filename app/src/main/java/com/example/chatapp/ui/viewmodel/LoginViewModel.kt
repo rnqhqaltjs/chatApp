@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
     }
 
     suspend fun getLoginBox(): Boolean = withContext(Dispatchers.IO) {
-        repository.getID(CHECK_BOX).first().toBoolean()
+        repository.getLoginBox(CHECK_BOX).first()
     }
 
 }

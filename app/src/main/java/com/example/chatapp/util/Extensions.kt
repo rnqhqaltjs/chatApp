@@ -9,6 +9,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.chatapp.MyApplication
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -25,8 +26,8 @@ fun View.show(activity: Activity){
     visibility = View.VISIBLE
 }
 
-fun Fragment.toast(msg: String?){
-    Toast.makeText(requireContext(),msg, Toast.LENGTH_LONG).show()
+fun Fragment.toast(message: String?) {
+    (requireActivity().application as MyApplication).showToast(requireActivity().applicationContext, message ?: "")
 }
 
 fun String.isValidEmail() =
