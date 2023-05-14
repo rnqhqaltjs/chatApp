@@ -11,4 +11,5 @@
     <color name="gray">#808080</color>
     <color name="lsb">#99CCFF</color>
     <color name="orange">#FFA048</color>
+    <color name="lightgray">#E2E2E2</color>
 </resources>

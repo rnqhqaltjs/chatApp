@@ -47,7 +47,7 @@ class ChatRepositoryImpl(
                         // 받아온 새로운 토큰
                         val token = task.result
 
-                        if(currentUser!!.token != token) {
+                        if(currentUser!!.token != token && uid != null) {
                             database.child("user/$uid/token").setValue(token)
                         }
                     }

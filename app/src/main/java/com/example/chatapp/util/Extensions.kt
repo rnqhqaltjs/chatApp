@@ -21,8 +21,8 @@ fun View.hide(activity: Activity){
     visibility = View.GONE
 }
 
-fun View.show(activity: Activity){
-    activity.window.addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+fun View.show(activity: Activity) {
+    activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     visibility = View.VISIBLE
 }
 

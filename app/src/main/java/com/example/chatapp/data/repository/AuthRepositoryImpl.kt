@@ -32,9 +32,11 @@ class AuthRepositoryImpl(
         result: (UiState<String>)->Unit
     ){
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
                     result.invoke(UiState.Success("로그인 성공"))
+                } else {
+                    result.invoke(UiState.Failure(task.exception?.message))
                 }
             }.addOnFailureListener {
                 result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
@@ -92,6 +94,20 @@ class AuthRepositoryImpl(
             }
     }
 
+    override suspend fun findPassword(email: String, result: (UiState<String>) -> Unit) {
+        auth.sendPasswordResetEmail(email)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    result.invoke(UiState.Success("이메일 전송 성공"))
+
+                } else {
+                    result.invoke(UiState.Failure(task.exception?.message))
+                }
+            }.addOnFailureListener {
+                result.invoke(UiState.Failure("인증 실패, 이메일을 확인하세요"))
+            }
+    }
+
     override suspend fun putID(key: String, value: String) {
         val preferenceKey = stringPreferencesKey(key)
         dataStore.edit{ prefs ->
@@ -137,15 +153,4 @@ class AuthRepositoryImpl(
                 prefs[preferenceKey] ?: false
             }
     }
-
-//    override suspend fun getID(key: String): String?{
-//        return  try {
-//            val preferenceKey = stringPreferencesKey(key)
-//            val preference = dataStore.data.first()
-//            preference[preferenceKey]
-//        }catch (e:Exception){
-//            e.printStackTrace()
-//            null
-//        }
-//    }
 }

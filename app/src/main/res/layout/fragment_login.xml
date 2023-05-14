@@ -65,7 +65,7 @@
         android:layout_marginBottom="4dp"
         android:padding="10dp"
         android:background="@drawable/edit_text_border"
-        app:layout_constraintBottom_toTopOf="@+id/forgot_password" />
+        app:layout_constraintBottom_toTopOf="@+id/find_password" />
 
     <CheckBox
         android:id="@+id/sessionSaveBox"
@@ -81,10 +81,10 @@
         app:layout_constraintTop_toBottomOf="@+id/passwordArea" />
 
     <TextView
-        android:id="@+id/forgot_password"
+        android:id="@+id/find_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/forgot_password"
+        android:text="@string/find_password"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:textSize="12sp"

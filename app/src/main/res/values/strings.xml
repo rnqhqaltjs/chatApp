@@ -6,5 +6,5 @@
     <string name="home">친구</string>
     <string name="chat">채팅</string>
     <string name="settings">설정</string>
-    <string name="forgot_password"><u>비밀번호 찾기</u></string>
+    <string name="find_password"><u>비밀번호 찾기</u></string>
 </resources>
