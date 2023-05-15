@@ -68,7 +68,6 @@ class MessageFragment : Fragment() {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = messageListAdapter
-
         }
     }
 
@@ -92,7 +91,6 @@ class MessageFragment : Fragment() {
                             binding.messageRecyclerView.smoothScrollToPosition(messageListAdapter.itemCount - 1)
                         }, 100)
                     }
-
                 }
             }
         }

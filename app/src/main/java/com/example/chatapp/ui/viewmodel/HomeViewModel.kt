@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
 import com.example.chatapp.util.UiState
@@ -28,4 +27,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun getNonSeenData(count: ((Int)->Unit)) = viewModelScope.launch {
+        repository.getNonSeenData(count)
+    }
 }

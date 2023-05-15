@@ -202,6 +202,30 @@ class ChatRepositoryImpl(
             })
     }
 
+    override suspend fun getNonSeenData(count: ((Int)->Unit)) {
+        val senderUid = auth.currentUser?.uid
+
+        database.child("latestUsersAndMessages").child(senderUid!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val chatList : ArrayList<Chat> = arrayListOf()
+                    var unreadMessageCount = 0
+
+                    for (postSnapshot in snapshot.children) {
+                        val chat = postSnapshot.getValue(Chat::class.java)
+                        if(!chat!!.message.seen) {
+                            unreadMessageCount++
+                        }
+                    }
+                    count.invoke(unreadMessageCount)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // 실패 시 실행
+                }
+            })
+    }
+
     override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) {
         val uid = auth.currentUser?.uid
 

@@ -1,9 +1,10 @@
 package com.example.chatapp.ui.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -11,16 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.chatapp.R
-import com.example.chatapp.data.repository.ChatRepositoryImpl
 import com.example.chatapp.databinding.ActivityHomeBinding
-import com.example.chatapp.ui.viewmodel.ChatViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
+import com.example.chatapp.ui.viewmodel.HomeViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,6 +22,9 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var bottomNavigationView: BottomNavigationView
+
+    private val homeViewModel by viewModels<HomeViewModel>()
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -45,6 +42,12 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             }
+        }
+
+        bottomNavigationView = binding.bottomNavigationView
+        val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.fragment_chat)
+        homeViewModel.getNonSeenData{ count ->
+            badgeDrawable.number = count
         }
     }
 
