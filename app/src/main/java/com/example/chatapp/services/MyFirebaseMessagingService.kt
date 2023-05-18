@@ -11,6 +11,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.chatapp.R
+import com.example.chatapp.ui.view.HomeActivity
 import com.example.chatapp.ui.view.MainActivity
 import com.example.chatapp.util.getBitmapFromUrl
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -49,7 +50,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 //        val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
         // 일회용 PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, HomeActivity::class.java)
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) // Activity Stack 을 경로만 남김(A-B-C-D-B => A-B)
         val pendingIntent =

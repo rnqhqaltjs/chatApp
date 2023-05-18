@@ -208,7 +208,6 @@ class ChatRepositoryImpl(
         database.child("latestUsersAndMessages").child(senderUid!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val chatList : ArrayList<Chat> = arrayListOf()
                     var unreadMessageCount = 0
 
                     for (postSnapshot in snapshot.children) {

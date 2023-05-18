@@ -1,10 +1,12 @@
 package com.example.chatapp.ui.view
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,6 +37,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupJetpackNavigation()
+        setBadge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.fragment_message) {
@@ -42,12 +45,6 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE
             }
-        }
-
-        bottomNavigationView = binding.bottomNavigationView
-        val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.fragment_chat)
-        homeViewModel.getNonSeenData{ count ->
-            badgeDrawable.number = count
         }
     }
 
@@ -61,6 +58,22 @@ class HomeActivity : AppCompatActivity() {
             setOf(R.id.fragment_home, R.id.fragment_chat, R.id.fragment_settings)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+    }
+
+    private fun setBadge() {
+        bottomNavigationView = binding.bottomNavigationView
+        val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.fragment_chat)
+        badgeDrawable.backgroundColor = ContextCompat.getColor(this, R.color.orange)
+        badgeDrawable.horizontalOffset = 10
+        badgeDrawable.verticalOffset = 10
+        homeViewModel.getNonSeenData { count ->
+            if (count > 0) {
+                badgeDrawable.isVisible =true
+                badgeDrawable.number = count
+            } else {
+                badgeDrawable.isVisible = false
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
