@@ -8,24 +8,35 @@
     tools:context=".ui.view.RegisterFragment"
     android:background="@color/lsb">
 
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:layout_marginTop="40dp"
         android:text="회원가입"
-        android:textColor="@color/black"
-        android:textSize="40dp"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/backBtn" />
 
     <ImageView
         android:id="@+id/imageArea"
         android:layout_width="180dp"
         android:layout_height="180dp"
         android:layout_margin="20dp"
-        android:background="@drawable/image_rounded"
+        android:background="@drawable/image_rounded_border"
         android:scaleType="fitXY"
         android:src="@drawable/ic_home_24"
         app:layout_constraintBottom_toTopOf="@+id/nameArea"
@@ -40,7 +51,7 @@
         android:src="@drawable/ic_camera"
         android:padding="7dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/change_image_rounded"
+        android:background="@drawable/image_rounded_border"
         app:layout_constraintBottom_toBottomOf="@+id/imageArea"
         app:layout_constraintEnd_toEndOf="@+id/imageArea" />
 

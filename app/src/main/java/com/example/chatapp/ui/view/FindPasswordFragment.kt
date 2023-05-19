@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentFindPasswordBinding
 import com.example.chatapp.ui.viewmodel.FindPasswordViewModel
 import com.example.chatapp.ui.viewmodel.LoginViewModel
@@ -37,6 +39,10 @@ class FindPasswordFragment : Fragment() {
             if(validation()) {
                 findPasswordViewModel.findPassword(binding.findPassText.text.toString())
             }
+        }
+
+        binding.backBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_findPasswordFragment_to_loginFragment)
         }
     }
 

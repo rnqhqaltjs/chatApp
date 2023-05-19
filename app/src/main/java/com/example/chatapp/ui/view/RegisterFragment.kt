@@ -60,6 +60,10 @@ class RegisterFragment : Fragment() {
                 )
             }
         }
+
+        binding.backBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+        }
     }
     //이미지 등록
     private val getContent =

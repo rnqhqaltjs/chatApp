@@ -51,6 +51,7 @@ class SettingsFragment : Fragment() {
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
         }
+        binding.profileImage.clipToOutline = true
 
         binding.saveButton.setOnClickListener {
             if(binding.profileName.text.isNotEmpty()){
