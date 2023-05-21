@@ -54,7 +54,7 @@ class HomeFragment : Fragment() {
             adapter = userlistadapter
         }
         userlistadapter.setOnItemClickListener {
-            val action = HomeFragmentDirections.actionFragmentHomeToFragmentMessage(it)
+            val action = HomeFragmentDirections.actionFragmentHomeToFragmentProfile(it)
             findNavController().navigate(action)
         }
     }

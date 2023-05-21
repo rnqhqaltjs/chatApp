@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_fragment_home_to_fragment_message"
             app:destination="@id/fragment_message" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_profile"
+            app:destination="@id/fragment_profile" />
     </fragment>
     <fragment
         android:id="@+id/fragment_chat"
@@ -60,5 +63,20 @@
         <action
             android:id="@+id/action_fragment_message_to_fragment_chat"
             app:destination="@id/fragment_chat" />
+        <action
+            android:id="@+id/action_fragment_message_to_fragment_profile"
+            app:destination="@id/fragment_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.example.chatapp.ui.view.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="user"
+            app:argType="com.example.chatapp.data.model.User" />
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_message"
+            app:destination="@id/fragment_message" />
     </fragment>
 </navigation>
