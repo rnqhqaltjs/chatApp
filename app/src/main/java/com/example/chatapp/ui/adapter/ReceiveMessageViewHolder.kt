@@ -2,10 +2,13 @@ package com.example.chatapp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.View
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.chatapp.data.model.Message
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.ReceivemessageItemBinding
+import com.example.chatapp.ui.view.MessageFragmentDirections
 import java.text.SimpleDateFormat
 
 class ReceiveMessageViewHolder(
@@ -13,7 +16,7 @@ class ReceiveMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message, isDateHeaderNeeded: Boolean, isFirstTime: Boolean) {
+    fun bind(message: Message, isDateHeaderNeeded: Boolean, isFirstTime: Boolean, user: User) {
         itemView.apply {
             binding.receiveMessageText.text = message.message
             binding.messageImage.load(message.image)
@@ -35,6 +38,10 @@ class ReceiveMessageViewHolder(
                 binding.receiveMessageDate.visibility = View.GONE
                 binding.leftLine.visibility = View.GONE
                 binding.rightLine.visibility = View.GONE
+            }
+            binding.messageImage.setOnClickListener {
+                val action = MessageFragmentDirections.actionFragmentMessageToFragmentProfile(user)
+                findNavController().navigate(action)
             }
         }
     }

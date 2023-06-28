@@ -24,7 +24,6 @@
         android:textColor="@color/black"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,6 +48,7 @@
         android:background="@drawable/round_corner_lightskyblue"
         android:padding="10dp"
         android:text="보내는 메시지"
+        android:maxWidth="240dp"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.data.model.Message
+import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.ReceivemessageItemBinding
 import com.example.chatapp.databinding.SendmessageItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback) {
+class MessageListAdapter(private val user: User) : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback) {
 
     private val receive = 1 //받는 타입
     private val send = 2 //보내는 타입
@@ -37,9 +38,11 @@ class MessageListAdapter : ListAdapter<Message, RecyclerView.ViewHolder>(Message
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
+        val user = user
+
         when (holder.itemViewType) {
             send -> (holder as SendMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position))
-            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position))
+            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position), user)
         }
     }
 

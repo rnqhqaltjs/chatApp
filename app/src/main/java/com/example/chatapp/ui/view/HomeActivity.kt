@@ -40,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
         setBadge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if(destination.id == R.id.fragment_message) {
+            if (destination.id == R.id.fragment_message || destination.id == R.id.fragment_profile) {
                 binding.bottomNavigationView.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE

@@ -63,7 +63,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun recyclerview(){
-        messageListAdapter = MessageListAdapter()
+        messageListAdapter = MessageListAdapter(user)
         binding.messageRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
