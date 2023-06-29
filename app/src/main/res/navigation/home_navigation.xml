@@ -13,14 +13,14 @@
             android:id="@+id/action_fragment_home_to_fragment_chat"
             app:destination="@id/fragment_chat" />
         <action
-            android:id="@+id/action_fragment_home_to_fragment_settings"
-            app:destination="@id/fragment_settings" />
-        <action
             android:id="@+id/action_fragment_home_to_fragment_message"
             app:destination="@id/fragment_message" />
         <action
             android:id="@+id/action_fragment_home_to_fragment_profile"
             app:destination="@id/fragment_profile" />
+        <action
+            android:id="@+id/action_fragment_home_to_fragment_menu"
+            app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
         android:id="@+id/fragment_chat"
@@ -31,11 +31,11 @@
             android:id="@+id/action_fragment_chat_to_fragment_home"
             app:destination="@id/fragment_home" />
         <action
-            android:id="@+id/action_fragment_chat_to_fragment_settings"
-            app:destination="@id/fragment_settings" />
-        <action
             android:id="@+id/action_fragment_chat_to_fragment_message"
             app:destination="@id/fragment_message" />
+        <action
+            android:id="@+id/action_fragment_chat_to_fragment_menu"
+            app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
         android:id="@+id/fragment_settings"
@@ -43,11 +43,8 @@
         android:label="@string/settings"
         tools:layout="@layout/fragment_settings">
         <action
-            android:id="@+id/action_fragment_settings_to_fragment_home"
-            app:destination="@id/fragment_home" />
-        <action
-            android:id="@+id/action_fragment_settings_to_fragment_chat"
-            app:destination="@id/fragment_chat" />
+            android:id="@+id/action_fragment_settings_to_fragment_menu"
+            app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
         android:id="@+id/fragment_message"
@@ -78,5 +75,19 @@
         <action
             android:id="@+id/action_fragment_profile_to_fragment_message"
             app:destination="@id/fragment_message" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_menu"
+        android:name="com.example.chatapp.ui.view.MenuFragment"
+        android:label="@string/menu" >
+        <action
+            android:id="@+id/action_fragment_menu_to_fragment_chat"
+            app:destination="@id/fragment_chat" />
+        <action
+            android:id="@+id/action_fragment_menu_to_fragment_home"
+            app:destination="@id/fragment_home" />
+        <action
+            android:id="@+id/action_fragment_menu_to_fragment_settings"
+            app:destination="@id/fragment_settings" />
     </fragment>
 </navigation>

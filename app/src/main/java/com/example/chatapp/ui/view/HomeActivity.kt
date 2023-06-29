@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -36,6 +37,13 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val targetFragment = intent.getStringExtra("Fragment")
+        if (targetFragment != null) {
+            if (targetFragment == "MessageFragment") {
+                MessageFragment()
+            }
+        }
+
         setupJetpackNavigation()
         setBadge()
 
@@ -55,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.fragment_home, R.id.fragment_chat, R.id.fragment_settings)
+            setOf(R.id.fragment_home, R.id.fragment_chat, R.id.fragment_menu)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
