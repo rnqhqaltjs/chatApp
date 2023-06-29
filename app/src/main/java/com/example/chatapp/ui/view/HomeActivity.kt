@@ -1,14 +1,11 @@
 package com.example.chatapp.ui.view
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -48,7 +45,9 @@ class HomeActivity : AppCompatActivity() {
         setBadge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.fragment_message || destination.id == R.id.fragment_profile) {
+            if (destination.id == R.id.fragment_message ||
+                destination.id == R.id.fragment_profile ||
+                destination.id == R.id.fragment_settings) {
                 binding.bottomNavigationView.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE

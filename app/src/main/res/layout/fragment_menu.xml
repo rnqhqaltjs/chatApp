@@ -6,4 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.HomeFragment">
 
+
+    <TextView
+        android:id="@+id/edit_profile_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="프로필 편집"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

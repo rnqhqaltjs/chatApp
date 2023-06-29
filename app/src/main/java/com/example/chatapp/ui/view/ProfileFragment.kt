@@ -33,8 +33,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         user = args.user
 
-        observer()
-
         binding.profileName.text = user.name
         binding.profileEmail.text = user.email
         binding.profileImage.load(user.image)
@@ -43,11 +41,8 @@ class ProfileFragment : Fragment() {
         binding.profileMessageBtn.setOnClickListener {
             val action = ProfileFragmentDirections.actionFragmentProfileToFragmentMessage(user)
             findNavController().navigate(action)
+
         }
-    }
-
-    private fun observer(){
-
     }
 
     override fun onDestroyView() {

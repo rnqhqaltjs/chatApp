@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.chatapp.databinding.FragmentMenuBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +25,12 @@ class MenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.editProfileBtn.setOnClickListener {
+            val action = MenuFragmentDirections.actionFragmentMenuToFragmentSettings()
+            findNavController().navigate(action)
+
+        }
 
 
     }
