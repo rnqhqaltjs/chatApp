@@ -14,25 +14,25 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
-import com.example.chatapp.databinding.FragmentSettingsBinding
+import com.example.chatapp.databinding.FragmentEditprofileBinding
 import com.example.chatapp.ui.viewmodel.SettingsViewModel
 import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SettingsFragment : Fragment() {
-    private var _binding: FragmentSettingsBinding? = null
+class EditProfileFragment : Fragment() {
+    private var _binding: FragmentEditprofileBinding? = null
     private val binding get() = _binding!!
 
     private val chatViewModel by viewModels<SettingsViewModel>()
-    private var imageUri: Uri? = null
+    private lateinit var imageUri: Uri
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        _binding = FragmentEditprofileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,14 +43,17 @@ class SettingsFragment : Fragment() {
 
         chatViewModel.getProfileData(
             { binding.profileImage.load(it) },
-            { binding.profileName.setText(it) }
+            { binding.profileName.setText(it) },
+            { binding.profileEmail.text = it }
         )
 
         binding.profileImage.setOnClickListener {
             val intentImage = Intent(Intent.ACTION_PICK)
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
+
         }
+
         binding.profileImage.clipToOutline = true
 
         binding.saveButton.setOnClickListener {
@@ -68,7 +71,6 @@ class SettingsFragment : Fragment() {
             startActivity(intent)
             activity?.finish()
         }
-
     }
 
     //이미지 변경
@@ -76,7 +78,7 @@ class SettingsFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
             if(result.resultCode == Activity.RESULT_OK) {
-                imageUri = result.data?.data //이미지 경로 원본
+                imageUri = result.data?.data!! //이미지 경로 원본
                 binding.profileImage.setImageURI(imageUri) //이미지 뷰를 바꿈
                 Log.d("image", "success")
             }

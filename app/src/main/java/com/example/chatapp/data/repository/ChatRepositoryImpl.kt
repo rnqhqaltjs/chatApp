@@ -225,7 +225,7 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) {
+    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) {
         val uid = auth.currentUser?.uid
 
         database.child("user").child(uid!!)
@@ -235,6 +235,7 @@ class ChatRepositoryImpl(
 
                     image.invoke(userProfile!!.image)
                     name.invoke(userProfile.name)
+                    email.invoke(userProfile.email)
                 }
                 override fun onCancelled(error: DatabaseError) {
                     //실패 시 실행

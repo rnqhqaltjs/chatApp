@@ -3,6 +3,7 @@
     <string name="home">친구</string>
     <string name="chat">채팅</string>
     <string name="menu">메뉴</string>
+    <string name="edit_profile">프로필 수정</string>
     <string name="settings">설정</string>
     <string name="profile">프로필</string>
     <string name="find_password"><u>비밀번호 찾기</u></string>

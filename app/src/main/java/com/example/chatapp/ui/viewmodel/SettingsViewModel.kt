@@ -23,8 +23,8 @@ class SettingsViewModel @Inject constructor(
         repository.logout()
     }
 
-    fun getProfileData(image: ((String)->Unit), name: ((String)->Unit)) = viewModelScope.launch {
-        repository.getProfileData(image, name)
+    fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) = viewModelScope.launch {
+        repository.getProfileData(image, name, email)
     }
 
     fun profileChange(name: String, image: ByteArray?) = viewModelScope.launch {

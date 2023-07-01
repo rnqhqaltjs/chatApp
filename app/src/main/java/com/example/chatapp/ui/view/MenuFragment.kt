@@ -27,12 +27,10 @@ class MenuFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.editProfileBtn.setOnClickListener {
-            val action = MenuFragmentDirections.actionFragmentMenuToFragmentSettings()
+            val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditprofile()
             findNavController().navigate(action)
 
         }
-
-
     }
 
     override fun onDestroyView() {

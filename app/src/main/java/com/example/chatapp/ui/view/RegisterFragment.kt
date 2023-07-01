@@ -26,7 +26,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val authViewModel by viewModels<RegisterViewModel>()
-    private var imageUri: Uri? = null
+    private lateinit var imageUri: Uri
     private var imageCheck = false
 
     override fun onCreateView(
@@ -69,7 +69,7 @@ class RegisterFragment : Fragment() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if(result.resultCode == RESULT_OK) {
-                imageUri = result.data?.data //이미지 경로 원본
+                imageUri = result.data?.data!! //이미지 경로 원본
                 binding.imageArea.setImageURI(imageUri) //이미지 뷰를 바꿈
                 imageCheck = true
                 Log.d("image", "success")

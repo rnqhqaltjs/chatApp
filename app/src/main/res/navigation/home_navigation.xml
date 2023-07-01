@@ -38,12 +38,12 @@
             app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
-        android:id="@+id/fragment_settings"
-        android:name="com.example.chatapp.ui.view.SettingsFragment"
-        android:label="@string/settings"
-        tools:layout="@layout/fragment_settings">
+        android:id="@+id/fragment_editprofile"
+        android:name="com.example.chatapp.ui.view.EditProfileFragment"
+        android:label="@string/edit_profile"
+        tools:layout="@layout/fragment_editprofile">
         <action
-            android:id="@+id/action_fragment_settings_to_fragment_menu"
+            android:id="@+id/action_fragment_editprofile_to_fragment_menu"
             app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
@@ -88,7 +88,7 @@
             android:id="@+id/action_fragment_menu_to_fragment_home"
             app:destination="@id/fragment_home" />
         <action
-            android:id="@+id/action_fragment_menu_to_fragment_settings"
-            app:destination="@id/fragment_settings" />
+            android:id="@+id/action_fragment_menu_to_fragment_editprofile"
+            app:destination="@id/fragment_editprofile" />
     </fragment>
 </navigation>

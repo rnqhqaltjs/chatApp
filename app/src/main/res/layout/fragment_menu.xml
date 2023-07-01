@@ -7,11 +7,85 @@
     tools:context=".ui.view.HomeFragment">
 
 
+    <ImageView
+        android:id="@+id/menu_image"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/menu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/menu_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/menu_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이메일"
+        app:layout_constraintStart_toEndOf="@+id/menu_image"
+        app:layout_constraintTop_toBottomOf="@+id/menu_name" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/menu_image" />
+
+    <ImageView
+        android:id="@+id/edit_profile_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic__edit_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view1" />
+
     <TextView
         android:id="@+id/edit_profile_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="프로필 편집"
+        android:text="프로필 수정"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/edit_profile_image"
+        app:layout_constraintTop_toBottomOf="@+id/view1" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_btn" />
+
+    <ImageView
+        android:id="@+id/settings_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_settings_24"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/settings_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="설정"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/settings_image"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/settings_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>
