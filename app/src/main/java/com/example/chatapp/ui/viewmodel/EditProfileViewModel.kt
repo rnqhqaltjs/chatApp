@@ -19,10 +19,6 @@ class EditProfileViewModel @Inject constructor(
     val profileobserve: LiveData<UiState<String>>
         get() = _profileobserve
 
-    fun logout(){
-        repository.logout()
-    }
-
     fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) = viewModelScope.launch {
         repository.getProfileData(image, name, email)
     }

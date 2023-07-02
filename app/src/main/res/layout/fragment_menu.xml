@@ -108,4 +108,34 @@
         android:layout_height="1dp"
         android:background="@color/lightgray"
         app:layout_constraintTop_toBottomOf="@+id/settings_btn" />
+
+    <ImageView
+        android:id="@+id/logout_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_logout_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <TextView
+        android:id="@+id/logout_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="60dp"
+        android:text="로그아웃"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/logout_image"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/logout_btn" />
 </androidx.constraintlayout.widget.ConstraintLayout>

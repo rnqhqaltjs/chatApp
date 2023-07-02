@@ -1,5 +1,6 @@
 package com.example.chatapp.ui.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,6 +44,13 @@ class MenuFragment : Fragment() {
             val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditprofile()
             findNavController().navigate(action)
 
+        }
+
+        binding.logoutBtn.setOnClickListener {
+            chatViewModel.logout()
+            val intent = Intent(activity, MainActivity::class.java)
+            startActivity(intent)
+            activity?.finish()
         }
     }
 

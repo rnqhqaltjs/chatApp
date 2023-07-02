@@ -64,13 +64,6 @@ class EditProfileFragment : Fragment() {
                 )
             }
         }
-
-        binding.logout.setOnClickListener {
-            chatViewModel.logout()
-            val intent = Intent(activity, MainActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-        }
     }
 
     //이미지 변경
