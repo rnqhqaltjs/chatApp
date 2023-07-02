@@ -41,7 +41,7 @@
         android:id="@+id/fragment_editprofile"
         android:name="com.example.chatapp.ui.view.EditProfileFragment"
         android:label="@string/edit_profile"
-        tools:layout="@layout/fragment_editprofile">
+        tools:layout="@layout/fragment_edit_profile">
         <action
             android:id="@+id/action_fragment_editprofile_to_fragment_menu"
             app:destination="@id/fragment_menu" />

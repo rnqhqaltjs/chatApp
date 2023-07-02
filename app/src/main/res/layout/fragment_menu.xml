@@ -11,6 +11,9 @@
         android:id="@+id/menu_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/image_rounded"
+        android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
@@ -20,6 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="이름"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:textSize="18sp"
         android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/menu_image"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,12 +34,16 @@
         android:id="@+id/menu_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
         android:text="이메일"
         app:layout_constraintStart_toEndOf="@+id/menu_image"
         app:layout_constraintTop_toBottomOf="@+id/menu_name" />
 
     <View
         android:id="@+id/view1"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgray"
@@ -43,22 +53,27 @@
         android:id="@+id/edit_profile_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
         android:src="@drawable/ic__edit_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
 
     <TextView
         android:id="@+id/edit_profile_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="60dp"
         android:text="프로필 수정"
-        android:textSize="18sp"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/edit_profile_image"
         app:layout_constraintTop_toBottomOf="@+id/view1" />
 
     <View
         android:id="@+id/view2"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgray"
@@ -66,6 +81,8 @@
 
     <ImageView
         android:id="@+id/settings_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_settings_24"
@@ -74,8 +91,10 @@
 
     <TextView
         android:id="@+id/settings_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="60dp"
         android:text="설정"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -84,6 +103,7 @@
 
     <View
         android:id="@+id/view3"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgray"

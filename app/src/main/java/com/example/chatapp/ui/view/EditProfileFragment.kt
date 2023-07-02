@@ -14,17 +14,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import coil.load
-import com.example.chatapp.databinding.FragmentEditprofileBinding
-import com.example.chatapp.ui.viewmodel.SettingsViewModel
+import com.example.chatapp.databinding.FragmentEditProfileBinding
+import com.example.chatapp.ui.viewmodel.EditProfileViewModel
 import com.example.chatapp.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class EditProfileFragment : Fragment() {
-    private var _binding: FragmentEditprofileBinding? = null
+    private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
 
-    private val chatViewModel by viewModels<SettingsViewModel>()
+    private val chatViewModel by viewModels<EditProfileViewModel>()
     private lateinit var imageUri: Uri
 
     override fun onCreateView(
@@ -32,7 +32,7 @@ class EditProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentEditprofileBinding.inflate(inflater, container, false)
+        _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -104,7 +104,6 @@ class EditProfileFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         _binding = null
