@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.chatapp.databinding.FragmentMenuBinding
-import com.example.chatapp.ui.viewmodel.EditProfileViewModel
 import com.example.chatapp.ui.viewmodel.MenuViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

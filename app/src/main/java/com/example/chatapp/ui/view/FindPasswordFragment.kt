@@ -68,16 +68,16 @@ class FindPasswordFragment : Fragment() {
 
     }
 
-    fun validation(): Boolean {
+    private fun validation(): Boolean {
         var isValid = true
 
         if (binding.findPassText.text.isNullOrEmpty()){
             isValid = false
-            toast("이메일을 입력해주세요")
+            toast(getString(R.string.enter_email))
         }else{
             if (!binding.findPassText.text.toString().isValidEmail()){
                 isValid = false
-                toast("올바른 이메일 주소를 입력해주세요")
+                toast(getString(R.string.invalid_email))
             }
         }
 

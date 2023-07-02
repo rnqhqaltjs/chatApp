@@ -75,11 +75,11 @@
         android:ems="10"
         android:hint="아이디(이메일)"
         android:background="@drawable/edit_text_border"
-        app:layout_constraintBottom_toTopOf="@+id/passwordArea1"
+        app:layout_constraintBottom_toTopOf="@+id/passwordArea"
         />
 
     <EditText
-        android:id="@+id/passwordArea1"
+        android:id="@+id/passwordArea"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
@@ -88,10 +88,10 @@
         android:ems="10"
         android:hint="비밀번호"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/passwordArea2" />
+        app:layout_constraintBottom_toTopOf="@+id/confirmPasswordArea" />
 
     <EditText
-        android:id="@+id/passwordArea2"
+        android:id="@+id/confirmPasswordArea"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:ems="10"

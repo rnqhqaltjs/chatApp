@@ -56,7 +56,7 @@ class RegisterFragment : Fragment() {
                     binding.nameArea.text.toString(),
                     binding.emailArea.text.toString(),
                     convertFileToByteArray(requireContext(),imageUri)!!,
-                    binding.passwordArea1.text.toString()
+                    binding.passwordArea.text.toString()
                 )
             }
         }
@@ -106,35 +106,35 @@ class RegisterFragment : Fragment() {
         when {
             binding.nameArea.text.isNullOrEmpty() -> {
                 isValid = false
-                toast("이름을 입력해주세요")
+                toast(getString(R.string.enter_name))
             }
             binding.emailArea.text.isNullOrEmpty() -> {
                 isValid = false
-                toast("이메일을 입력해주세요")
+                toast(getString(R.string.enter_email))
             }
             !binding.emailArea.text.toString().isValidEmail() -> {
                 isValid = false
-                toast("올바른 이메일 주소를 입력해주세요")
+                toast(getString(R.string.invalid_email))
             }
-            binding.passwordArea1.text.isNullOrEmpty() -> {
+            binding.passwordArea.text.isNullOrEmpty() -> {
                 isValid = false
-                toast("비밀번호를 입력해주세요")
+                toast(getString(R.string.enter_password))
             }
-            binding.passwordArea1.text.toString().length < 6 -> {
+            binding.passwordArea.text.toString().length < 6 -> {
                 isValid = false
-                toast("비밀번호를 6자리 이상으로 입력해주세요")
+                toast(getString(R.string.invalid_password))
             }
-            binding.passwordArea2.text.isNullOrEmpty() -> {
+            binding.confirmPasswordArea.text.isNullOrEmpty() -> {
                 isValid = false
-                toast("비밀번호 확인을 입력해주세요")
+                toast(getString(R.string.enter_confirm_password))
             }
-            binding.passwordArea1.text.toString() != binding.passwordArea2.text.toString() -> {
+            binding.passwordArea.text.toString() != binding.confirmPasswordArea.text.toString() -> {
                 isValid = false
-                toast("비밀번호가 서로 달라요")
+                toast(getString(R.string.different_password))
             }
             !imageCheck -> {
                 isValid = false
-                toast("앱에서 사용할 사진을 등록해주세요")
+                toast(getString(R.string.enter_image))
             }
         }
         return isValid

@@ -92,19 +92,19 @@ class LoginFragment : Fragment() {
 
         return when {
             email.isEmpty() -> {
-                toast("이메일을 입력해주세요")
+                toast(getString(R.string.enter_email))
                 false
             }
             !email.isValidEmail() -> {
-                toast("올바른 이메일을 입력해주세요")
+                toast(getString(R.string.invalid_email))
                 false
             }
             password.isEmpty() -> {
-                toast("비밀번호를 입력해주세요.")
+                toast(getString(R.string.enter_password))
                 false
             }
             password.length < 6 -> {
-                toast("비밀번호를 6자리 이상으로 입력해주세요.")
+                toast(getString(R.string.invalid_password))
                 false
             }
             else -> true

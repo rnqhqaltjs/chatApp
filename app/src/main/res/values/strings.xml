@@ -7,4 +7,12 @@
     <string name="settings">설정</string>
     <string name="profile">프로필</string>
     <string name="find_password"><u>비밀번호 찾기</u></string>
+    <string name="enter_name">이름을 입력해주세요</string>
+    <string name="enter_email">이메일을 입력해주세요</string>
+    <string name="invalid_email">올바른 이메일을 입력해주세요</string>
+    <string name="enter_password">비밀번호를 입력해주세요</string>
+    <string name="invalid_password">비밀번호를 6자리 이상으로 입력해주세요</string>
+    <string name="enter_confirm_password">비밀번호 확인을 입력해주세요</string>
+    <string name="different_password">비밀번호가 서로 달라요</string>
+    <string name="enter_image">앱에서 사용할 사진을 등록해주세요</string>
 </resources>
