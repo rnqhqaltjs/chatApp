@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_home">
     <fragment
         android:id="@+id/fragment_home"
-        android:name="com.example.chatapp.ui.view.HomeFragment"
+        android:name="com.example.chatapp.ui.user.HomeFragment"
         android:label="@string/home"
         tools:layout="@layout/fragment_home">
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_chat"
-        android:name="com.example.chatapp.ui.view.ChatFragment"
+        android:name="com.example.chatapp.ui.chat.ChatFragment"
         android:label="@string/chat"
         tools:layout="@layout/fragment_chat">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_editprofile"
-        android:name="com.example.chatapp.ui.view.EditProfileFragment"
+        android:name="com.example.chatapp.ui.editprofile.EditProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_message"
-        android:name="com.example.chatapp.ui.view.MessageFragment"
+        android:name="com.example.chatapp.ui.message.MessageFragment"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" >
         <action
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_profile"
-        android:name="com.example.chatapp.ui.view.ProfileFragment"
+        android:name="com.example.chatapp.ui.profile.ProfileFragment"
         android:label="@string/profile"
         tools:layout="@layout/fragment_profile">
         <argument
@@ -79,7 +79,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_menu"
-        android:name="com.example.chatapp.ui.view.MenuFragment"
+        android:name="com.example.chatapp.ui.menu.MenuFragment"
         android:label="@string/menu" >
         <action
             android:id="@+id/action_fragment_menu_to_fragment_chat"

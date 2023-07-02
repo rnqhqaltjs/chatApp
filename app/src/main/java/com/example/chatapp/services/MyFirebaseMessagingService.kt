@@ -11,8 +11,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.example.chatapp.R
-import com.example.chatapp.ui.view.HomeActivity
-import com.example.chatapp.ui.view.MainActivity
+import com.example.chatapp.ui.activity.HomeActivity
 import com.example.chatapp.util.getBitmapFromUrl
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage

@@ -18,7 +18,7 @@
         android:theme="@style/Theme.ChatApp"
         tools:targetApi="tiramisu">
         <activity
-            android:name=".ui.view.StartActivity"
+            android:name=".ui.activity.StartActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>
@@ -31,14 +31,14 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.HomeActivity"
+            android:name=".ui.activity.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.view.MainActivity"
+            android:name=".ui.activity.MainActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
