@@ -25,42 +25,50 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
+    override fun logout(){
+        auth.signOut()
+    }
+
     override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
-        database.child("user").addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val userList : ArrayList<User> = arrayListOf()
-                val uid = auth.currentUser?.uid
+        try {
+            database.child("user").addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userList : ArrayList<User> = arrayListOf()
+                    val uid = auth.currentUser?.uid
 
-                for(postSnapshot in snapshot.children){
-                    val currentUser = postSnapshot.getValue(User::class.java)
+                    for(postSnapshot in snapshot.children){
+                        val currentUser = postSnapshot.getValue(User::class.java)
 
-                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                        // 실패
-                        if (!task.isSuccessful) {
-                            Log.d(
-                                ContentValues.TAG,
-                                "Fetching FCM registration token failed",
-                                task.exception
-                            )
-                            return@addOnCompleteListener
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            // 실패
+                            if (!task.isSuccessful) {
+                                Log.d(
+                                    ContentValues.TAG,
+                                    "Fetching FCM registration token failed",
+                                    task.exception
+                                )
+                                return@addOnCompleteListener
+                            }
+                            // 받아온 새로운 토큰
+                            val token = task.result
+
+                            if(currentUser?.token != token && uid != null) {
+                                database.child("user/$uid/token").setValue(token)
+                            }
                         }
-                        // 받아온 새로운 토큰
-                        val token = task.result
-
-                        if(currentUser!!.token != token && uid != null) {
-                            database.child("user/$uid/token").setValue(token)
+                        if(currentUser?.uid != uid){
+                            userList.add(currentUser!!)
                         }
                     }
-                    if(currentUser?.uid != uid){
-                        userList.add(currentUser!!)
-                    }
+                    result.invoke(UiState.Success(userList))
                 }
-                result.invoke(UiState.Success(userList))
-            }
-            override fun onCancelled(error: DatabaseError) {
-                result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
+                }
+            })
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
     override suspend fun sendMessage(
@@ -110,27 +118,31 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
         val senderRoom = senderUid + receiverUid
 
-        database.child("chats").child(senderRoom).child("messages")
-            .addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val messageList : ArrayList<Message> = arrayListOf()
-                    messageList.clear()
+        try {
+            database.child("chats").child(senderRoom).child("messages")
+                .addValueEventListener(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val messageList : ArrayList<Message> = arrayListOf()
+                        messageList.clear()
 
-                    for(postSnapshot in snapshot.children){
-                        val message = postSnapshot.getValue(Message::class.java)
-                        messageList.add(message!!)
+                        for(postSnapshot in snapshot.children){
+                            val message = postSnapshot.getValue(Message::class.java)
+                            messageList.add(message!!)
+                        }
+                        result.invoke(UiState.Success(messageList))
                     }
-                    result.invoke(UiState.Success(messageList))
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
-                }
-            })
-        seenMessage(receiverUid)
+                    override fun onCancelled(error: DatabaseError) {
+                        result.invoke(UiState.Failure("메세지를 불러오는데 실패했습니다"))
+                    }
+                })
+            seenMessage(receiverUid)
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
-    override var MessageSeenListener: ValueEventListener? = null
-    override var LatestMessageSeenListener: ValueEventListener? = null
+    private lateinit var MessageSeenListener: ValueEventListener
+    private lateinit var LatestMessageSeenListener: ValueEventListener
 
     override fun seenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
@@ -165,41 +177,39 @@ class ChatRepositoryImpl(
     override fun removeSeenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
-        if (MessageSeenListener != null) {
-            database.child("chats").child(receiverRoom).child("messages")
-                .removeEventListener(MessageSeenListener!!)
-            MessageSeenListener = null
-        }
+        database.child("chats").child(receiverRoom).child("messages")
+            .removeEventListener(MessageSeenListener)
 
-        if (LatestMessageSeenListener != null) {
-            database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
-                .child("message")
-                .removeEventListener(LatestMessageSeenListener!!)
-            LatestMessageSeenListener = null
-        }
+        database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
+            .child("message")
+            .removeEventListener(LatestMessageSeenListener)
     }
 
     override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {
         val senderUid = auth.currentUser?.uid
 
-        database.child("latestUsersAndMessages").child(senderUid!!)
-            .addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val chatList : ArrayList<Chat> = arrayListOf()
-                    chatList.clear()
+        try {
+            database.child("latestUsersAndMessages").child(senderUid!!)
+                .addValueEventListener(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val chatList : ArrayList<Chat> = arrayListOf()
+                        chatList.clear()
 
-                    for(postSnapshot in snapshot.children){
-                        val chat = postSnapshot.getValue(Chat::class.java)
-                        chatList.add(chat!!)
-                        chatList.sortBy { it.message.time }
-                        chatList.reverse()
+                        for(postSnapshot in snapshot.children){
+                            val chat = postSnapshot.getValue(Chat::class.java)
+                            chatList.add(chat!!)
+                            chatList.sortBy { it.message.time }
+                            chatList.reverse()
+                        }
+                        result.invoke(UiState.Success(chatList))
                     }
-                    result.invoke(UiState.Success(chatList))
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("채팅리스트를 불러오는데 실패했습니다"))
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        result.invoke(UiState.Failure("채팅리스트를 불러오는데 실패했습니다"))
+                    }
+                })
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
     override suspend fun getNonSeenData(count: ((Int)->Unit)) {
@@ -246,27 +256,28 @@ class ChatRepositoryImpl(
     override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>)->Unit) {
         val uid = auth.currentUser?.uid
 
-        if (image != null) {
-            storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
-                storage.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
-                    storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
-                        val photoUri : Uri = it
-                        database.child("user/$uid/image").setValue(photoUri.toString())
-                        database.child("user/$uid/name").setValue(name)
+        try {
+            if (image != null) {
+                storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
+                    storage.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
+                        storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
+                            val photoUri : Uri = it
+                            database.child("user/$uid/image").setValue(photoUri.toString())
+                            database.child("user/$uid/name").setValue(name)
+                        }
                     }
+                    result.invoke(UiState.Success("프로필 변경 완료"))
+                }.addOnFailureListener {
+                    result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
                 }
+            } else {
+                database.child("user/$uid/name").setValue(name)
                 result.invoke(UiState.Success("프로필 변경 완료"))
-            }.addOnFailureListener {
-                result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
             }
-        } else {
-            database.child("user/$uid/name").setValue(name)
-            result.invoke(UiState.Success("프로필 변경 완료"))
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
         }
-    }
 
-    override fun logout(){
-        auth.signOut()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -296,12 +307,12 @@ class ChatRepositoryImpl(
             val response = RetrofitInstance.api.sendNotification(body)
 
             if (response.isSuccessful) {
-                result(UiState.Success("메시지 전송 성공"))
+                result.invoke(UiState.Success("메시지 전송 성공"))
             } else {
-                result(UiState.Failure("푸시 메시지 전송에 실패했습니다"))
+                result.invoke(UiState.Failure("푸시 메시지 전송에 실패했습니다"))
             }
         } catch (e: Exception) {
-            result(UiState.Failure(e.message))
+            result.invoke(UiState.Failure(e.message))
         }
     }
 }

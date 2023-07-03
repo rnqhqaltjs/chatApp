@@ -31,16 +31,18 @@ class AuthRepositoryImpl(
         password: String,
         result: (UiState<String>)->Unit
     ){
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke(UiState.Success("로그인 성공"))
-                } else {
-                    result.invoke(UiState.Failure(task.exception?.message))
+        try {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        result.invoke(UiState.Success("로그인 성공"))
+                    } else {
+                        result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
+                    }
                 }
-            }.addOnFailureListener {
-                result.invoke(UiState.Failure("인증 실패, 이메일과 패스워드를 확인하세요"))
-            }
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
     override suspend fun registerUser(
@@ -50,62 +52,59 @@ class AuthRepositoryImpl(
         password: String,
         result: (UiState<String>) -> Unit
     ) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { it ->
-                if (it.isSuccessful) {
-                    //FCM 불러오기
-                    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                        // 실패
-                        if (!task.isSuccessful) {
-                            Log.d(TAG, "Fetching FCM registration token failed", task.exception)
-                            return@addOnCompleteListener
-                        }
-                        // 받아온 새로운 토큰
-                        val token = task.result
-
-                        storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
-                            .addOnSuccessListener {
-                                var profileimage: Uri?
-
-                                storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
-                                    .addOnSuccessListener {
-                                        profileimage = it
-
-                                        database.child("user")
-                                            .child(auth.currentUser?.uid!!)
-                                            .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!,token))
-                                    }
+        try {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { it ->
+                    if (it.isSuccessful) {
+                        //FCM 불러오기
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            // 실패
+                            if (!task.isSuccessful) {
+                                Log.d(TAG, "Fetching FCM registration token failed", task.exception)
+                                return@addOnCompleteListener
                             }
-                        result.invoke(UiState.Success("로그인 성공"))
-                    }
-                } else {
-                        try {
-                            throw it.exception ?: java.lang.Exception("유효하지 않은 인증")
-                        } catch (e: FirebaseAuthWeakPasswordException) {
-                            result.invoke(UiState.Failure("비밀번호를 6자리 이상으로 입력해주세요"))
-                        } catch (e: FirebaseAuthInvalidCredentialsException) {
-                            result.invoke(UiState.Failure("올바른 이메일을 입력해주세요"))
-                        } catch (e: FirebaseAuthUserCollisionException) {
-                            result.invoke(UiState.Failure("이미 사용중인 이메일입니다"))
-                        } catch (e: Exception) {
-                            result.invoke(UiState.Failure(e.message))
+                            // 받아온 새로운 토큰
+                            val token = task.result
+
+                            storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").putBytes(image)
+                                .addOnSuccessListener {
+                                    var profileimage: Uri?
+
+                                    storage.child("userImages").child("${auth.currentUser?.uid!!}/photo").downloadUrl
+                                        .addOnSuccessListener {
+                                            profileimage = it
+
+                                            database.child("user")
+                                                .child(auth.currentUser?.uid!!)
+                                                .setValue(User(name,email,profileimage.toString(),auth.currentUser?.uid!!,token))
+                                        }
+                                }
+                            result.invoke(UiState.Success("회원가입 성공"))
                         }
+                    } else {
+                        result.invoke(UiState.Failure("회원가입 실패"))
+                    }
                 }
-            }
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
+        
     }
 
     override suspend fun findPassword(email: String, result: (UiState<String>) -> Unit) {
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    result.invoke(UiState.Success("이메일 전송 성공"))
+        try {
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        result.invoke(UiState.Success("이메일 전송 성공"))
 
-                } else {
-                    result.invoke(UiState.Failure(task.exception?.message))
+                    } else {
+                        result.invoke(UiState.Failure("전송 실패, 이메일을 확인하세요"))
+                    }
                 }
-            }.addOnFailureListener {
-                result.invoke(UiState.Failure("인증 실패, 이메일을 확인하세요"))
-            }
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
     override suspend fun putID(key: String, value: String) {
