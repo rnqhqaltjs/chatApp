@@ -4,7 +4,6 @@ import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
-import com.google.firebase.database.ValueEventListener
 
 interface ChatRepository {
     fun logout()
