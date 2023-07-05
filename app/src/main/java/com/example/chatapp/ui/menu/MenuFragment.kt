@@ -37,7 +37,6 @@ class MenuFragment : Fragment() {
             { binding.menuName.text = it },
             { binding.menuEmail.text = it }
         )
-        binding.menuImage.clipToOutline = true
 
         binding.editProfileBtn.setOnClickListener {
             val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditprofile()

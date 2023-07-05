@@ -47,7 +47,6 @@ class RegisterFragment : Fragment() {
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
         }
-        binding.imageArea.clipToOutline = true
 
         binding.registerBtn.setOnClickListener {
             if(validation()){

@@ -43,7 +43,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun recyclerview(){
-        chatlistadapter = ChatListAdapter()
+        chatlistadapter = ChatListAdapter(chatViewModel)
         binding.chatRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

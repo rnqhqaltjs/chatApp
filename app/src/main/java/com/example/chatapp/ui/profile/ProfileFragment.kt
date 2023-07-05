@@ -36,7 +36,6 @@ class ProfileFragment : Fragment() {
         binding.profileName.text = user.name
         binding.profileEmail.text = user.email
         binding.profileImage.load(user.image)
-        binding.profileImage.clipToOutline = true
 
         binding.profileMessageBtn.setOnClickListener {
             val action = ProfileFragmentDirections.actionFragmentProfileToFragmentMessage(user)

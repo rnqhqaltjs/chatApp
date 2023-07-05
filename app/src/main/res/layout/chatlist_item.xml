@@ -1,67 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/chat_image"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:scaleType="fitXY"
-        android:background="@drawable/image_rounded"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/chat_name"
-        android:layout_width="0dp"
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.chatapp.ui.chat.ChatViewModel" />
+
+        <variable
+            name="chat"
+            type="com.example.chatapp.data.model.Chat" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:text="name"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/chat_image"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
 
-    <TextView
-        android:id="@+id/chat_lastmessage"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:text="lastmessage"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/chat_image"
-        app:layout_constraintTop_toBottomOf="@id/chat_name" />
+        <ImageView
+            android:id="@+id/chat_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="fitXY"
+            app:imageUrl="@{chat.user.image}"
+            android:clipToOutline="true"
+            android:background="@drawable/image_rounded"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/chat_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="time"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/chat_name"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <TextView
+            android:id="@+id/chat_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:text="@{chat.user.name}"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/chat_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/newmessagenotify"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:visibility="gone"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/chat_lastmessage"
-        app:layout_constraintEnd_toEndOf="@+id/chat_lastmessage"
-        app:srcCompat="@drawable/ic_circle"
-        app:tint="@color/lsb" />
+        <TextView
+            android:id="@+id/chat_lastmessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:text="@{chat.message.message}"
+            app:chatMessageStyle="@{chat}"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/chat_image"
+            app:layout_constraintTop_toBottomOf="@id/chat_name" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lastMessageTime="@{chat.message.time}"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/chat_name"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/newmessagenotify"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:visibility="@{chat.message.seen ? View.GONE : View.VISIBLE}"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintBottom_toBottomOf="@+id/chat_lastmessage"
+            app:layout_constraintEnd_toEndOf="@+id/chat_lastmessage"
+            app:srcCompat="@drawable/ic_circle"
+            app:tint="@color/lsb" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

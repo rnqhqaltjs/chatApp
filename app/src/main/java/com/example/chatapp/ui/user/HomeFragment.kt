@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun recyclerview(){
-        userlistadapter = UserListAdapter()
+        userlistadapter = UserListAdapter(chatViewModel)
         binding.userRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

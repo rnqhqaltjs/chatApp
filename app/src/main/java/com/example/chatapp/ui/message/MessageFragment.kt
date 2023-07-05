@@ -62,7 +62,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun recyclerview(){
-        messageListAdapter = MessageListAdapter(user)
+        messageListAdapter = MessageListAdapter(chatViewModel, user)
         binding.messageRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

@@ -53,8 +53,6 @@ class EditProfileFragment : Fragment() {
 
         }
 
-        binding.profileImage.clipToOutline = true
-
         binding.saveButton.setOnClickListener {
             if(binding.profileName.text.isNotEmpty()){
                 chatViewModel.profileChange(

@@ -13,9 +13,8 @@ import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessageListAdapter(private val user: User) : ListAdapter<Message, RecyclerView.ViewHolder>(
-    MessageDiffCallback
-) {
+class MessageListAdapter internal constructor(private val viewModel: MessageViewModel, private val user: User)
+    : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback) {
 
     private val receive = 1 //받는 타입
     private val send = 2 //보내는 타입
@@ -39,12 +38,11 @@ class MessageListAdapter(private val user: User) : ListAdapter<Message, Recycler
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
         val user = user
 
         when (holder.itemViewType) {
             send -> (holder as SendMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position))
-            receive -> (holder as ReceiveMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position), user)
+            receive -> (holder as ReceiveMessageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position), user)
         }
     }
 

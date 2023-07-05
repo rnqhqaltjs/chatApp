@@ -9,12 +9,9 @@ class UserListViewHolder(
     private val binding: UserlistItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(user: User) {
-        itemView.apply {
-            binding.userImage.load(user.image)
-            binding.userImage.clipToOutline = true
-            binding.userName.text = user.name
-            binding.userEmail.text = user.email
-        }
+    fun bind(viewModel: HomeViewModel, user: User) {
+        binding.viewmodel = viewModel
+        binding.user = user
+        binding.executePendingBindings()
     }
 }

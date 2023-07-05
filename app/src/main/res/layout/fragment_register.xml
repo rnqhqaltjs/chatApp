@@ -38,6 +38,7 @@
         android:layout_margin="20dp"
         android:background="@drawable/image_rounded_border"
         android:scaleType="fitXY"
+        android:clipToOutline="true"
         android:src="@drawable/ic_home_24"
         app:layout_constraintBottom_toTopOf="@+id/nameArea"
         app:layout_constraintEnd_toEndOf="parent"
