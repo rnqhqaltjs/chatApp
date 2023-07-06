@@ -12,26 +12,11 @@ class SendMessageViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("SimpleDateFormat")
-    fun bind(message: Message, isFirstDate: Boolean, isFirstTime: Boolean) {
-        binding.sendMessageText.text = message.message
-        binding.sendMessageSeen.visibility = if (message.seen) View.GONE else View.VISIBLE
-
-        if(isFirstTime) {
-            binding.sendMessageTime.visibility = View.VISIBLE
-            binding.sendMessageTime.text = SimpleDateFormat("hh:mm a").format(message.time.toLong())
-        } else {
-            binding.sendMessageDate.visibility = View.GONE
-        }
-
-        if (isFirstDate) {
-            binding.sendMessageDate.visibility = View.VISIBLE
-            binding.leftLine.visibility = View.VISIBLE
-            binding.rightLine.visibility = View.VISIBLE
-            binding.sendMessageDate.text = SimpleDateFormat("yyyy년 MM월 dd일").format(message.time.toLong())
-        } else {
-            binding.sendMessageDate.visibility = View.GONE
-            binding.leftLine.visibility = View.GONE
-            binding.rightLine.visibility = View.GONE
-        }
+    fun bind(viewModel: MessageViewModel, message: Message, isFirstDate: Boolean, isFirstTime: Boolean) {
+        binding.viewmodel = viewModel
+        binding.message = message
+        binding.isFirstDate = isFirstDate
+        binding.isFirstTime = isFirstTime
+        binding.executePendingBindings()
     }
 }

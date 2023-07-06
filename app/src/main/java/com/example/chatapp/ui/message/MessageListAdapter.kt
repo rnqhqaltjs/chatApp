@@ -38,10 +38,8 @@ class MessageListAdapter internal constructor(private val viewModel: MessageView
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val user = user
-
         when (holder.itemViewType) {
-            send -> (holder as SendMessageViewHolder).bind(getItem(position), isFirstDate(position), isFirstTime(position))
+            send -> (holder as SendMessageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position))
             receive -> (holder as ReceiveMessageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position), user)
         }
     }
