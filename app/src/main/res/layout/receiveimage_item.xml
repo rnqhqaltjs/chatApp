@@ -83,20 +83,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/receive_message_date" />
 
-        <TextView
-            android:id="@+id/receive_message_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/receive_message_image"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:scaleType="fitXY"
+            android:clipToOutline="true"
             android:layout_alignParentStart="true"
             android:layout_marginStart="4dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="5dp"
             android:background="@drawable/round_corner_lightgray"
-            android:maxWidth="240dp"
-            android:padding="10dp"
-            android:text="@{message.message}"
-            android:textColor="@color/black"
-            android:textSize="18sp"
+            android:padding="8dp"
+            tools:src="@tools:sample/avatars"
+            app:imageUrl="@{message.photoImage}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/message_image"
             app:layout_constraintTop_toBottomOf="@+id/receive_message_date" />
@@ -110,7 +110,7 @@
             android:layout_marginStart="5dp"
             app:onTimeFormat="@{message.time}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/receive_message_text" />
+            app:layout_constraintStart_toEndOf="@+id/receive_message_image" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

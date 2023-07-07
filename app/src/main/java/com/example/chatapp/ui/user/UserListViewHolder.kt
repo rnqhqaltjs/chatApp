@@ -1,7 +1,6 @@
 package com.example.chatapp.ui.user
 
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.UserlistItemBinding
 

@@ -25,8 +25,12 @@ class MessageViewModel @Inject constructor(
     val notifyobserve: LiveData<UiState<String>>
         get() = _notifyobserve
 
-    fun sendMessage(message:String, receiverUid:String, time: String, userReceiver: User) = viewModelScope.launch {
+    fun sendMessage(message:String, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
         repository.sendMessage(message, receiverUid, time, userReceiver)
+    }
+
+    fun sendImageMessage(message: String, image: ByteArray?, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
+        repository.sendImageMessage(message, image, receiverUid, time, userReceiver)
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {

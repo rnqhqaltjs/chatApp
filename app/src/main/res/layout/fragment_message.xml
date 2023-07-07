@@ -36,6 +36,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <ImageView
+        android:id="@+id/send_image_btn"
+        android:layout_width="50dp"
+        android:layout_height="55dp"
+        android:src="@drawable/ic_photo_24"
+        android:background="@color/lsb"
+        android:padding="10dp"
+        app:tint= "@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ProgressBar
         android:id="@+id/message_progress"
         style="?android:attr/progressBarStyle"

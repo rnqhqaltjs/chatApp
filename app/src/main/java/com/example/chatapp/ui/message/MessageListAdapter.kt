@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
+import com.example.chatapp.databinding.ReceiveimageItemBinding
 import com.example.chatapp.databinding.ReceivemessageItemBinding
+import com.example.chatapp.databinding.SendimageItemBinding
 import com.example.chatapp.databinding.SendmessageItemBinding
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
@@ -16,8 +18,10 @@ import java.util.*
 class MessageListAdapter internal constructor(private val viewModel: MessageViewModel, private val user: User)
     : ListAdapter<Message, RecyclerView.ViewHolder>(MessageDiffCallback) {
 
-    private val receive = 1 //받는 타입
-    private val send = 2 //보내는 타입
+    private val send = 1
+    private val sendImage = 2
+    private val receive = 3
+    private val receiveImage = 4
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -27,9 +31,18 @@ class MessageListAdapter internal constructor(private val viewModel: MessageView
                 val binding = SendmessageItemBinding.inflate(layoutInflater, parent, false)
                 SendMessageViewHolder(binding)
             }
+            sendImage -> {
+                val binding = SendimageItemBinding.inflate(layoutInflater, parent, false)
+                SendImageViewHolder(binding)
+            }
             receive -> {
                 val binding = ReceivemessageItemBinding.inflate(layoutInflater, parent, false)
                 ReceiveMessageViewHolder(binding)
+            }
+
+            receiveImage -> {
+                val binding = ReceiveimageItemBinding.inflate(layoutInflater, parent, false)
+                ReceiveImageViewHolder(binding)
             }
             else -> {
                 throw Exception("Error reading holder type")
@@ -40,15 +53,24 @@ class MessageListAdapter internal constructor(private val viewModel: MessageView
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder.itemViewType) {
             send -> (holder as SendMessageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position))
+            sendImage -> (holder as SendImageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position))
             receive -> (holder as ReceiveMessageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position), user)
+            receiveImage -> (holder as ReceiveImageViewHolder).bind(viewModel, getItem(position), isFirstDate(position), isFirstTime(position), user)
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val item = getItem(position)
-        return when {
-            FirebaseAuth.getInstance().currentUser?.uid.equals(item.sendId) -> send
-            else -> receive
+        return if (FirebaseAuth.getInstance().currentUser?.uid == item.sendId) {
+            when {
+                item.photoImage != "" -> sendImage
+                else -> send
+            }
+        } else {
+            when {
+                item.photoImage != "" -> receiveImage
+                else -> receive
+            }
         }
     }
 

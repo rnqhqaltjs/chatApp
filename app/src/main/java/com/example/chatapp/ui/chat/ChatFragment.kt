@@ -39,7 +39,6 @@ class ChatFragment : Fragment() {
         recyclerview()
         chatViewModel.getChatData()
         observer()
-
     }
 
     private fun recyclerview(){

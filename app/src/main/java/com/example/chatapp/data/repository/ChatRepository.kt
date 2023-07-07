@@ -9,6 +9,7 @@ interface ChatRepository {
     fun logout()
     suspend fun getUserData(result: (UiState<List<User>>) -> Unit)
     suspend fun sendMessage(message:String, receiverUid:String, time:String, userReceiver: User)
+    suspend fun sendImageMessage(message: String, image: ByteArray?, receiverUid:String, time:String, userReceiver: User)
     fun seenMessage(receiverUid: String)
     fun removeSeenMessage(receiverUid: String)
     suspend fun getMessageData(receiverUid:String, result: (UiState<List<Message>>) -> Unit)

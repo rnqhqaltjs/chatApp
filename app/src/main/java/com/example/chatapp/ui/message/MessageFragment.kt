@@ -1,9 +1,18 @@
 package com.example.chatapp.ui.message
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -25,7 +34,8 @@ class MessageFragment : Fragment() {
     private val chatViewModel by viewModels<MessageViewModel>()
     private val time = System.currentTimeMillis()
 
-    private lateinit var user: User // 클래스 변수로 user 선언
+    private lateinit var imageUri: Uri
+    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +56,33 @@ class MessageFragment : Fragment() {
         chatViewModel.getMessageData(user.uid)
         observer()
 
+        binding.messageEdit.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // 텍스트 변경 전에 수행할 작업
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트 변경 중에 수행할 작업
+                if (s.isNullOrEmpty()) {
+                    binding.sendImageBtn.visibility = View.VISIBLE
+                    binding.sendBtn.visibility = View.INVISIBLE
+                } else {
+                    binding.sendImageBtn.visibility = View.INVISIBLE
+                    binding.sendBtn.visibility = View.VISIBLE
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // 텍스트 변경 후에 수행할 작업
+            }
+        })
+
+        binding.sendImageBtn.setOnClickListener {
+            val intentImage = Intent(Intent.ACTION_PICK)
+            intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
+            getContent.launch(intentImage)
+        }
+
         binding.sendBtn.setOnClickListener {
             if(binding.messageEdit.text.toString().isNotEmpty()){
                 chatViewModel.sendMessage(
@@ -60,6 +97,25 @@ class MessageFragment : Fragment() {
             }
         }
     }
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if(result.resultCode == Activity.RESULT_OK) {
+                imageUri = result.data?.data!! //이미지 경로 원본
+
+                chatViewModel.sendImageMessage(
+                    "이미지를 전송하였습니다.",
+                    convertFileToByteArray(requireContext(),imageUri),
+                    user.uid,time.toString(),
+                    user
+                )
+                Log.d("image", "success")
+            }
+            else{
+                Log.d("image", "failure")
+            }
+        }
 
     private fun recyclerview(){
         messageListAdapter = MessageListAdapter(chatViewModel, user)

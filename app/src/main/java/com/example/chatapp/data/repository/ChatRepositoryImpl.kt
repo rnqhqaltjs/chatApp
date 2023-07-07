@@ -86,7 +86,7 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userSender = snapshot.getValue(User::class.java)
 
-                    val theMessage = Message(message, senderUid, time, userSender!!.image,false)
+                    val theMessage = Message(message, senderUid, time, userSender!!.image, "", false)
                     val latestUserMessageForSender = Chat(theMessage, userReceiver)
                     val latestUserMessageForReceiver = Chat(theMessage, userSender)
 
@@ -102,6 +102,57 @@ class ChatRepositoryImpl(
                                             database.child(("latestUsersAndMessages")).child(receiverUid)
                                                 .child(senderUid)
                                                 .setValue(latestUserMessageForReceiver)
+                                        }
+                                }
+                        }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+    }
+
+    override suspend fun sendImageMessage(
+        message: String,
+        image: ByteArray?,
+        receiverUid: String,
+        time:String,
+        userReceiver: User
+    ) {
+        val senderUid = auth.currentUser?.uid
+        val senderRoom = senderUid + receiverUid
+        val receiverRoom = receiverUid + senderUid
+
+        database.child("user").child(senderUid!!)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userSender = snapshot.getValue(User::class.java)
+
+                    storage.child("chatImages").child(senderRoom).putBytes(image!!)
+                        .addOnSuccessListener {
+                            var chatimage: Uri?
+
+                            storage.child("chatImages").child(senderRoom).downloadUrl
+                                .addOnSuccessListener {
+                                    chatimage = it
+
+                                    val theMessage = Message(message, senderUid, time, userSender!!.image, chatimage.toString(), false)
+                                    val latestUserMessageForSender = Chat(theMessage, userReceiver)
+                                    val latestUserMessageForReceiver = Chat(theMessage, userSender)
+
+                                    database.child("chats").child(senderRoom).child("messages").push()
+                                        .setValue(theMessage).addOnSuccessListener {
+                                            database.child("chats").child(receiverRoom).child("messages").push()
+                                                .setValue(theMessage).addOnSuccessListener {
+
+                                                    database.child(("latestUsersAndMessages")).child(senderUid)
+                                                        .child(receiverUid)
+                                                        .setValue(latestUserMessageForSender)
+                                                        .addOnSuccessListener {
+                                                            database.child(("latestUsersAndMessages")).child(receiverUid)
+                                                                .child(senderUid)
+                                                                .setValue(latestUserMessageForReceiver)
+                                                        }
+                                                }
                                         }
                                 }
                         }

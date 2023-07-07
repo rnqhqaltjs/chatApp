@@ -2,10 +2,10 @@ package com.example.chatapp.ui.message
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatapp.data.model.Message
-import com.example.chatapp.databinding.SendmessageItemBinding
+import com.example.chatapp.databinding.SendimageItemBinding
 
-class SendMessageViewHolder(
-    private val binding: SendmessageItemBinding
+class SendImageViewHolder(
+    private val binding: SendimageItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(viewModel: MessageViewModel, message: Message, isFirstDate: Boolean, isFirstTime: Boolean) {
