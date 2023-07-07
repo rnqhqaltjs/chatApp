@@ -127,11 +127,11 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userSender = snapshot.getValue(User::class.java)
 
-                    storage.child("chatImages").child(senderRoom).putBytes(image!!)
+                    storage.child("chatImages").child(senderRoom).child(time).putBytes(image!!)
                         .addOnSuccessListener {
                             var chatimage: Uri?
 
-                            storage.child("chatImages").child(senderRoom).downloadUrl
+                            storage.child("chatImages").child(senderRoom).child(time).downloadUrl
                                 .addOnSuccessListener {
                                     chatimage = it
 

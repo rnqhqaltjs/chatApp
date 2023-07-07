@@ -36,6 +36,7 @@ class MessageFragment : Fragment() {
 
     private lateinit var imageUri: Uri
     private lateinit var user: User
+    private var isPhotoSelectionOpen = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +79,7 @@ class MessageFragment : Fragment() {
         })
 
         binding.sendImageBtn.setOnClickListener {
+            isPhotoSelectionOpen = true
             val intentImage = Intent(Intent.ACTION_PICK)
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
@@ -91,7 +93,7 @@ class MessageFragment : Fragment() {
                     time.toString(),
                     user
                 )
-                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
+                chatViewModel.sendNotification("이미지를 전송하였습니다.", user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }
@@ -110,9 +112,12 @@ class MessageFragment : Fragment() {
                     user.uid,time.toString(),
                     user
                 )
+                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
+                isPhotoSelectionOpen = false
                 Log.d("image", "success")
             }
             else{
+                isPhotoSelectionOpen = false
                 Log.d("image", "failure")
             }
         }
@@ -164,7 +169,9 @@ class MessageFragment : Fragment() {
     }
 
     override fun onPause() {
-        chatViewModel.removeSeenMessage(user.uid)
+        if (!isPhotoSelectionOpen) {
+            chatViewModel.removeSeenMessage(user.uid)
+        }
         super.onPause()
     }
 
