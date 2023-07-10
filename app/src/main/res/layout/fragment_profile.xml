@@ -64,7 +64,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
-            app:onProfileImageClicked="@{user}"
+            app:onProfileMessageClicked="@{user}"
             android:src="@drawable/ic_send"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

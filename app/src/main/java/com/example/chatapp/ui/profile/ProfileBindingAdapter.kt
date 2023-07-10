@@ -11,7 +11,7 @@ fun loadImage(view: ImageView, url: String) {
     view.load(url)
 }
 
-@BindingAdapter("onProfileImageClicked")
+@BindingAdapter("onProfileMessageClicked")
 fun setOnProfileMessageClicked(view: ImageView, user: User) {
     view.setOnClickListener {
         val action = ProfileFragmentDirections.actionFragmentProfileToFragmentMessage(user)

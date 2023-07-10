@@ -93,7 +93,7 @@ class MessageFragment : Fragment() {
                     time.toString(),
                     user
                 )
-                chatViewModel.sendNotification("이미지를 전송하였습니다.", user)
+                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }
@@ -112,7 +112,7 @@ class MessageFragment : Fragment() {
                     user.uid,time.toString(),
                     user
                 )
-                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
+                chatViewModel.sendNotification("이미지를 전송하였습니다.", user)
                 isPhotoSelectionOpen = false
                 Log.d("image", "success")
             }
