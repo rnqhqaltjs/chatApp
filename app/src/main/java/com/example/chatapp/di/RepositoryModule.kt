@@ -1,6 +1,5 @@
 package com.example.chatapp.di
 
-import android.app.Application
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.chatapp.data.repository.AuthRepository
