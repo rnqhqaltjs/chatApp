@@ -13,10 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.chatapp.R
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.activity.HomeActivity
@@ -43,7 +45,9 @@ class MessageFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMessageBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
+        binding.viewmodel = chatViewModel
+
         return binding.root
     }
 
@@ -56,27 +60,6 @@ class MessageFragment : Fragment() {
 
         chatViewModel.getMessageData(user.uid)
         observer()
-
-        binding.messageEdit.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // 텍스트 변경 전에 수행할 작업
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // 텍스트 변경 중에 수행할 작업
-                if (s.isNullOrEmpty()) {
-                    binding.sendImageBtn.visibility = View.VISIBLE
-                    binding.sendBtn.visibility = View.INVISIBLE
-                } else {
-                    binding.sendImageBtn.visibility = View.INVISIBLE
-                    binding.sendBtn.visibility = View.VISIBLE
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                // 텍스트 변경 후에 수행할 작업
-            }
-        })
 
         binding.sendImageBtn.setOnClickListener {
             isPhotoSelectionOpen = true

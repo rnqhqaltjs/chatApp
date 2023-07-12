@@ -1,5 +1,9 @@
 package com.example.chatapp.ui.message
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,6 +15,7 @@ import com.example.chatapp.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 @HiltViewModel
 class MessageViewModel @Inject constructor(
@@ -49,6 +54,19 @@ class MessageViewModel @Inject constructor(
 
     fun removeSeenMessage(receiverUid: String) {
         repository.removeSeenMessage(receiverUid)
+    }
+
+    val sendImageBtnVisibility = ObservableInt(View.VISIBLE)
+    val sendBtnVisibility = ObservableInt(View.INVISIBLE)
+
+    fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        if (s.isEmpty()) {
+            sendImageBtnVisibility.set(View.VISIBLE)
+            sendBtnVisibility.set(View.INVISIBLE)
+        } else {
+            sendImageBtnVisibility.set(View.INVISIBLE)
+            sendBtnVisibility.set(View.VISIBLE)
+        }
     }
 
 }

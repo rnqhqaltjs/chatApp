@@ -1,64 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.message.MessageFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/message_recyclerView"
+    <data>
+        <variable
+            name="message"
+            type="com.example.chatapp.data.model.Message" />
+
+        <variable
+            name="viewmodel"
+            type="com.example.chatapp.ui.message.MessageViewModel"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/send_btn"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="10dp"
-        android:clipToPadding="false"/>
+        android:layout_height="match_parent"
+        tools:context=".ui.message.MessageFragment">
 
-    <EditText
-        android:id="@+id/message_edit"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:ems="10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/send_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/send_btn" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/message_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/send_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingBottom="10dp"
+            android:clipToPadding="false" />
 
-    <ImageView
-        android:id="@+id/send_btn"
-        android:layout_width="50dp"
-        android:layout_height="55dp"
-        android:src="@drawable/ic_send"
-        android:background="@color/lsb"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <EditText
+            android:id="@+id/message_edit"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:onTextChanged="@{viewmodel::onTextChanged}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/send_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/send_btn" />
 
-    <ImageView
-        android:id="@+id/send_image_btn"
-        android:layout_width="50dp"
-        android:layout_height="55dp"
-        android:src="@drawable/ic_photo_24"
-        android:background="@color/lsb"
-        android:padding="10dp"
-        app:tint= "@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <ImageView
+            android:id="@+id/send_btn"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:src="@drawable/ic_send"
+            android:background="@color/lsb"
+            android:visibility="@{viewmodel.sendBtnVisibility}"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/message_progress"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_centerInParent="true"
-        android:elevation="10dp"
-        android:indeterminateTint="@color/black"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/send_image_btn"
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:src="@drawable/ic_photo_24"
+            android:background="@color/lsb"
+            android:visibility="@{viewmodel.sendImageBtnVisibility}"
+            android:padding="10dp"
+            app:tint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ProgressBar
+            android:id="@+id/message_progress"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerInParent="true"
+            android:elevation="10dp"
+            android:indeterminateTint="@color/black"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
