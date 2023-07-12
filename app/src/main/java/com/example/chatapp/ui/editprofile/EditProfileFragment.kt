@@ -78,7 +78,25 @@ class EditProfileFragment : Fragment() {
         }
 
     private fun observer(){
-        chatViewModel.profileobserve.observe(viewLifecycleOwner){ state ->
+
+        chatViewModel.profileobserve.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.profileProgress.show(requireActivity())
+                }
+
+                is UiState.Failure -> {
+                    binding.profileProgress.hide(requireActivity())
+                    toast(state.error)
+                }
+
+                is UiState.Success -> {
+                    binding.profileProgress.hide(requireActivity())
+                }
+            }
+        }
+
+        chatViewModel.profilechangeobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.profileProgress.show(requireActivity())

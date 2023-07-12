@@ -295,22 +295,28 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) {
+    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit), result: (UiState<String>) -> Unit) {
         val uid = auth.currentUser?.uid
 
-        database.child("user").child(uid!!)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userProfile = snapshot.getValue(User::class.java)
+        try {
+            database.child("user").child(uid!!)
+                .addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userProfile = snapshot.getValue(User::class.java)
 
-                    image.invoke(userProfile!!.image)
-                    name.invoke(userProfile.name)
-                    email.invoke(userProfile.email)
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    //실패 시 실행
-                }
-            })
+                        image.invoke(userProfile!!.image)
+                        name.invoke(userProfile.name)
+                        email.invoke(userProfile.email)
+                        result.invoke(UiState.Success("프로필 불러오기 성공"))
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        result.invoke(UiState.Failure("프로필 불러오기 실패"))
+                    }
+                })
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
+
     }
 
     override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>)->Unit) {
