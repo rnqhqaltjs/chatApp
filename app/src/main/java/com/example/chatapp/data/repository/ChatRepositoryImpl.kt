@@ -192,8 +192,8 @@ class ChatRepositoryImpl(
         }
     }
 
-    private lateinit var MessageSeenListener: ValueEventListener
-    private lateinit var LatestMessageSeenListener: ValueEventListener
+    private lateinit var messageSeenListener: ValueEventListener
+    private lateinit var latestMessageSeenListener: ValueEventListener
 
     override fun seenMessage(receiverUid: String) {
         val senderUid = auth.currentUser?.uid
@@ -201,7 +201,7 @@ class ChatRepositoryImpl(
         val seenObj: HashMap<String, Any> = HashMap()
         seenObj["seen"] = true
 
-        MessageSeenListener = database.child("chats").child(receiverRoom).child("messages")
+        messageSeenListener = database.child("chats").child(receiverRoom).child("messages")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(postSnapshot in snapshot.children){
@@ -212,7 +212,7 @@ class ChatRepositoryImpl(
                 }
             })
 
-        LatestMessageSeenListener = database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
+        latestMessageSeenListener = database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
             .child("message")
             .addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -229,11 +229,11 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
         database.child("chats").child(receiverRoom).child("messages")
-            .removeEventListener(MessageSeenListener)
+            .removeEventListener(messageSeenListener)
 
         database.child("latestUsersAndMessages").child(senderUid!!).child(receiverUid)
             .child("message")
-            .removeEventListener(LatestMessageSeenListener)
+            .removeEventListener(latestMessageSeenListener)
     }
 
     override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {
