@@ -116,50 +116,59 @@ class ChatRepositoryImpl(
         image: ByteArray?,
         receiverUid: String,
         time:String,
-        userReceiver: User
+        userReceiver: User,
+        result: (UiState<String>) -> Unit
     ) {
         val senderUid = auth.currentUser?.uid
         val senderRoom = senderUid + receiverUid
         val receiverRoom = receiverUid + senderUid
 
-        database.child("user").child(senderUid!!)
-            .addListenerForSingleValueEvent(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userSender = snapshot.getValue(User::class.java)
+        try {
+            database.child("user").child(senderUid!!)
+                .addListenerForSingleValueEvent(object: ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userSender = snapshot.getValue(User::class.java)
 
-                    storage.child("chatImages").child(senderRoom).child(time).putBytes(image!!)
-                        .addOnSuccessListener {
-                            var chatimage: Uri?
+                        storage.child("chatImages").child(senderRoom).child(time).putBytes(image!!)
+                            .addOnSuccessListener {
+                                var chatimage: Uri?
 
-                            storage.child("chatImages").child(senderRoom).child(time).downloadUrl
-                                .addOnSuccessListener {
-                                    chatimage = it
+                                storage.child("chatImages").child(senderRoom).child(time).downloadUrl
+                                    .addOnSuccessListener {
+                                        chatimage = it
 
-                                    val theMessage = Message(message, senderUid, time, userSender!!.image, chatimage.toString(), false)
-                                    val latestUserMessageForSender = Chat(theMessage, userReceiver)
-                                    val latestUserMessageForReceiver = Chat(theMessage, userSender)
+                                        val theMessage = Message(message, senderUid, time, userSender!!.image, chatimage.toString(), false)
+                                        val latestUserMessageForSender = Chat(theMessage, userReceiver)
+                                        val latestUserMessageForReceiver = Chat(theMessage, userSender)
 
-                                    database.child("chats").child(senderRoom).child("messages").push()
-                                        .setValue(theMessage).addOnSuccessListener {
-                                            database.child("chats").child(receiverRoom).child("messages").push()
-                                                .setValue(theMessage).addOnSuccessListener {
+                                        database.child("chats").child(senderRoom).child("messages").push()
+                                            .setValue(theMessage).addOnSuccessListener {
+                                                database.child("chats").child(receiverRoom).child("messages").push()
+                                                    .setValue(theMessage).addOnSuccessListener {
 
-                                                    database.child(("latestUsersAndMessages")).child(senderUid)
-                                                        .child(receiverUid)
-                                                        .setValue(latestUserMessageForSender)
-                                                        .addOnSuccessListener {
-                                                            database.child(("latestUsersAndMessages")).child(receiverUid)
-                                                                .child(senderUid)
-                                                                .setValue(latestUserMessageForReceiver)
-                                                        }
-                                                }
-                                        }
-                                }
-                        }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                }
-            })
+                                                        database.child(("latestUsersAndMessages")).child(senderUid)
+                                                            .child(receiverUid)
+                                                            .setValue(latestUserMessageForSender)
+                                                            .addOnSuccessListener {
+                                                                database.child(("latestUsersAndMessages")).child(receiverUid)
+                                                                    .child(senderUid)
+                                                                    .setValue(latestUserMessageForReceiver)
+                                                                    .addOnSuccessListener {
+                                                                        result.invoke(UiState.Success("이미지 전송 성공"))
+                                                                    }
+                                                            }
+                                                    }
+                                            }
+                                    }
+                            }
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        result.invoke(UiState.Failure("이미지 전송 실패"))
+                    }
+                })
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 
     override suspend fun getMessageData(
@@ -314,16 +323,18 @@ class ChatRepositoryImpl(
                         storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
                             val photoUri : Uri = it
                             database.child("user/$uid/image").setValue(photoUri.toString())
-                            database.child("user/$uid/name").setValue(name)
+                            database.child("user/$uid/name").setValue(name).addOnSuccessListener {
+                                result.invoke(UiState.Success("프로필 변경 완료"))
+                            }
                         }
                     }
-                    result.invoke(UiState.Success("프로필 변경 완료"))
                 }.addOnFailureListener {
                     result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
                 }
             } else {
-                database.child("user/$uid/name").setValue(name)
-                result.invoke(UiState.Success("프로필 변경 완료"))
+                database.child("user/$uid/name").setValue(name).addOnSuccessListener {
+                    result.invoke(UiState.Success("프로필 변경 완료"))
+                }
             }
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))

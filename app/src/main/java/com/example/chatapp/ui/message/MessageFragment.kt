@@ -142,6 +142,21 @@ class MessageFragment : Fragment() {
             }
         }
 
+        chatViewModel.sendobserve.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                    binding.messageProgress.show(requireActivity())
+                }
+                is UiState.Failure -> {
+                    binding.messageProgress.hide(requireActivity())
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    binding.messageProgress.hide(requireActivity())
+                }
+            }
+        }
+
         chatViewModel.notifyobserve.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
