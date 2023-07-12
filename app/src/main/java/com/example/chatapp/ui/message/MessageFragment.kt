@@ -5,8 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +20,11 @@ import com.example.chatapp.R
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.activity.HomeActivity
-import com.example.chatapp.util.*
+import com.example.chatapp.util.UiState
+import com.example.chatapp.util.convertFileToByteArray
+import com.example.chatapp.util.hide
+import com.example.chatapp.util.show
+import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,14 +71,16 @@ class MessageFragment : Fragment() {
         }
 
         binding.sendBtn.setOnClickListener {
-            if(binding.messageEdit.text.toString().isNotEmpty()){
+            val message = binding.messageEdit.text.toString()
+
+            if(message.isNotEmpty()){
                 chatViewModel.sendMessage(
-                    binding.messageEdit.text.toString(),
+                    message,
                     user.uid,
                     time.toString(),
                     user
                 )
-                chatViewModel.sendNotification(binding.messageEdit.text.toString(), user)
+                chatViewModel.sendNotification(message, user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }

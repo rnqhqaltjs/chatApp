@@ -100,42 +100,43 @@ class RegisterFragment : Fragment() {
     }
 
     private fun validation(): Boolean {
-        var isValid = true
-        when {
-            binding.nameArea.text.isNullOrEmpty() -> {
-                isValid = false
-                toast(getString(R.string.enter_name))
-            }
-            binding.emailArea.text.isNullOrEmpty() -> {
-                isValid = false
-                toast(getString(R.string.enter_email))
-            }
-            !binding.emailArea.text.toString().isValidEmail() -> {
-                isValid = false
-                toast(getString(R.string.invalid_email))
-            }
-            binding.passwordArea.text.isNullOrEmpty() -> {
-                isValid = false
-                toast(getString(R.string.enter_password))
-            }
-            binding.passwordArea.text.toString().length < 6 -> {
-                isValid = false
-                toast(getString(R.string.invalid_password))
-            }
-            binding.confirmPasswordArea.text.isNullOrEmpty() -> {
-                isValid = false
-                toast(getString(R.string.enter_confirm_password))
-            }
-            binding.passwordArea.text.toString() != binding.confirmPasswordArea.text.toString() -> {
-                isValid = false
-                toast(getString(R.string.different_password))
-            }
-            !imageCheck -> {
-                isValid = false
-                toast(getString(R.string.enter_image))
+        with(binding) {
+            return when {
+                nameArea.text.isNullOrEmpty() -> {
+                    toast(getString(R.string.enter_name))
+                    false
+                }
+                emailArea.text.isNullOrEmpty() -> {
+                    toast(getString(R.string.enter_email))
+                    false
+                }
+                !emailArea.text.toString().isValidEmail() -> {
+                    toast(getString(R.string.invalid_email))
+                    false
+                }
+                passwordArea.text.isNullOrEmpty() -> {
+                    toast(getString(R.string.enter_password))
+                    false
+                }
+                passwordArea.text.toString().length < 6 -> {
+                    toast(getString(R.string.invalid_password))
+                    false
+                }
+                confirmPasswordArea.text.isNullOrEmpty() -> {
+                    toast(getString(R.string.enter_confirm_password))
+                    false
+                }
+                passwordArea.text.toString() != confirmPasswordArea.text.toString() -> {
+                    toast(getString(R.string.different_password))
+                    false
+                }
+                !imageCheck -> {
+                    toast(getString(R.string.enter_image))
+                    false
+                }
+                else -> true
             }
         }
-        return isValid
     }
 
     override fun onDestroyView() {
