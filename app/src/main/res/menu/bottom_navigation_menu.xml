@@ -5,6 +5,10 @@
         android:title=""
         android:icon="@drawable/ic_home_24" />
 
+    <item android:id="@+id/fragment_notification"
+        android:title=""
+        android:icon="@drawable/ic_notification" />
+
     <item android:id="@+id/fragment_chat"
         android:title=""
         android:icon="@drawable/ic_chat_24" />

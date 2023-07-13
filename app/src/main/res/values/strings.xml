@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">chatApp</string>
     <string name="home">친구</string>
+    <string name="notification">알림</string>
     <string name="chat">채팅</string>
     <string name="menu">메뉴</string>
     <string name="edit_profile">프로필 수정</string>

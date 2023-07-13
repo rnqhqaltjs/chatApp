@@ -44,8 +44,6 @@ class MenuFragment : Fragment() {
             { binding.menuEmail.text = it }
         )
 
-
-
         binding.editProfileBtn.setOnClickListener {
             val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditprofile()
             findNavController().navigate(action)
