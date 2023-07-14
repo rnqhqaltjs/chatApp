@@ -7,6 +7,7 @@ import com.example.chatapp.data.api.RetrofitInstance
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.NotificationBody
+import com.example.chatapp.data.model.Request
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 import com.google.firebase.auth.FirebaseAuth
@@ -383,4 +384,56 @@ class ChatRepositoryImpl(
             result.invoke(UiState.Failure(e.message))
         }
     }
+
+    override suspend fun getRequest(receiverUid: String, result: (String) -> Unit) {
+
+        val senderUid = auth.currentUser?.uid
+
+        database.child("requests").child(senderUid!!).child(receiverUid)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val requestData = snapshot.getValue(Request::class.java)
+
+                    if (requestData != null) {
+                        result.invoke(requestData.status)
+                    } else {
+                        result.invoke("nothing")
+                    }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke("nothing")
+                }
+
+            })
+    }
+
+    override suspend fun friendRequest(receiverUid: String, result: (String)->Unit) {
+
+        val senderUid = auth.currentUser?.uid
+        val request: HashMap<String, Any> = HashMap()
+        request["status"] = "pending"
+
+        database.child("requests").child(senderUid!!).child(receiverUid).updateChildren(request)
+            .addOnSuccessListener {
+                result.invoke("pending")
+            }. addOnFailureListener {
+                result.invoke("nothing")
+            }
+    }
+
+    override suspend fun requestCancel(receiverUid: String, result: (String)->Unit) {
+
+        val senderUid = auth.currentUser?.uid
+
+        database.child("requests").child(senderUid!!).child(receiverUid).removeValue()
+            .addOnSuccessListener {
+                result.invoke("nothing")
+            }. addOnFailureListener {
+                result.invoke("pending")
+            }
+    }
+
+
 }
