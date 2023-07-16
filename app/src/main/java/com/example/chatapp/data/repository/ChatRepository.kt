@@ -2,6 +2,7 @@ package com.example.chatapp.data.repository
 
 import com.example.chatapp.data.model.Chat
 import com.example.chatapp.data.model.Message
+import com.example.chatapp.data.model.Request
 import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 
@@ -22,6 +23,6 @@ interface ChatRepository {
     suspend fun friendRequest(receiverUid: String, result: (String)->Unit)
     suspend fun requestCancel(receiverUid: String, result: (String)->Unit)
 
-
+    suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)
 
 }

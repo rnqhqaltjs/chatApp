@@ -1,5 +1,5 @@
 package com.example.chatapp.data.model
 
-class Request {
+data class Request (
     val status: String = ""
-}
+)

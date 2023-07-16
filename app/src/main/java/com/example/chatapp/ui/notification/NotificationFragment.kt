@@ -26,6 +26,10 @@ class NotificationFragment : Fragment() {
     private var _binding: FragmentNotificationBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var friendRequestAdapter: FriendRequestAdapter
+
+    private val chatViewModel by viewModels<NotificationViewModel>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,6 +42,39 @@ class NotificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        recyclerview()
+
+        chatViewModel.getRequestData()
+        observer()
+
+    }
+
+    private fun recyclerview(){
+        friendRequestAdapter = FriendRequestAdapter()
+        binding.requestRecyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
+            adapter = friendRequestAdapter
+        }
+    }
+
+    private fun observer(){
+        chatViewModel.requestobserve.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                    binding.requestProgress.show(requireActivity())
+                }
+                is UiState.Failure -> {
+                    binding.requestProgress.hide(requireActivity())
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    binding.requestProgress.hide(requireActivity())
+                    friendRequestAdapter.submitList(state.data)
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
