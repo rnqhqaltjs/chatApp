@@ -389,7 +389,7 @@ class ChatRepositoryImpl(
 
         val senderUid = auth.currentUser?.uid
 
-        database.child("requests").child(senderUid!!).child(receiverUid)
+        database.child("requests").child(receiverUid).child(senderUid!!)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val requestData = snapshot.getValue(Request::class.java)
@@ -409,25 +409,37 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun friendRequest(receiverUid: String, result: (String)->Unit) {
+    override suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit) {
 
         val senderUid = auth.currentUser?.uid
         val request: HashMap<String, Any> = HashMap()
         request["status"] = "pending"
 
-        database.child("requests").child(senderUid!!).child(receiverUid).updateChildren(request)
-            .addOnSuccessListener {
-                result.invoke("pending")
-            }. addOnFailureListener {
-                result.invoke("nothing")
-            }
+        database.child("user").child(senderUid!!)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userSender = snapshot.getValue(User::class.java)
+
+                    database.child("requests").child(receiverUid).child(senderUid).setValue(Request(userSender!!.name, senderUid, "pending", time, userSender.image))
+                        .addOnSuccessListener {
+                            result.invoke("pending")
+                        }. addOnFailureListener {
+                            result.invoke("nothing")
+                        }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke("nothing")
+                }
+            })
     }
 
     override suspend fun requestCancel(receiverUid: String, result: (String)->Unit) {
 
         val senderUid = auth.currentUser?.uid
 
-        database.child("requests").child(senderUid!!).child(receiverUid).removeValue()
+        database.child("requests").child(receiverUid).child(senderUid!!).removeValue()
             .addOnSuccessListener {
                 result.invoke("nothing")
             }. addOnFailureListener {
@@ -440,10 +452,10 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
 
         try {
-            database.child("requests").child("HHJ8QyPVlGXrEsKmmr6VXadTlnJ2").addValueEventListener(object: ValueEventListener {
+            database.child("requests").child(senderUid!!).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val requestList : ArrayList<Request> = arrayListOf()
-
+                    requestList.clear()
 
                     for(postSnapshot in snapshot.children){
                         val requestUser = postSnapshot.getValue(Request::class.java)
@@ -459,6 +471,15 @@ class ChatRepositoryImpl(
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))
         }
+    }
+
+    override suspend fun declineRequest(receiverUid: String) {
+
+        val senderUid = auth.currentUser?.uid
+
+        database.child("requests").child(senderUid!!).child(receiverUid).removeValue()
+        Log.d("senduid", senderUid)
+        Log.d("receiveruid", receiverUid)
     }
 
 

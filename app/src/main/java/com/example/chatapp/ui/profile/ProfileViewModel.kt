@@ -24,8 +24,8 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun friendRequest(receiverUid: String) = viewModelScope.launch {
-        repository.friendRequest(receiverUid){
+    fun friendRequest(receiverUid: String, time: String) = viewModelScope.launch {
+        repository.friendRequest(receiverUid, time){
             _friendRequestObserver.postValue(it)
         }
     }

@@ -26,4 +26,8 @@ class NotificationViewModel @Inject constructor(
             _requestobserve.value = it
         }
     }
+
+    fun declineRequest(receiverUid: String) = viewModelScope.launch {
+        repository.declineRequest(receiverUid)
+    }
 }

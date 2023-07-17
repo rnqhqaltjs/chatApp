@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentProfileBinding
-import com.example.chatapp.ui.register.RegisterViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,6 +19,8 @@ class ProfileFragment : Fragment() {
 
     private val chatViewModel by viewModels<ProfileViewModel>()
     private val args by navArgs<ProfileFragmentArgs>()
+
+    private val time = System.currentTimeMillis()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,11 +39,11 @@ class ProfileFragment : Fragment() {
             if(success == "pending") {
                 binding.friendRequestBtn.visibility = View.GONE
                 binding.requestCancelBtn.visibility = View.VISIBLE
-                binding.friendRequestText.text = "요청 취소"
+                binding.textView.text = "요청 취소"
             } else {
                 binding.friendRequestBtn.visibility = View.VISIBLE
                 binding.requestCancelBtn.visibility = View.GONE
-                binding.friendRequestText.text = "친구 요청"
+                binding.textView.text = "친구 요청"
 
             }
         }
@@ -50,7 +51,7 @@ class ProfileFragment : Fragment() {
         chatViewModel.getRequest(args.user.uid)
 
         binding.friendRequestBtn.setOnClickListener {
-            chatViewModel.friendRequest(args.user.uid)
+            chatViewModel.friendRequest(args.user.uid, time.toString())
         }
 
         binding.requestCancelBtn.setOnClickListener {

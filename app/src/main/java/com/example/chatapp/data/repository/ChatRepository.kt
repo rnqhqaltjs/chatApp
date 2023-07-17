@@ -20,9 +20,9 @@ interface ChatRepository {
     suspend fun profileChange(name:String, image: ByteArray?, result: (UiState<String>)->Unit)
     suspend fun sendNotification(message:String, userReceiver: User, result: (UiState<String>) -> Unit)
     suspend fun getRequest(receiverUid: String, result: (String)->Unit)
-    suspend fun friendRequest(receiverUid: String, result: (String)->Unit)
+    suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit)
     suspend fun requestCancel(receiverUid: String, result: (String)->Unit)
-
     suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)
+    suspend fun declineRequest(receiverUid: String)
 
 }

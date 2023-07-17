@@ -65,7 +65,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_person_add_24"
-            app:layout_constraintEnd_toStartOf="@+id/profile_message_btn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:tint="@color/black" />
@@ -77,22 +77,10 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_person_remove_24"
             android:visibility="gone"
-            app:layout_constraintEnd_toStartOf="@+id/profile_message_btn"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
             app:tint="@color/black" />
-
-        <TextView
-            android:id="@+id/friend_request_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="친구 요청"
-            android:textColor="@color/black"
-            android:textSize="11sp"
-            app:layout_constraintEnd_toStartOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/friend_request_btn" />
 
         <ImageView
             android:id="@+id/profile_message_btn"
@@ -101,6 +89,7 @@
             android:layout_marginTop="20dp"
             app:onProfileMessageClicked="@{user}"
             android:src="@drawable/ic_send"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view"
@@ -110,12 +99,12 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:text="1:1 채팅"
+            android:layout_marginTop="51dp"
             android:textColor="@color/black"
             android:textSize="11sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/profile_message_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

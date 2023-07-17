@@ -50,7 +50,7 @@ class NotificationFragment : Fragment() {
     }
 
     private fun recyclerview(){
-        friendRequestAdapter = FriendRequestAdapter()
+        friendRequestAdapter = FriendRequestAdapter(chatViewModel)
         binding.requestRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
