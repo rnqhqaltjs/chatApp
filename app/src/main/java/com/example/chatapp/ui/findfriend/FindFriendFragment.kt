@@ -5,6 +5,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -39,10 +40,9 @@ class FindFriendFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        chatViewModel.getUserData()
 
         recyclerview()
-
+        searchUsers()
         observer()
     }
 
@@ -59,27 +59,23 @@ class FindFriendFragment : Fragment() {
         }
     }
 
-//    private fun searchUsers() {
-//        var startTime = System.currentTimeMillis()
-//        var endTime: Long
-//
-//        binding.etSearch.text =
-//            Editable.Factory.getInstance().newEditable(bookSearchViewModel.query)
-//
-//        binding.etSearch.addTextChangedListener { text: Editable? ->
-//            endTime = System.currentTimeMillis()
-//            if (endTime - startTime >= 100L) {
-//                text?.let {
-//                    val query = it.toString().trim()
-//                    if (query.isNotEmpty()) {
-//                        chatViewModel.userSearch(query)
-//                        bookSearchViewModel.query = query
-//                    }
-//                }
-//            }
-//            startTime = endTime
-//        }
-//    }
+    private fun searchUsers() {
+        var startTime = System.currentTimeMillis()
+        var endTime: Long
+
+        binding.etSearch.addTextChangedListener { text: Editable? ->
+            endTime = System.currentTimeMillis()
+            if (endTime - startTime >= 100L) {
+                text?.let {
+                    val query = it.toString().trim()
+                    if (query.isNotEmpty()) {
+                        chatViewModel.getUserSearchData(query)
+                    }
+                }
+            }
+            startTime = endTime
+        }
+    }
 
     private fun observer(){
         chatViewModel.userSearch.observe(viewLifecycleOwner){ state ->

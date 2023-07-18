@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.UserlistItemBinding
+import com.example.chatapp.databinding.UsersearchItemBinding
 
 class UserSearchAdapter internal constructor()
     : ListAdapter<User, UserSearchViewHolder>(UserDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserSearchViewHolder {
         return UserSearchViewHolder(
-            UserlistItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            UsersearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 

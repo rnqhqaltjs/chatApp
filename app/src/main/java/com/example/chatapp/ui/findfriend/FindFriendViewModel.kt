@@ -20,9 +20,9 @@ class FindFriendViewModel @Inject constructor(
     val userSearch: LiveData<UiState<List<User>>>
         get() = _userSearch
 
-    fun getUserData() = viewModelScope.launch {
+    fun getUserSearchData(query: String) = viewModelScope.launch {
         _userSearch.value = UiState.Loading
-        repository.getUserData {
+        repository.getUserSearchData(query) {
             _userSearch.value = it
         }
     }

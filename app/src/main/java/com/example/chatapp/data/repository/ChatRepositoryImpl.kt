@@ -498,5 +498,31 @@ class ChatRepositoryImpl(
         }
     }
 
+    override suspend fun getUserSearchData(query: String, result: (UiState<List<User>>) -> Unit) {
+        try {
+            database.child("user").addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val userList: ArrayList<User> = arrayListOf()
+                    val uid = auth.currentUser?.uid
 
+                    for (postSnapshot in snapshot.children) {
+                        val currentUser = postSnapshot.getValue(User::class.java)
+
+                        if (currentUser?.uid != uid) {
+                            if(currentUser?.name == query){
+                                userList.add(currentUser)
+                            }
+                        }
+                    }
+                    result.invoke(UiState.Success(userList))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
+                }
+            })
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
+    }
 }
