@@ -44,12 +44,12 @@
             app:destination="@id/fragment_notification" />
     </fragment>
     <fragment
-        android:id="@+id/fragment_editprofile"
+        android:id="@+id/fragment_edit_profile"
         android:name="com.example.chatapp.ui.editprofile.EditProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile">
         <action
-            android:id="@+id/action_fragment_editprofile_to_fragment_menu"
+            android:id="@+id/action_fragment_edit_profile_to_fragment_menu"
             app:destination="@id/fragment_menu" />
     </fragment>
     <fragment
@@ -81,6 +81,9 @@
         <action
             android:id="@+id/action_fragment_profile_to_fragment_message"
             app:destination="@id/fragment_message" />
+        <action
+            android:id="@+id/action_fragment_profile_to_fragment_find_friend"
+            app:destination="@id/fragment_find_friend" />
     </fragment>
     <fragment
         android:id="@+id/fragment_menu"
@@ -94,11 +97,14 @@
             android:id="@+id/action_fragment_menu_to_fragment_home"
             app:destination="@id/fragment_home" />
         <action
-            android:id="@+id/action_fragment_menu_to_fragment_editprofile"
-            app:destination="@id/fragment_editprofile" />
+            android:id="@+id/action_fragment_menu_to_fragment_edit_profile"
+            app:destination="@id/fragment_edit_profile" />
         <action
             android:id="@+id/action_fragment_menu_to_fragment_notification"
             app:destination="@id/fragment_notification" />
+        <action
+            android:id="@+id/action_fragment_menu_to_fragment_find_friend"
+            app:destination="@id/fragment_find_friend" />
     </fragment>
     <fragment
         android:id="@+id/fragment_notification"
@@ -114,5 +120,18 @@
         <action
             android:id="@+id/action_fragment_notification_to_fragment_menu"
             app:destination="@id/fragment_menu" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_find_friend"
+        android:name="com.example.chatapp.ui.findfriend.FindFriendFragment"
+        android:label="@string/find_friend"
+        tools:layout="@layout/fragment_find_friend" >
+        <action
+            android:id="@+id/action_fragment_find_friend_to_fragment_menu"
+            app:destination="@id/fragment_menu" />
+        <action
+            android:id="@+id/action_fragment_find_friend_to_fragment_profile"
+            app:destination="@id/fragment_profile" />
+
     </fragment>
 </navigation>

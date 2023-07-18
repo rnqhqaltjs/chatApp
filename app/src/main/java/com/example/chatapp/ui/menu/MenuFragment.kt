@@ -45,9 +45,13 @@ class MenuFragment : Fragment() {
         )
 
         binding.editProfileBtn.setOnClickListener {
-            val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditprofile()
+            val action = MenuFragmentDirections.actionFragmentMenuToFragmentEditProfile()
             findNavController().navigate(action)
+        }
 
+        binding.findFriendBtn.setOnClickListener {
+            val action = MenuFragmentDirections.actionFragmentMenuToFragmentFindFriend()
+            findNavController().navigate(action)
         }
 
         binding.logoutBtn.setOnClickListener {

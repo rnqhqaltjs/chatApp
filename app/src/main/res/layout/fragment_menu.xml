@@ -81,25 +81,25 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_btn" />
 
     <ImageView
-        android:id="@+id/settings_image"
+        android:id="@+id/findFriend_image"
         android:layout_marginTop="20dp"
         android:layout_marginStart="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_settings_24"
+        android:src="@drawable/ic_person_add_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <TextView
-        android:id="@+id/settings_btn"
+        android:id="@+id/findFriend_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:paddingStart="60dp"
-        android:text="설정"
+        android:text="친구 찾기"
         android:textColor="@color/black"
         android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/settings_image"
+        app:layout_constraintStart_toEndOf="@+id/findFriend_image"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <View
@@ -108,7 +108,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/lightgray"
-        app:layout_constraintTop_toBottomOf="@+id/settings_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/findFriend_btn" />
 
     <ImageView
         android:id="@+id/logout_image"
@@ -140,6 +140,36 @@
         android:background="@color/lightgray"
         app:layout_constraintTop_toBottomOf="@+id/logout_btn" />
 
+    <ImageView
+        android:id="@+id/settings_image"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_settings_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/settings_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingStart="60dp"
+        android:text="설정"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/settings_image"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <View
+        android:id="@+id/view5"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/lightgray"
+        app:layout_constraintTop_toBottomOf="@+id/settings_btn" />
+
     <ProgressBar
         android:id="@+id/menu_progress"
         style="?android:attr/progressBarStyle"
@@ -149,8 +179,8 @@
         android:elevation="10dp"
         android:indeterminateTint="@color/black"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/menu_image"
+        app:layout_constraintEnd_toEndOf="@+id/menu_image"
+        app:layout_constraintStart_toStartOf="@+id/menu_image"
+        app:layout_constraintTop_toTopOf="@+id/menu_image" />
 </androidx.constraintlayout.widget.ConstraintLayout>
