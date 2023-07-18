@@ -30,4 +30,8 @@ class NotificationViewModel @Inject constructor(
     fun declineRequest(receiverUid: String) = viewModelScope.launch {
         repository.declineRequest(receiverUid)
     }
+
+    fun acceptRequest(receiverUid: String) = viewModelScope.launch {
+        repository.acceptRequest(receiverUid)
+    }
 }

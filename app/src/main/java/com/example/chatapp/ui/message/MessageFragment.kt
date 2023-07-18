@@ -135,7 +135,7 @@ class MessageFragment : Fragment() {
                     //메시지 마지막 아이템으로 이동
                     if (messageListAdapter.itemCount > 0) {
                         binding.messageRecyclerView.postDelayed({
-                            binding.messageRecyclerView.smoothScrollToPosition(messageListAdapter.itemCount - 1)
+                            binding.messageRecyclerView.scrollToPosition(messageListAdapter.itemCount - 1)
                         }, 100)
                     }
                 }

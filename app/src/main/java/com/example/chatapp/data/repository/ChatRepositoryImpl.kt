@@ -386,27 +386,33 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getRequest(receiverUid: String, result: (String) -> Unit) {
-
         val senderUid = auth.currentUser?.uid
 
-        database.child("requests").child(receiverUid).child(senderUid!!)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val requestData = snapshot.getValue(Request::class.java)
+        database.child("requests").child(receiverUid).child(senderUid!!).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    result.invoke("pending")
+                } else {
+                    database.child("friends").child(senderUid).child(receiverUid).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            if (snapshot.exists()) {
+                                result.invoke("friends")
+                            } else {
+                                result.invoke("nothing")
+                            }
+                        }
 
-                    if (requestData != null) {
-                        result.invoke(requestData.status)
-                    } else {
-                        result.invoke("nothing")
-                    }
-
+                        override fun onCancelled(error: DatabaseError) {
+                            result.invoke("nothing")
+                        }
+                    })
                 }
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke("nothing")
-                }
-
-            })
+            override fun onCancelled(error: DatabaseError) {
+                result.invoke("nothing")
+            }
+        })
     }
 
     override suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit) {
@@ -478,8 +484,18 @@ class ChatRepositoryImpl(
         val senderUid = auth.currentUser?.uid
 
         database.child("requests").child(senderUid!!).child(receiverUid).removeValue()
-        Log.d("senduid", senderUid)
-        Log.d("receiveruid", receiverUid)
+    }
+
+    override suspend fun acceptRequest(receiverUid: String) {
+
+        val senderUid = auth.currentUser?.uid
+        val request: HashMap<String, Any> = HashMap()
+        request["status"] = "pending"
+
+        database.child("requests").child(senderUid!!).child(receiverUid).removeValue().addOnSuccessListener {
+            database.child("friends").child(receiverUid).child(senderUid).updateChildren(request)
+            database.child("friends").child(senderUid).child(receiverUid).updateChildren(request)
+        }
     }
 
 

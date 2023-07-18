@@ -18,7 +18,7 @@ class FriendRequestViewHolder(
         }
 
         binding.requestAcceptBtn.setOnClickListener {
-
+            notificationViewModel.acceptRequest(request.uid)
         }
     }
 }

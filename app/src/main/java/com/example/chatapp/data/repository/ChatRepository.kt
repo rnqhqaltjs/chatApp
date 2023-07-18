@@ -24,5 +24,6 @@ interface ChatRepository {
     suspend fun requestCancel(receiverUid: String, result: (String)->Unit)
     suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)
     suspend fun declineRequest(receiverUid: String)
+    suspend fun acceptRequest(receiverUid: String)
 
 }
