@@ -490,7 +490,7 @@ class ChatRepositoryImpl(
 
         val senderUid = auth.currentUser?.uid
         val request: HashMap<String, Any> = HashMap()
-        request["status"] = "pending"
+        request["status"] = "friend"
 
         database.child("requests").child(senderUid!!).child(receiverUid).removeValue().addOnSuccessListener {
             database.child("friends").child(receiverUid).child(senderUid).updateChildren(request)
@@ -524,5 +524,25 @@ class ChatRepositoryImpl(
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))
         }
+    }
+
+    override suspend fun getRequestCount(count: (Int) -> Unit) {
+        val senderUid = auth.currentUser?.uid
+
+        database.child("requests").child(senderUid!!)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var unreadMessageCount = 0
+
+                    for (postSnapshot in snapshot.children) {
+                        unreadMessageCount++
+                    }
+                    count.invoke(unreadMessageCount)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // 실패 시 실행
+                }
+            })
     }
 }

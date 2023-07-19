@@ -54,7 +54,6 @@ class NotificationFragment : Fragment() {
         binding.requestRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
             adapter = friendRequestAdapter
         }
     }

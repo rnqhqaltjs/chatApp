@@ -30,4 +30,8 @@ class HomeViewModel @Inject constructor(
     fun getNonSeenData(count: ((Int)->Unit)) = viewModelScope.launch {
         repository.getNonSeenData(count)
     }
+
+    fun getRequestCount(count: ((Int)->Unit)) = viewModelScope.launch {
+        repository.getRequestCount(count)
+    }
 }

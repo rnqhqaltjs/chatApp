@@ -51,10 +51,6 @@ class FindFriendFragment : Fragment() {
         binding.userSearchRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(
-                DividerItemDecoration(requireContext(),
-                    DividerItemDecoration.VERTICAL)
-            )
             adapter = userSearchAdapter
         }
     }
@@ -65,7 +61,7 @@ class FindFriendFragment : Fragment() {
 
         binding.etSearch.addTextChangedListener { text: Editable? ->
             endTime = System.currentTimeMillis()
-            if (endTime - startTime >= 100L) {
+            if (endTime - startTime >= 50L) {
                 text?.let {
                     val query = it.toString().trim()
                     if (query.isNotEmpty()) {

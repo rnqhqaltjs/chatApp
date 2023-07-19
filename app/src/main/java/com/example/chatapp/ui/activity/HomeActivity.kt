@@ -43,7 +43,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
         setupJetpackNavigation()
-        setBadge()
+        showRequestCountBadge()
+        showUnreadMessageBadge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if (destination.id == R.id.fragment_message ||
@@ -70,13 +71,29 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    private fun setBadge() {
+    private fun showUnreadMessageBadge() {
         bottomNavigationView = binding.bottomNavigationView
         val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.fragment_chat)
         badgeDrawable.backgroundColor = ContextCompat.getColor(this, R.color.orange)
         badgeDrawable.horizontalOffset = 10
         badgeDrawable.verticalOffset = 10
         homeViewModel.getNonSeenData { count ->
+            if (count > 0) {
+                badgeDrawable.isVisible =true
+                badgeDrawable.number = count
+            } else {
+                badgeDrawable.isVisible = false
+            }
+        }
+    }
+
+    private fun showRequestCountBadge() {
+        bottomNavigationView = binding.bottomNavigationView
+        val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.fragment_notification)
+        badgeDrawable.backgroundColor = ContextCompat.getColor(this, R.color.orange)
+        badgeDrawable.horizontalOffset = 10
+        badgeDrawable.verticalOffset = 10
+        homeViewModel.getRequestCount { count ->
             if (count > 0) {
                 badgeDrawable.isVisible =true
                 badgeDrawable.number = count
