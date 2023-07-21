@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repository.ChatRepository
+import com.example.chatapp.data.repository.MenuRepository
 import com.example.chatapp.util.SingleLiveEvent
 import com.example.chatapp.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
-    private val repository: ChatRepository
+    private val repository: MenuRepository
 ): ViewModel() {
 
     private val _profileobserve = MutableLiveData<UiState<String>>()

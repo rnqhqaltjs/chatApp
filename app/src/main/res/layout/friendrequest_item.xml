@@ -25,7 +25,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="10dp"
         android:text="이름"
         app:layout_constraintStart_toEndOf="@+id/request_image"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
         android:layout_height="40dp"
         android:text="수락"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="8dp"
         android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/request_image" />

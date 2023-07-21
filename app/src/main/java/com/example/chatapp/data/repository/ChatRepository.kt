@@ -7,7 +7,6 @@ import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 
 interface ChatRepository {
-    fun logout()
     suspend fun getUserData(result: (UiState<List<User>>) -> Unit)
     suspend fun sendMessage(message:String, receiverUid:String, time:String, userReceiver: User)
     suspend fun sendImageMessage(message: String, image: ByteArray?, receiverUid:String, time:String, userReceiver: User, result: (UiState<String>) -> Unit)
@@ -16,8 +15,6 @@ interface ChatRepository {
     suspend fun getMessageData(receiverUid:String, result: (UiState<List<Message>>) -> Unit)
     suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit)
     suspend fun getNonSeenData(count: ((Int)->Unit))
-    suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit), result: (UiState<String>) -> Unit)
-    suspend fun profileChange(name:String, image: ByteArray?, result: (UiState<String>)->Unit)
     suspend fun sendNotification(message:String, userReceiver: User, result: (UiState<String>) -> Unit)
     suspend fun getRequest(receiverUid: String, result: (String)->Unit)
     suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit)
@@ -25,7 +22,6 @@ interface ChatRepository {
     suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)
     suspend fun declineRequest(receiverUid: String)
     suspend fun acceptRequest(receiverUid: String)
-    suspend fun getUserSearchData(query: String, result: (UiState<List<User>>) -> Unit)
     suspend fun getRequestCount(count: ((Int)->Unit))
 
 }

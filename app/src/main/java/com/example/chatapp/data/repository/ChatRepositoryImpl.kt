@@ -26,43 +26,60 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
-    override fun logout(){
-        auth.signOut()
-    }
-
     override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
         try {
-            database.child("user").addValueEventListener(object: ValueEventListener {
+            val uid = auth.currentUser?.uid
+
+            database.child("user").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val userList : ArrayList<User> = arrayListOf()
-                    val uid = auth.currentUser?.uid
+                    val userList: ArrayList<User> = arrayListOf()
+                    val friendUids: ArrayList<String> = arrayListOf()
 
-                    for(postSnapshot in snapshot.children){
-                        val currentUser = postSnapshot.getValue(User::class.java)
+                    // 친구 uid 목록 가져오기
+                    database.child("friends").child(uid!!).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(friendsSnapshot: DataSnapshot) {
+                            friendUids.clear()
 
-                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                            // 실패
-                            if (!task.isSuccessful) {
-                                Log.d(
-                                    ContentValues.TAG,
-                                    "Fetching FCM registration token failed",
-                                    task.exception
-                                )
-                                return@addOnCompleteListener
+                            for (friendSnapshot in friendsSnapshot.children) {
+                                friendUids.add(friendSnapshot.key!!)
                             }
-                            // 받아온 새로운 토큰
-                            val token = task.result
 
-                            if(currentUser?.token != token && uid != null) {
-                                database.child("user/$uid/token").setValue(token)
+                            // 유저 데이터 가져오기 및 친구인 유저만 추가
+                            for (postSnapshot in snapshot.children) {
+                                val currentUser = postSnapshot.getValue(User::class.java)
+
+                                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                                    // 실패
+                                    if (!task.isSuccessful) {
+                                        Log.d(
+                                            ContentValues.TAG,
+                                            "Fetching FCM registration token failed",
+                                            task.exception
+                                        )
+                                        return@addOnCompleteListener
+                                    }
+                                    // 받아온 새로운 토큰
+                                    val token = task.result
+
+                                    if (currentUser?.token != token) {
+                                        database.child("user/$uid/token").setValue(token)
+                                    }
+                                }
+
+                                if (currentUser?.uid != null && currentUser.uid != uid && currentUser.uid in friendUids) {
+                                    userList.add(currentUser)
+                                }
                             }
+
+                            result.invoke(UiState.Success(userList))
                         }
-                        if(currentUser?.uid != uid){
-                            userList.add(currentUser!!)
+
+                        override fun onCancelled(friendsError: DatabaseError) {
+                            result.invoke(UiState.Failure("친구 목록을 불러오는데 실패했습니다"))
                         }
-                    }
-                    result.invoke(UiState.Success(userList))
+                    })
                 }
+
                 override fun onCancelled(error: DatabaseError) {
                     result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
                 }
@@ -296,59 +313,6 @@ class ChatRepositoryImpl(
             })
     }
 
-    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit), result: (UiState<String>) -> Unit) {
-        val uid = auth.currentUser?.uid
-
-        try {
-            database.child("user").child(uid!!)
-                .addListenerForSingleValueEvent(object: ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val userProfile = snapshot.getValue(User::class.java)
-
-                        image.invoke(userProfile!!.image)
-                        name.invoke(userProfile.name)
-                        email.invoke(userProfile.email)
-                        result.invoke(UiState.Success("프로필 불러오기 성공"))
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        result.invoke(UiState.Failure("프로필 불러오기 실패"))
-                    }
-                })
-        } catch (e: Exception) {
-            result.invoke(UiState.Failure(e.message))
-        }
-
-    }
-
-    override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>)->Unit) {
-        val uid = auth.currentUser?.uid
-
-        try {
-            if (image != null) {
-                storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
-                    storage.child("userImages/$uid/photo").putBytes(image).addOnSuccessListener {
-                        storage.child("userImages/$uid/photo").downloadUrl.addOnSuccessListener {
-                            val photoUri : Uri = it
-                            database.child("user/$uid/image").setValue(photoUri.toString())
-                            database.child("user/$uid/name").setValue(name).addOnSuccessListener {
-                                result.invoke(UiState.Success("프로필 변경 완료"))
-                            }
-                        }
-                    }
-                }.addOnFailureListener {
-                    result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
-                }
-            } else {
-                database.child("user/$uid/name").setValue(name).addOnSuccessListener {
-                    result.invoke(UiState.Success("프로필 변경 완료"))
-                }
-            }
-        } catch (e: Exception) {
-            result.invoke(UiState.Failure(e.message))
-        }
-
-    }
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun sendNotification(
         message:String,
@@ -495,34 +459,6 @@ class ChatRepositoryImpl(
         database.child("requests").child(senderUid!!).child(receiverUid).removeValue().addOnSuccessListener {
             database.child("friends").child(receiverUid).child(senderUid).updateChildren(request)
             database.child("friends").child(senderUid).child(receiverUid).updateChildren(request)
-        }
-    }
-
-    override suspend fun getUserSearchData(query: String, result: (UiState<List<User>>) -> Unit) {
-        try {
-            database.child("user").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userList: ArrayList<User> = arrayListOf()
-                    val uid = auth.currentUser?.uid
-
-                    for (postSnapshot in snapshot.children) {
-                        val currentUser = postSnapshot.getValue(User::class.java)
-
-                        if (currentUser?.uid != uid) {
-                            if(currentUser?.name == query){
-                                userList.add(currentUser)
-                            }
-                        }
-                    }
-                    result.invoke(UiState.Success(userList))
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
-                }
-            })
-        } catch (e: Exception) {
-            result.invoke(UiState.Failure(e.message))
         }
     }
 

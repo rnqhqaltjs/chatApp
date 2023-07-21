@@ -53,6 +53,10 @@ class FindFriendFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             adapter = userSearchAdapter
         }
+        userSearchAdapter.setOnItemClickListener {
+            val action = FindFriendFragmentDirections.actionFragmentFindFriendToFragmentProfile(it)
+            findNavController().navigate(action)
+        }
     }
 
     private fun searchUsers() {

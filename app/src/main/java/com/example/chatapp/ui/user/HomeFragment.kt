@@ -48,7 +48,6 @@ class HomeFragment : Fragment() {
         binding.userRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            addItemDecoration(DividerItemDecoration(requireContext(),DividerItemDecoration.VERTICAL))
             adapter = userlistadapter
         }
         userlistadapter.setOnItemClickListener {
