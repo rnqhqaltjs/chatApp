@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StartActivity : AppCompatActivity() {
-    private val authViewModel by viewModels<LoginViewModel>()
+    private val authViewModel by viewModels<ActivityViewModel>()
 
     private var auth : FirebaseAuth? = null
 
