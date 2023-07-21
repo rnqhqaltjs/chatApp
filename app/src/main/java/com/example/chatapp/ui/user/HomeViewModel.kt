@@ -27,11 +27,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getNonSeenData(count: ((Int)->Unit)) = viewModelScope.launch {
-        repository.getNonSeenData(count)
-    }
-
-    fun getRequestCount(count: ((Int)->Unit)) = viewModelScope.launch {
-        repository.getRequestCount(count)
+    fun removeFriend(receiverUid: String) = viewModelScope.launch {
+        repository.removeFriend(receiverUid)
     }
 }

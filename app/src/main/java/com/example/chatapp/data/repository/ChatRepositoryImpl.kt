@@ -360,7 +360,7 @@ class ChatRepositoryImpl(
                     database.child("friends").child(senderUid).child(receiverUid).addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
-                                result.invoke("friends")
+                                result.invoke("friend")
                             } else {
                                 result.invoke("nothing")
                             }
@@ -460,6 +460,13 @@ class ChatRepositoryImpl(
             database.child("friends").child(receiverUid).child(senderUid).updateChildren(request)
             database.child("friends").child(senderUid).child(receiverUid).updateChildren(request)
         }
+    }
+
+    override suspend fun removeFriend(receiverUid: String) {
+        val senderUid = auth.currentUser?.uid
+
+        database.child("friends").child(senderUid!!).child(receiverUid).removeValue()
+        database.child("friends").child(receiverUid).child(senderUid).removeValue()
     }
 
     override suspend fun getRequestCount(count: (Int) -> Unit) {

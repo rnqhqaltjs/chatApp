@@ -57,7 +57,7 @@ class ProfileFragment : Fragment() {
                     binding.profileMessageBtn.visibility = View.GONE
                     binding.textView.text = "요청 취소"
                 }
-                "friends" -> {
+                "friend" -> {
                     binding.friendRequestBtn.visibility = View.GONE
                     binding.requestCancelBtn.visibility = View.GONE
                     binding.profileMessageBtn.visibility = View.VISIBLE

@@ -1,9 +1,12 @@
 package com.example.chatapp.ui.user
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -53,6 +56,17 @@ class HomeFragment : Fragment() {
         userlistadapter.setOnItemClickListener {
             val action = HomeFragmentDirections.actionFragmentHomeToFragmentProfile(it)
             findNavController().navigate(action)
+        }
+        userlistadapter.setOnItemLongClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle("알림")
+                .setMessage("정말로 친구를 삭제하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    chatViewModel.removeFriend(it.uid)
+                }
+                .setNegativeButton("아니오") { _, _ ->
+                }
+            builder.show()
         }
     }
 

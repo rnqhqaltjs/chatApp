@@ -22,11 +22,20 @@ class UserListAdapter internal constructor(private val viewModel: HomeViewModel)
         holder.itemView.setOnClickListener {
             onItemClickListener?.let { it(item) }
         }
+        holder.itemView.setOnLongClickListener {
+            onItemLongClickListener?.let { it(item) }
+            true
+        }
     }
 
     private var onItemClickListener: ((User) -> Unit)? = null
     fun setOnItemClickListener(listener: (User) -> Unit) {
         onItemClickListener = listener
+    }
+
+    private var onItemLongClickListener: ((User) -> Unit)? = null
+    fun setOnItemLongClickListener(listener: (User) -> Unit) {
+        onItemLongClickListener = listener
     }
 
     companion object {
