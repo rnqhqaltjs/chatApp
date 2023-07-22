@@ -7,7 +7,7 @@ import com.example.chatapp.data.model.User
 import com.example.chatapp.util.UiState
 
 interface ChatRepository {
-    suspend fun getUserData(result: (UiState<List<User>>) -> Unit)
+    suspend fun getFriendsData(result: (UiState<List<User>>) -> Unit)
     suspend fun sendMessage(message:String, receiverUid:String, time:String, userReceiver: User)
     suspend fun sendImageMessage(message: String, image: ByteArray?, receiverUid:String, time:String, userReceiver: User, result: (UiState<String>) -> Unit)
     fun seenMessage(receiverUid: String)

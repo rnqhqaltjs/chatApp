@@ -20,9 +20,9 @@ class HomeViewModel @Inject constructor(
     val userobserve: LiveData<UiState<List<User>>>
         get() = _userobserve
 
-    fun getUserData() = viewModelScope.launch {
+    fun getFriendsData() = viewModelScope.launch {
         _userobserve.value = UiState.Loading
-        repository.getUserData {
+        repository.getFriendsData {
             _userobserve.value = it
         }
     }

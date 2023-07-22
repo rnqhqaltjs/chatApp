@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
 
         recyclerview()
 
-        chatViewModel.getUserData()
+        chatViewModel.getFriendsData()
         observer()
     }
 

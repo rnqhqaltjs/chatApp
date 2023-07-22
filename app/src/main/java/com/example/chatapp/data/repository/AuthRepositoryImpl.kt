@@ -88,7 +88,6 @@ class AuthRepositoryImpl(
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))
         }
-        
     }
 
     override suspend fun findPassword(email: String, result: (UiState<String>) -> Unit) {

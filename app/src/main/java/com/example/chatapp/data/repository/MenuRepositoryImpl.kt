@@ -16,13 +16,14 @@ class MenuRepositoryImpl(
     private val storage: StorageReference
 ): MenuRepository {
 
+    private val uid: String?
+        get() = auth.currentUser?.uid
+
     override fun logout(){
         auth.signOut()
     }
 
-    override suspend fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit), result: (UiState<String>) -> Unit) {
-        val uid = auth.currentUser?.uid
-
+    override suspend fun getProfileData(image: ((String) -> Unit), name: ((String) -> Unit), email: ((String) -> Unit), result: (UiState<String>) -> Unit) {
         try {
             database.child("user").child(uid!!)
                 .addListenerForSingleValueEvent(object: ValueEventListener {
@@ -41,12 +42,9 @@ class MenuRepositoryImpl(
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))
         }
-
     }
 
-    override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>)->Unit) {
-        val uid = auth.currentUser?.uid
-
+    override suspend fun profileChange(name: String, image: ByteArray?, result: (UiState<String>) -> Unit) {
         try {
             if (image != null) {
                 storage.child("userImages/$uid/photo").delete().addOnSuccessListener {
@@ -65,6 +63,8 @@ class MenuRepositoryImpl(
             } else {
                 database.child("user/$uid/name").setValue(name).addOnSuccessListener {
                     result.invoke(UiState.Success("프로필 변경 완료"))
+                }.addOnFailureListener {
+                    result.invoke(UiState.Failure("프로필 변경 과정 중 오류 발생"))
                 }
             }
         } catch (e: Exception) {
@@ -74,27 +74,25 @@ class MenuRepositoryImpl(
 
     override suspend fun getUserSearchData(query: String, result: (UiState<List<User>>) -> Unit) {
         try {
-            database.child("user").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val userList: ArrayList<User> = arrayListOf()
-                    val uid = auth.currentUser?.uid
+            database.child("user").orderByChild("name").equalTo(query)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val userList: ArrayList<User> = arrayListOf()
 
-                    for (postSnapshot in snapshot.children) {
-                        val currentUser = postSnapshot.getValue(User::class.java)
+                        for (postSnapshot in snapshot.children) {
+                            val currentUser = postSnapshot.getValue(User::class.java)
 
-                        if (currentUser?.uid != uid) {
-                            if(currentUser?.name == query){
-                                userList.add(currentUser)
+                            if (currentUser?.uid != uid) {
+                                userList.add(currentUser!!)
                             }
                         }
+                        result.invoke(UiState.Success(userList))
                     }
-                    result.invoke(UiState.Success(userList))
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
+                    }
+                })
         } catch (e: Exception) {
             result.invoke(UiState.Failure(e.message))
         }

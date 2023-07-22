@@ -26,7 +26,7 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
-    override suspend fun getUserData(result: (UiState<List<User>>) -> Unit) {
+    override suspend fun getFriendsData(result: (UiState<List<User>>) -> Unit) {
         try {
             val uid = auth.currentUser?.uid
 
