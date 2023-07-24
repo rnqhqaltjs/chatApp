@@ -10,15 +10,8 @@ class FriendRequestViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(notificationViewModel: NotificationViewModel, request: Request) {
-        binding.requestName.text = request.name
-        binding.requestImage.load(request.image)
-
-        binding.requestDeclineBtn.setOnClickListener {
-            notificationViewModel.declineRequest(request.uid)
-        }
-
-        binding.requestAcceptBtn.setOnClickListener {
-            notificationViewModel.acceptRequest(request.uid)
-        }
+        binding.viewmodel = notificationViewModel
+        binding.request = request
+        binding.executePendingBindings()
     }
 }
