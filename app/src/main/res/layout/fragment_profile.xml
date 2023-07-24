@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.chatapp.ui.profile.ProfileViewModel" />
+
         <variable
             name="user"
             type="com.example.chatapp.data.model.User" />
@@ -64,6 +69,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
+            android:onClick="@{() -> viewmodel.friendRequest(user.uid, viewmodel.currentTime)}"
             android:src="@drawable/ic_person_add_24"
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="gone"
@@ -76,6 +82,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="20dp"
+            android:onClick="@{ () -> viewmodel.requestCancel(user.uid)}"
             android:src="@drawable/ic_person_remove_24"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"

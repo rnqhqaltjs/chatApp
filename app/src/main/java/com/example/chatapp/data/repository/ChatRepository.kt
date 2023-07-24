@@ -16,7 +16,7 @@ interface ChatRepository {
     suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit)
     suspend fun getNonSeenData(count: ((Int)->Unit))
     suspend fun sendNotification(message:String, userReceiver: User, result: (UiState<String>) -> Unit)
-    suspend fun getRequest(receiverUid: String, result: (String)->Unit)
+    suspend fun checkFriendRequestStatus(receiverUid: String, result: (String)->Unit)
     suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit)
     suspend fun requestCancel(receiverUid: String, result: (String)->Unit)
     suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)

@@ -73,13 +73,11 @@ class ChatRepositoryImpl(
 
                             result.invoke(UiState.Success(userList))
                         }
-
                         override fun onCancelled(friendsError: DatabaseError) {
                             result.invoke(UiState.Failure("친구 목록을 불러오는데 실패했습니다"))
                         }
                     })
                 }
-
                 override fun onCancelled(error: DatabaseError) {
                     result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
                 }
@@ -349,7 +347,7 @@ class ChatRepositoryImpl(
         }
     }
 
-    override suspend fun getRequest(receiverUid: String, result: (String) -> Unit) {
+    override suspend fun checkFriendRequestStatus(receiverUid: String, result: (String) -> Unit) {
         val senderUid = auth.currentUser?.uid
 
         database.child("requests").child(receiverUid).child(senderUid!!).addValueEventListener(object : ValueEventListener {

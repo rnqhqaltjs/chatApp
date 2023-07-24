@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.chatapp.data.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,8 +19,21 @@ class ProfileViewModel @Inject constructor(
     val friendRequestObserver: LiveData<String>
         get() = _friendRequestObserver
 
-    fun getRequest(receiverUid: String) = viewModelScope.launch {
-        repository.getRequest(receiverUid){
+    private val _currentTime = MutableLiveData<String>()
+    val currentTime: LiveData<String>
+        get() = _currentTime
+
+    init {
+        viewModelScope.launch {
+            while (true) {
+                _currentTime.value = System.currentTimeMillis().toString()
+                delay(1000)
+            }
+        }
+    }
+
+    fun checkFriendRequestStatus(receiverUid: String) = viewModelScope.launch {
+        repository.checkFriendRequestStatus(receiverUid){
             _friendRequestObserver.postValue(it)
         }
     }
@@ -35,5 +49,4 @@ class ProfileViewModel @Inject constructor(
             _friendRequestObserver.postValue(it)
         }
     }
-
 }

@@ -16,6 +16,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 
+val time = System.currentTimeMillis().toString()
 fun View.hide(activity: Activity){
     activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
     visibility = View.GONE

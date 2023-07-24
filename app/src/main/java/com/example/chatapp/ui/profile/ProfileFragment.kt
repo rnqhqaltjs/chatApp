@@ -20,8 +20,6 @@ class ProfileFragment : Fragment() {
     private val chatViewModel by viewModels<ProfileViewModel>()
     private val args by navArgs<ProfileFragmentArgs>()
 
-    private val time = System.currentTimeMillis()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,19 +31,14 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = chatViewModel
         binding.user = args.user
 
         observer()
 
-        chatViewModel.getRequest(args.user.uid)
-
-        binding.friendRequestBtn.setOnClickListener {
-            chatViewModel.friendRequest(args.user.uid, time.toString())
-        }
-
-        binding.requestCancelBtn.setOnClickListener {
-            chatViewModel.requestCancel(args.user.uid)
-        }
+        chatViewModel.checkFriendRequestStatus(args.user.uid)
     }
 
     private fun observer() {
