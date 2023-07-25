@@ -31,13 +31,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class MessageFragment : Fragment() {
     private var _binding: FragmentMessageBinding? = null
     private val binding get() = _binding!!
-
     private val args by navArgs<MessageFragmentArgs>()
+    private val messageViewModel: MessageViewModel by viewModels()
     lateinit var messageListAdapter: MessageListAdapter
-
-    private val chatViewModel by viewModels<MessageViewModel>()
     private val time = System.currentTimeMillis()
-
     private lateinit var imageUri: Uri
     private lateinit var user: User
     private var isPhotoSelectionOpen = false
@@ -48,7 +45,7 @@ class MessageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
-        binding.viewmodel = chatViewModel
+        binding.viewmodel = messageViewModel
 
         return binding.root
     }
@@ -60,7 +57,7 @@ class MessageFragment : Fragment() {
 
         recyclerview()
 
-        chatViewModel.getMessageData(user.uid)
+        messageViewModel.getMessageData(user.uid)
         observer()
 
         binding.sendImageBtn.setOnClickListener {
@@ -74,13 +71,13 @@ class MessageFragment : Fragment() {
             val message = binding.messageEdit.text.toString()
 
             if(message.isNotEmpty()){
-                chatViewModel.sendMessage(
+                messageViewModel.sendMessage(
                     message,
                     user.uid,
                     time.toString(),
                     user
                 )
-                chatViewModel.sendNotification(message, user)
+                messageViewModel.sendNotification(message, user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }
@@ -93,13 +90,13 @@ class MessageFragment : Fragment() {
             if(result.resultCode == Activity.RESULT_OK) {
                 imageUri = result.data?.data!! //이미지 경로 원본
 
-                chatViewModel.sendImageMessage(
+                messageViewModel.sendImageMessage(
                     "이미지를 전송하였습니다.",
                     convertFileToByteArray(requireContext(),imageUri),
                     user.uid,time.toString(),
                     user
                 )
-                chatViewModel.sendNotification("이미지를 전송하였습니다.", user)
+                messageViewModel.sendNotification("이미지를 전송하였습니다.", user)
                 isPhotoSelectionOpen = false
                 Log.d("image", "success")
             }
@@ -110,7 +107,7 @@ class MessageFragment : Fragment() {
         }
 
     private fun recyclerview(){
-        messageListAdapter = MessageListAdapter(chatViewModel, user)
+        messageListAdapter = MessageListAdapter(messageViewModel, user)
         binding.messageRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -119,7 +116,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.messageDataList.observe(viewLifecycleOwner){ state ->
+        messageViewModel.messageDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.messageProgress.show(requireActivity())
@@ -142,7 +139,7 @@ class MessageFragment : Fragment() {
             }
         }
 
-        chatViewModel.sendImageLiveData.observe(viewLifecycleOwner){ state ->
+        messageViewModel.sendImageLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.messageProgress.show(requireActivity())
@@ -157,7 +154,7 @@ class MessageFragment : Fragment() {
             }
         }
 
-        chatViewModel.messageNotificationLiveData.observe(viewLifecycleOwner){ state ->
+        messageViewModel.messageNotificationLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                 }
@@ -172,7 +169,7 @@ class MessageFragment : Fragment() {
 
     override fun onPause() {
         if (!isPhotoSelectionOpen) {
-            chatViewModel.removeSeenMessage(user.uid)
+            messageViewModel.removeSeenMessage(user.uid)
         }
         super.onPause()
     }

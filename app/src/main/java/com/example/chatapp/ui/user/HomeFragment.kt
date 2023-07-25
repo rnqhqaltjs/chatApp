@@ -1,16 +1,13 @@
 package com.example.chatapp.ui.user
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentHomeBinding
 import com.example.chatapp.util.UiState
@@ -23,10 +20,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
+    private val userViewModel: UserViewModel by viewModels()
     lateinit var userlistadapter: UserListAdapter
-
-    private val chatViewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,12 +37,12 @@ class HomeFragment : Fragment() {
 
         recyclerview()
 
-        chatViewModel.getFriendsData()
+        userViewModel.getFriendsData()
         observer()
     }
 
     private fun recyclerview(){
-        userlistadapter = UserListAdapter(chatViewModel)
+        userlistadapter = UserListAdapter(userViewModel)
         binding.userRecyclerview.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -62,7 +57,7 @@ class HomeFragment : Fragment() {
             builder.setTitle("알림")
                 .setMessage("정말로 친구를 삭제하시겠습니까?")
                 .setPositiveButton("예") { _, _ ->
-                    chatViewModel.removeFriend(it.uid)
+                    userViewModel.removeFriend(it.uid)
                 }
                 .setNegativeButton("아니오") { _, _ ->
                 }
@@ -71,7 +66,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.userDataList.observe(viewLifecycleOwner){ state ->
+        userViewModel.userDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.homeProgress.show(requireActivity())

@@ -22,8 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
-
-    private val chatViewModel by viewModels<EditProfileViewModel>()
+    private val editProfileViewModel: EditProfileViewModel by viewModels ()
     private lateinit var imageUri: Uri
 
     override fun onCreateView(
@@ -40,7 +39,7 @@ class EditProfileFragment : Fragment() {
 
         observer()
 
-        chatViewModel.getProfileData(
+        editProfileViewModel.getProfileData(
             { binding.profileImage.load(it) },
             { binding.profileName.setText(it) },
             { binding.profileEmail.text = it }
@@ -55,7 +54,7 @@ class EditProfileFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             if(binding.profileName.text.isNotEmpty()){
-                chatViewModel.profileChange(
+                editProfileViewModel.profileChange(
                     name = binding.profileName.text.toString(),
                     image = convertFileToByteArray(requireContext(),imageUri)
                 )
@@ -79,7 +78,7 @@ class EditProfileFragment : Fragment() {
 
     private fun observer(){
 
-        chatViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
+        editProfileViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     binding.profileProgress.show(requireActivity())
@@ -96,7 +95,7 @@ class EditProfileFragment : Fragment() {
             }
         }
 
-        chatViewModel.profileUpdateLiveData.observe(viewLifecycleOwner){ state ->
+        editProfileViewModel.profileUpdateLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.profileProgress.show(requireActivity())

@@ -14,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityHomeBinding
 import com.example.chatapp.ui.message.MessageFragment
-import com.example.chatapp.ui.user.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,8 +23,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var bottomNavigationView: BottomNavigationView
-
-    private val homeViewModel by viewModels<ActivityViewModel>()
+    private val activityViewModel: ActivityViewModel by viewModels()
 
     private val binding: ActivityHomeBinding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
@@ -77,7 +75,7 @@ class HomeActivity : AppCompatActivity() {
         badgeDrawable.backgroundColor = ContextCompat.getColor(this, R.color.orange)
         badgeDrawable.horizontalOffset = 10
         badgeDrawable.verticalOffset = 10
-        homeViewModel.getNonSeenData { count ->
+        activityViewModel.getNonSeenData { count ->
             if (count > 0) {
                 badgeDrawable.isVisible =true
                 badgeDrawable.number = count
@@ -93,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         badgeDrawable.backgroundColor = ContextCompat.getColor(this, R.color.orange)
         badgeDrawable.horizontalOffset = 10
         badgeDrawable.verticalOffset = 10
-        homeViewModel.getRequestCount { count ->
+        activityViewModel.getRequestCount { count ->
             if (count > 0) {
                 badgeDrawable.isVisible =true
                 badgeDrawable.number = count

@@ -9,11 +9,8 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatapp.databinding.FragmentFindFriendBinding
-import com.example.chatapp.ui.user.HomeFragmentDirections
-import com.example.chatapp.ui.user.UserListAdapter
 import com.example.chatapp.util.UiState
 import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
@@ -24,10 +21,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class FindFriendFragment : Fragment() {
     private var _binding: FragmentFindFriendBinding? = null
     private val binding get() = _binding!!
-
+    private val findFriendViewModel: FindFriendViewModel by viewModels()
     lateinit var userSearchAdapter: UserSearchAdapter
-
-    private val chatViewModel by viewModels<FindFriendViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,7 +64,7 @@ class FindFriendFragment : Fragment() {
                 text?.let {
                     val query = it.toString().trim()
                     if (query.isNotEmpty()) {
-                        chatViewModel.getUserSearchData(query)
+                        findFriendViewModel.getUserSearchData(query)
                     }
                 }
             }
@@ -78,7 +73,7 @@ class FindFriendFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.userSearch.observe(viewLifecycleOwner){ state ->
+        findFriendViewModel.userSearch.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.findFriendProgress.show(requireActivity())

@@ -21,8 +21,7 @@ import kotlinx.coroutines.launch
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-
-    private val authViewModel by viewModels<LoginViewModel>()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,16 +39,16 @@ class LoginFragment : Fragment() {
 
         binding.loginBtn.setOnClickListener {
             if(validation()){
-                authViewModel.login(
+                loginViewModel.login(
                     email = binding.emailArea.text.toString(),
                     password = binding.passwordArea.text.toString()
                 )
-                authViewModel.putID(binding.emailArea.text.toString())
+                loginViewModel.putID(binding.emailArea.text.toString())
             }
         }
 
         binding.sessionSaveBox.setOnCheckedChangeListener { _, isChecked ->
-            authViewModel.saveLoginBox(isChecked)
+            loginViewModel.saveLoginBox(isChecked)
         }
 
         binding.signBtn.setOnClickListener {
@@ -63,7 +62,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun observer(){
-        authViewModel.loginLiveData.observe(viewLifecycleOwner){ state ->
+        loginViewModel.loginLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.loginBtn.text = ""
@@ -120,8 +119,8 @@ class LoginFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         lifecycleScope.launch {
-            binding.emailArea.setText(authViewModel.getID())
-            binding.sessionSaveBox.isChecked = authViewModel.getLoginBox()
+            binding.emailArea.setText(loginViewModel.getID())
+            binding.sessionSaveBox.isChecked = loginViewModel.getLoginBox()
         }
     }
 }

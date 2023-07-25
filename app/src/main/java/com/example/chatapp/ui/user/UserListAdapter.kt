@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.UserlistItemBinding
 
-class UserListAdapter internal constructor(private val viewModel: HomeViewModel)
+class UserListAdapter internal constructor(private val viewModel: UserViewModel)
     : ListAdapter<User, UserListViewHolder>(UserDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListViewHolder {

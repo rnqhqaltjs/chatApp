@@ -17,8 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FindPasswordFragment : Fragment() {
     private var _binding: FragmentFindPasswordBinding? = null
     private val binding get() = _binding!!
-
-    private val findPasswordViewModel by viewModels<FindPasswordViewModel>()
+    private val findPasswordViewModel: FindPasswordViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,19 +67,19 @@ class FindPasswordFragment : Fragment() {
     }
 
     private fun validation(): Boolean {
-        var isValid = true
+        val email = binding.findPassText.text.toString().trim()
 
-        if (binding.findPassText.text.isNullOrEmpty()){
-            isValid = false
-            toast(getString(R.string.enter_email))
-        }else{
-            if (!binding.findPassText.text.toString().isValidEmail()){
-                isValid = false
-                toast(getString(R.string.invalid_email))
+        return when {
+            email.isEmpty() -> {
+                toast(getString(R.string.enter_email))
+                false
             }
+            !email.isValidEmail() -> {
+                toast(getString(R.string.invalid_email))
+                false
+            }
+            else -> true
         }
-
-        return isValid
     }
 
     override fun onDestroyView() {

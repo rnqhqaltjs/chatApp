@@ -16,8 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
-    private val chatViewModel by viewModels<ProfileViewModel>()
+    private val profileViewModel: ProfileViewModel by viewModels()
     private val args by navArgs<ProfileFragmentArgs>()
 
     override fun onCreateView(
@@ -31,18 +30,17 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         binding.lifecycleOwner = viewLifecycleOwner
-        binding.viewmodel = chatViewModel
+        binding.viewmodel = profileViewModel
         binding.user = args.user
 
         observer()
 
-        chatViewModel.checkFriendRequestStatus(args.user.uid)
+        profileViewModel.checkFriendRequestStatus(args.user.uid)
     }
 
     private fun observer() {
-        chatViewModel.friendRequestStatus.observe(viewLifecycleOwner) { success ->
+        profileViewModel.friendRequestStatus.observe(viewLifecycleOwner) { success ->
             when (success) {
                 "pending" -> {
                     binding.friendRequestBtn.visibility = View.GONE

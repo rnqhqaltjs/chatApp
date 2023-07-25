@@ -23,8 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-
-    private val authViewModel by viewModels<RegisterViewModel>()
+    private val registerViewModel: RegisterViewModel by viewModels()
     private lateinit var imageUri: Uri
     private var imageCheck = false
 
@@ -50,7 +49,7 @@ class RegisterFragment : Fragment() {
 
         binding.registerBtn.setOnClickListener {
             if(validation()){
-                authViewModel.register(
+                registerViewModel.register(
                     binding.nameArea.text.toString(),
                     binding.emailArea.text.toString(),
                     convertFileToByteArray(requireContext(),imageUri)!!,
@@ -78,7 +77,7 @@ class RegisterFragment : Fragment() {
         }
 
     private fun observer() {
-        authViewModel.registerLiveData.observe(viewLifecycleOwner) { state ->
+        registerViewModel.registerLiveData.observe(viewLifecycleOwner) { state ->
             when(state){
                 is UiState.Loading -> {
                     binding.registerBtn.text = ""

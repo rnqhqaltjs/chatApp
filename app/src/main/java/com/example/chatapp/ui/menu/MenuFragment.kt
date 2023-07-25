@@ -21,8 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MenuFragment : Fragment() {
     private var _binding: FragmentMenuBinding? = null
     private val binding get() = _binding!!
-
-    private val chatViewModel by viewModels<MenuViewModel>()
+    private val menuViewModel: MenuViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,7 +37,7 @@ class MenuFragment : Fragment() {
 
         observer()
 
-        chatViewModel.getProfileData(
+        menuViewModel.getProfileData(
             { binding.menuImage.load(it) },
             { binding.menuName.text = it },
             { binding.menuEmail.text = it }
@@ -55,7 +54,7 @@ class MenuFragment : Fragment() {
         }
 
         binding.logoutBtn.setOnClickListener {
-            chatViewModel.logout()
+            menuViewModel.logout()
             val intent = Intent(activity, MainActivity::class.java)
             startActivity(intent)
             activity?.finish()
@@ -63,7 +62,7 @@ class MenuFragment : Fragment() {
     }
 
     private fun observer() {
-        chatViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
+        menuViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     binding.menuProgress.show(requireActivity())

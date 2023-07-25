@@ -8,7 +8,7 @@ class UserListViewHolder(
     private val binding: UserlistItemBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(viewModel: HomeViewModel, user: User) {
+    fun bind(viewModel: UserViewModel, user: User) {
         binding.viewmodel = viewModel
         binding.user = user
         binding.executePendingBindings()

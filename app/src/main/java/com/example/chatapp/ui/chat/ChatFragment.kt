@@ -19,10 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class ChatFragment : Fragment() {
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
-
+    private val chatViewModel: ChatViewModel by viewModels()
     lateinit var chatlistadapter: ChatListAdapter
-    
-    private val chatViewModel by viewModels<ChatViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
