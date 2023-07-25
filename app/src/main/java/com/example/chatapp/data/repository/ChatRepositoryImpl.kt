@@ -26,17 +26,18 @@ class ChatRepositoryImpl(
     private val storage: StorageReference
 ): ChatRepository {
 
+    private val senderUid: String?
+        get() = auth.currentUser?.uid
+
     override suspend fun getFriendsData(result: (UiState<List<User>>) -> Unit) {
         try {
-            val uid = auth.currentUser?.uid
-
             database.child("user").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userList: ArrayList<User> = arrayListOf()
                     val friendUids: ArrayList<String> = arrayListOf()
 
                     // 친구 uid 목록 가져오기
-                    database.child("friends").child(uid!!).addValueEventListener(object : ValueEventListener {
+                    database.child("friends").child(senderUid!!).addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(friendsSnapshot: DataSnapshot) {
                             friendUids.clear()
 
@@ -62,11 +63,11 @@ class ChatRepositoryImpl(
                                     val token = task.result
 
                                     if (currentUser?.token != token) {
-                                        database.child("user/$uid/token").setValue(token)
+                                        database.child("user/$senderUid/token").setValue(token)
                                     }
                                 }
 
-                                if (currentUser?.uid != null && currentUser.uid != uid && currentUser.uid in friendUids) {
+                                if (currentUser?.uid != null && currentUser.uid != senderUid && currentUser.uid in friendUids) {
                                     userList.add(currentUser)
                                 }
                             }
@@ -93,7 +94,6 @@ class ChatRepositoryImpl(
         time:String,
         userReceiver: User
     ) {
-        val senderUid = auth.currentUser?.uid
         val senderRoom = senderUid + receiverUid
         val receiverRoom = receiverUid + senderUid
 
@@ -102,7 +102,7 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userSender = snapshot.getValue(User::class.java)
 
-                    val theMessage = Message(message, senderUid, time, userSender!!.image, "", false)
+                    val theMessage = Message(message, senderUid!!, time, userSender!!.image, "", false)
                     val latestUserMessageForSender = Chat(theMessage, userReceiver)
                     val latestUserMessageForReceiver = Chat(theMessage, userSender)
 
@@ -111,12 +111,12 @@ class ChatRepositoryImpl(
                             database.child("chats").child(receiverRoom).child("messages").push()
                                 .setValue(theMessage).addOnSuccessListener {
 
-                                    database.child(("latestUsersAndMessages")).child(senderUid)
+                                    database.child(("latestUsersAndMessages")).child(senderUid!!)
                                         .child(receiverUid)
                                         .setValue(latestUserMessageForSender)
                                         .addOnSuccessListener {
                                             database.child(("latestUsersAndMessages")).child(receiverUid)
-                                                .child(senderUid)
+                                                .child(senderUid!!)
                                                 .setValue(latestUserMessageForReceiver)
                                         }
                                 }
@@ -135,7 +135,6 @@ class ChatRepositoryImpl(
         userReceiver: User,
         result: (UiState<String>) -> Unit
     ) {
-        val senderUid = auth.currentUser?.uid
         val senderRoom = senderUid + receiverUid
         val receiverRoom = receiverUid + senderUid
 
@@ -153,7 +152,7 @@ class ChatRepositoryImpl(
                                     .addOnSuccessListener {
                                         chatimage = it
 
-                                        val theMessage = Message(message, senderUid, time, userSender!!.image, chatimage.toString(), false)
+                                        val theMessage = Message(message, senderUid!!, time, userSender!!.image, chatimage.toString(), false)
                                         val latestUserMessageForSender = Chat(theMessage, userReceiver)
                                         val latestUserMessageForReceiver = Chat(theMessage, userSender)
 
@@ -162,12 +161,12 @@ class ChatRepositoryImpl(
                                                 database.child("chats").child(receiverRoom).child("messages").push()
                                                     .setValue(theMessage).addOnSuccessListener {
 
-                                                        database.child(("latestUsersAndMessages")).child(senderUid)
+                                                        database.child(("latestUsersAndMessages")).child(senderUid!!)
                                                             .child(receiverUid)
                                                             .setValue(latestUserMessageForSender)
                                                             .addOnSuccessListener {
                                                                 database.child(("latestUsersAndMessages")).child(receiverUid)
-                                                                    .child(senderUid)
+                                                                    .child(senderUid!!)
                                                                     .setValue(latestUserMessageForReceiver)
                                                                     .addOnSuccessListener {
                                                                         result.invoke(UiState.Success("이미지 전송 성공"))
@@ -191,7 +190,6 @@ class ChatRepositoryImpl(
         receiverUid: String,
         result: (UiState<List<Message>>) -> Unit
     ) {
-        val senderUid = auth.currentUser?.uid
         val senderRoom = senderUid + receiverUid
 
         try {
@@ -221,7 +219,6 @@ class ChatRepositoryImpl(
     private lateinit var latestMessageSeenListener: ValueEventListener
 
     override fun seenMessage(receiverUid: String) {
-        val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
         val seenObj: HashMap<String, Any> = HashMap()
         seenObj["seen"] = true
@@ -251,7 +248,6 @@ class ChatRepositoryImpl(
     }
 
     override fun removeSeenMessage(receiverUid: String) {
-        val senderUid = auth.currentUser?.uid
         val receiverRoom = receiverUid + senderUid
         database.child("chats").child(receiverRoom).child("messages")
             .removeEventListener(messageSeenListener)
@@ -262,8 +258,6 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getChatData(result: (UiState<List<Chat>>) -> Unit) {
-        val senderUid = auth.currentUser?.uid
-
         try {
             database.child("latestUsersAndMessages").child(senderUid!!)
                 .addValueEventListener(object: ValueEventListener {
@@ -289,8 +283,6 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getNonSeenData(count: ((Int)->Unit)) {
-        val senderUid = auth.currentUser?.uid
-
         database.child("latestUsersAndMessages").child(senderUid!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -317,7 +309,6 @@ class ChatRepositoryImpl(
         userReceiver: User,
         result: (UiState<String>) -> Unit
     ) {
-        val senderUid = auth.currentUser?.uid
         try {
             val userSender = suspendCancellableCoroutine { continuation ->
                 database.child("user").child(senderUid!!)
@@ -348,14 +339,12 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun checkFriendRequestStatus(receiverUid: String, result: (String) -> Unit) {
-        val senderUid = auth.currentUser?.uid
-
         database.child("requests").child(receiverUid).child(senderUid!!).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()) {
                     result.invoke("pending")
                 } else {
-                    database.child("friends").child(senderUid).child(receiverUid).addValueEventListener(object : ValueEventListener {
+                    database.child("friends").child(senderUid!!).child(receiverUid).addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
                                 result.invoke("friend")
@@ -378,8 +367,6 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun friendRequest(receiverUid: String, time: String, result: (String)->Unit) {
-
-        val senderUid = auth.currentUser?.uid
         val request: HashMap<String, Any> = HashMap()
         request["status"] = "pending"
 
@@ -388,7 +375,7 @@ class ChatRepositoryImpl(
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val userSender = snapshot.getValue(User::class.java)
 
-                    database.child("requests").child(receiverUid).child(senderUid).setValue(Request(userSender!!.name, senderUid, "pending", time, userSender.image))
+                    database.child("requests").child(receiverUid).child(senderUid!!).setValue(Request(userSender!!.name, senderUid!!, "pending", time, userSender.image))
                         .addOnSuccessListener {
                             result.invoke("pending")
                         }. addOnFailureListener {
@@ -404,9 +391,6 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun requestCancel(receiverUid: String, result: (String)->Unit) {
-
-        val senderUid = auth.currentUser?.uid
-
         database.child("requests").child(receiverUid).child(senderUid!!).removeValue()
             .addOnSuccessListener {
                 result.invoke("nothing")
@@ -416,9 +400,6 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit) {
-
-        val senderUid = auth.currentUser?.uid
-
         try {
             database.child("requests").child(senderUid!!).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -442,34 +423,25 @@ class ChatRepositoryImpl(
     }
 
     override suspend fun declineRequest(receiverUid: String) {
-
-        val senderUid = auth.currentUser?.uid
-
         database.child("requests").child(senderUid!!).child(receiverUid).removeValue()
     }
 
     override suspend fun acceptRequest(receiverUid: String) {
-
-        val senderUid = auth.currentUser?.uid
         val request: HashMap<String, Any> = HashMap()
         request["status"] = "friend"
 
         database.child("requests").child(senderUid!!).child(receiverUid).removeValue().addOnSuccessListener {
-            database.child("friends").child(receiverUid).child(senderUid).updateChildren(request)
-            database.child("friends").child(senderUid).child(receiverUid).updateChildren(request)
+            database.child("friends").child(receiverUid).child(senderUid!!).updateChildren(request)
+            database.child("friends").child(senderUid!!).child(receiverUid).updateChildren(request)
         }
     }
 
     override suspend fun removeFriend(receiverUid: String) {
-        val senderUid = auth.currentUser?.uid
-
         database.child("friends").child(senderUid!!).child(receiverUid).removeValue()
-        database.child("friends").child(receiverUid).child(senderUid).removeValue()
+        database.child("friends").child(receiverUid).child(senderUid!!).removeValue()
     }
 
     override suspend fun getRequestCount(count: (Int) -> Unit) {
-        val senderUid = auth.currentUser?.uid
-
         database.child("requests").child(senderUid!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {

@@ -45,13 +45,13 @@ class MessageFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_message, container, false)
-        binding.viewmodel = messageViewModel
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewmodel = messageViewModel
         user = args.user
         (activity as HomeActivity).supportActionBar?.title = user.name
 

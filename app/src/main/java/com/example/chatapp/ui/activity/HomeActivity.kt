@@ -64,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigationView.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.fragment_home, R.id.fragment_notification, R.id.fragment_chat, R.id.fragment_menu)
+            setOf(R.id.fragment_user, R.id.fragment_notification, R.id.fragment_chat, R.id.fragment_menu)
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
     }

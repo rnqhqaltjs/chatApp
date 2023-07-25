@@ -2,27 +2,27 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/home_navigation"
-    app:startDestination="@id/fragment_home">
+    android:id="@+id/user_navigation"
+    app:startDestination="@id/fragment_user">
     <fragment
-        android:id="@+id/fragment_home"
-        android:name="com.example.chatapp.ui.user.HomeFragment"
-        android:label="@string/home"
-        tools:layout="@layout/fragment_home">
+        android:id="@+id/fragment_user"
+        android:name="com.example.chatapp.ui.user.UserFragment"
+        android:label="@string/user"
+        tools:layout="@layout/fragment_user">
         <action
-            android:id="@+id/action_fragment_home_to_fragment_chat"
+            android:id="@+id/action_fragment_user_to_fragment_chat"
             app:destination="@id/fragment_chat" />
         <action
-            android:id="@+id/action_fragment_home_to_fragment_message"
+            android:id="@+id/action_fragment_user_to_fragment_message"
             app:destination="@id/fragment_message" />
         <action
-            android:id="@+id/action_fragment_home_to_fragment_profile"
+            android:id="@+id/action_fragment_user_to_fragment_profile"
             app:destination="@id/fragment_profile" />
         <action
-            android:id="@+id/action_fragment_home_to_fragment_menu"
+            android:id="@+id/action_fragment_user_to_fragment_menu"
             app:destination="@id/fragment_menu" />
         <action
-            android:id="@+id/action_fragment_home_to_fragment_notification"
+            android:id="@+id/action_fragment_user_to_fragment_notification"
             app:destination="@id/fragment_notification" />
     </fragment>
     <fragment
@@ -31,8 +31,8 @@
         android:label="@string/chat"
         tools:layout="@layout/fragment_chat">
         <action
-            android:id="@+id/action_fragment_chat_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_chat_to_fragment_user"
+            app:destination="@id/fragment_user" />
         <action
             android:id="@+id/action_fragment_chat_to_fragment_message"
             app:destination="@id/fragment_message" />
@@ -58,8 +58,8 @@
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" >
         <action
-            android:id="@+id/action_fragment_message_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_message_to_fragment_user"
+            app:destination="@id/fragment_user" />
         <argument
             android:name="user"
             app:argType="com.example.chatapp.data.model.User" />
@@ -94,8 +94,8 @@
             android:id="@+id/action_fragment_menu_to_fragment_chat"
             app:destination="@id/fragment_chat" />
         <action
-            android:id="@+id/action_fragment_menu_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_menu_to_fragment_user"
+            app:destination="@id/fragment_user" />
         <action
             android:id="@+id/action_fragment_menu_to_fragment_edit_profile"
             app:destination="@id/fragment_edit_profile" />
@@ -115,8 +115,8 @@
             android:id="@+id/action_fragment_notification_to_fragment_chat"
             app:destination="@id/fragment_chat" />
         <action
-            android:id="@+id/action_fragment_notification_to_fragment_home"
-            app:destination="@id/fragment_home" />
+            android:id="@+id/action_fragment_notification_to_fragment_user"
+            app:destination="@id/fragment_user" />
         <action
             android:id="@+id/action_fragment_notification_to_fragment_menu"
             app:destination="@id/fragment_menu" />

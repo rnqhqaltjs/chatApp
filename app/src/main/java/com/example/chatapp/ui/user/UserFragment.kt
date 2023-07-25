@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.chatapp.databinding.FragmentHomeBinding
+import com.example.chatapp.databinding.FragmentUserBinding
 import com.example.chatapp.util.UiState
 import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
@@ -17,8 +17,8 @@ import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+class UserFragment : Fragment() {
+    private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
     private val userViewModel: UserViewModel by viewModels()
     lateinit var userlistadapter: UserListAdapter
@@ -28,7 +28,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
             adapter = userlistadapter
         }
         userlistadapter.setOnItemClickListener {
-            val action = HomeFragmentDirections.actionFragmentHomeToFragmentProfile(it)
+            val action = UserFragmentDirections.actionFragmentUserToFragmentProfile(it)
             findNavController().navigate(action)
         }
         userlistadapter.setOnItemLongClickListener {
