@@ -42,7 +42,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun observer() {
-        chatViewModel.friendRequestObserver.observe(viewLifecycleOwner) { success ->
+        chatViewModel.friendRequestStatus.observe(viewLifecycleOwner) { success ->
             when (success) {
                 "pending" -> {
                     binding.friendRequestBtn.visibility = View.GONE

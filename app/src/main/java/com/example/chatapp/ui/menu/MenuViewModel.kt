@@ -15,14 +15,14 @@ class MenuViewModel @Inject constructor(
     private val repository: MenuRepository
 ): ViewModel() {
 
-    private val _profileobserve = MutableLiveData<UiState<String>>()
-    val profileobserve: LiveData<UiState<String>>
-        get() = _profileobserve
+    private val _profileLiveData = MutableLiveData<UiState<String>>()
+    val profileLiveData: LiveData<UiState<String>>
+        get() = _profileLiveData
 
     fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) = viewModelScope.launch {
-        _profileobserve.value = UiState.Loading
+        _profileLiveData.value = UiState.Loading
         repository.getProfileData(image, name, email){
-            _profileobserve.value = it
+            _profileLiveData.value = it
         }
     }
 

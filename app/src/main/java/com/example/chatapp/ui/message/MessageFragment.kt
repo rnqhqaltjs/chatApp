@@ -119,7 +119,7 @@ class MessageFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.messageobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.messageDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.messageProgress.show(requireActivity())
@@ -142,7 +142,7 @@ class MessageFragment : Fragment() {
             }
         }
 
-        chatViewModel.sendobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.sendImageLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.messageProgress.show(requireActivity())
@@ -157,7 +157,7 @@ class MessageFragment : Fragment() {
             }
         }
 
-        chatViewModel.notifyobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.messageNotificationLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                 }

@@ -63,7 +63,7 @@ class MenuFragment : Fragment() {
     }
 
     private fun observer() {
-        chatViewModel.profileobserve.observe(viewLifecycleOwner) { state ->
+        chatViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     binding.menuProgress.show(requireActivity())

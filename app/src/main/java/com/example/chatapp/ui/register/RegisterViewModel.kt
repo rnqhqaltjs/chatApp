@@ -15,14 +15,14 @@ class RegisterViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
 
-    private val _register = MutableLiveData<UiState<String>>()
-    val register: LiveData<UiState<String>>
-        get() = _register
+    private val _registerLiveData = MutableLiveData<UiState<String>>()
+    val registerLiveData: LiveData<UiState<String>>
+        get() = _registerLiveData
 
     fun register(name:String, email: String, image: ByteArray, password: String) = viewModelScope.launch {
-        _register.value = UiState.Loading
+        _registerLiveData.value = UiState.Loading
         repository.registerUser(name, email, image, password){
-            _register.value = it
+            _registerLiveData.value = it
         }
     }
 

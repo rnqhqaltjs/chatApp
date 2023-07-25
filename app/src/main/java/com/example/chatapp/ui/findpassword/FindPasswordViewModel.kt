@@ -15,14 +15,14 @@ class FindPasswordViewModel @Inject constructor(
     private val repository: AuthRepository
 ): ViewModel() {
 
-    private val _findpassobserve = MutableLiveData<UiState<String>>()
-    val findpassobserve: LiveData<UiState<String>>
-        get() = _findpassobserve
+    private val _passwordResetLiveData = MutableLiveData<UiState<String>>()
+    val passwordResetLiveData: LiveData<UiState<String>>
+        get() = _passwordResetLiveData
 
     fun findPassword(email: String) = viewModelScope.launch {
-        _findpassobserve.value = UiState.Loading
+        _passwordResetLiveData.value = UiState.Loading
         repository.findPassword(email) {
-            _findpassobserve.value = it
+            _passwordResetLiveData.value = it
         }
     }
 }

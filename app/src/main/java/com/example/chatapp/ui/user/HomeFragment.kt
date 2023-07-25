@@ -71,7 +71,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.userobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.userDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.homeProgress.show(requireActivity())

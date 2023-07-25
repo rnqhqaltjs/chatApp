@@ -78,7 +78,7 @@ class RegisterFragment : Fragment() {
         }
 
     private fun observer() {
-        authViewModel.register.observe(viewLifecycleOwner) { state ->
+        authViewModel.registerLiveData.observe(viewLifecycleOwner) { state ->
             when(state){
                 is UiState.Loading -> {
                     binding.registerBtn.text = ""

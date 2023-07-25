@@ -55,7 +55,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.chatobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.chatDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.chatProgress.show(requireActivity())

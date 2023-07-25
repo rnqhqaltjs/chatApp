@@ -18,14 +18,14 @@ class ChatViewModel @Inject constructor(
     private val repository: ChatRepository
     ): ViewModel() {
 
-    private val _chatobserve = MutableLiveData<UiState<List<Chat>>>()
-    val chatobserve: LiveData<UiState<List<Chat>>>
-        get() = _chatobserve
+    private val _chatDataList = MutableLiveData<UiState<List<Chat>>>()
+    val chatDataList: LiveData<UiState<List<Chat>>>
+        get() = _chatDataList
 
     fun getChatData() = viewModelScope.launch {
-        _chatobserve.value = UiState.Loading
+        _chatDataList.value = UiState.Loading
         repository.getChatData {
-            _chatobserve.value = it
+            _chatDataList.value = it
         }
     }
 }

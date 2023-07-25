@@ -15,9 +15,9 @@ class ProfileViewModel @Inject constructor(
     private val repository: ChatRepository
 ) : ViewModel() {
 
-    private val _friendRequestObserver = MutableLiveData<String>()
-    val friendRequestObserver: LiveData<String>
-        get() = _friendRequestObserver
+    private val _friendRequestStatus = MutableLiveData<String>()
+    val friendRequestStatus: LiveData<String>
+        get() = _friendRequestStatus
 
     private val _currentTime = MutableLiveData<String>()
     val currentTime: LiveData<String>
@@ -34,19 +34,19 @@ class ProfileViewModel @Inject constructor(
 
     fun checkFriendRequestStatus(receiverUid: String) = viewModelScope.launch {
         repository.checkFriendRequestStatus(receiverUid){
-            _friendRequestObserver.postValue(it)
+            _friendRequestStatus.postValue(it)
         }
     }
 
     fun friendRequest(receiverUid: String, time: String) = viewModelScope.launch {
         repository.friendRequest(receiverUid, time){
-            _friendRequestObserver.postValue(it)
+            _friendRequestStatus.postValue(it)
         }
     }
 
     fun requestCancel(receiverUid: String) = viewModelScope.launch {
         repository.requestCancel(receiverUid){
-            _friendRequestObserver.postValue(it)
+            _friendRequestStatus.postValue(it)
         }
     }
 }

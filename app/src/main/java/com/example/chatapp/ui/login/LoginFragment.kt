@@ -63,7 +63,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun observer(){
-        authViewModel.login.observe(viewLifecycleOwner){ state ->
+        authViewModel.loginLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.loginBtn.text = ""

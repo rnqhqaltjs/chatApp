@@ -19,14 +19,14 @@ class LoginViewModel @Inject constructor(
     private val repository: AuthRepository
     ) : ViewModel() {
 
-    private val _login = MutableLiveData<UiState<String>>()
-    val login: LiveData<UiState<String>>
-        get() = _login
+    private val _loginLiveData = MutableLiveData<UiState<String>>()
+    val loginLiveData: LiveData<UiState<String>>
+        get() = _loginLiveData
 
     fun login(email: String, password: String) = viewModelScope.launch {
-        _login.value = UiState.Loading
+        _loginLiveData.value = UiState.Loading
         repository.loginUser(email, password){
-            _login.value = it
+            _loginLiveData.value = it
         }
     }
 

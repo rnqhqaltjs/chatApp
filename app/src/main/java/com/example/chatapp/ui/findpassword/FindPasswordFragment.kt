@@ -46,7 +46,7 @@ class FindPasswordFragment : Fragment() {
     }
 
     private fun observer(){
-        findPasswordViewModel.findpassobserve.observe(viewLifecycleOwner) { state ->
+        findPasswordViewModel.passwordResetLiveData.observe(viewLifecycleOwner) { state ->
             when(state){
                 is UiState.Loading -> {
                     binding.findPassBtn.text = ""

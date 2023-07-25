@@ -46,7 +46,6 @@ class NotificationFragment : Fragment() {
 
         chatViewModel.getRequestData()
         observer()
-
     }
 
     private fun recyclerview(){
@@ -59,7 +58,7 @@ class NotificationFragment : Fragment() {
     }
 
     private fun observer(){
-        chatViewModel.requestobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.friendRequestDataList.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.requestProgress.show(requireActivity())

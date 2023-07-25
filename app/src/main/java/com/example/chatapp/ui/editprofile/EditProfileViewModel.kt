@@ -17,25 +17,25 @@ class EditProfileViewModel @Inject constructor(
     private val repository: MenuRepository
 ): ViewModel() {
 
-    private val _profileobserve = MutableLiveData<UiState<String>>()
-    val profileobserve: LiveData<UiState<String>>
-        get() = _profileobserve
+    private val _profileLiveData = MutableLiveData<UiState<String>>()
+    val profileLiveData: LiveData<UiState<String>>
+        get() = _profileLiveData
 
-    private val _profilechangeobserve = SingleLiveEvent<UiState<String>>()
-    val profilechangeobserve: LiveData<UiState<String>>
-        get() = _profilechangeobserve
+    private val _profileUpdateLiveData = SingleLiveEvent<UiState<String>>()
+    val profileUpdateLiveData: LiveData<UiState<String>>
+        get() = _profileUpdateLiveData
 
     fun getProfileData(image: ((String)->Unit), name: ((String)->Unit), email: ((String)->Unit)) = viewModelScope.launch {
-        _profileobserve.value = UiState.Loading
+        _profileLiveData.value = UiState.Loading
         repository.getProfileData(image, name, email){
-            _profileobserve.value = it
+            _profileLiveData.value = it
         }
     }
 
     fun profileChange(name: String, image: ByteArray?) = viewModelScope.launch {
-        _profilechangeobserve.value = UiState.Loading
+        _profileUpdateLiveData.value = UiState.Loading
         repository.profileChange(name, image){
-            _profilechangeobserve.value = it
+            _profileUpdateLiveData.value = it
         }
     }
 

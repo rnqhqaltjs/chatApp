@@ -79,7 +79,7 @@ class EditProfileFragment : Fragment() {
 
     private fun observer(){
 
-        chatViewModel.profileobserve.observe(viewLifecycleOwner) { state ->
+        chatViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     binding.profileProgress.show(requireActivity())
@@ -96,7 +96,7 @@ class EditProfileFragment : Fragment() {
             }
         }
 
-        chatViewModel.profilechangeobserve.observe(viewLifecycleOwner){ state ->
+        chatViewModel.profileUpdateLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
                     binding.profileProgress.show(requireActivity())

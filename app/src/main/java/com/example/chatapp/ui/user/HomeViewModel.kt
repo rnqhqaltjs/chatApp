@@ -16,14 +16,14 @@ class HomeViewModel @Inject constructor(
     private val repository: ChatRepository
 ): ViewModel() {
 
-    private val _userobserve = MutableLiveData<UiState<List<User>>>()
-    val userobserve: LiveData<UiState<List<User>>>
-        get() = _userobserve
+    private val _userDataList = MutableLiveData<UiState<List<User>>>()
+    val userDataList: LiveData<UiState<List<User>>>
+        get() = _userDataList
 
     fun getFriendsData() = viewModelScope.launch {
-        _userobserve.value = UiState.Loading
+        _userDataList.value = UiState.Loading
         repository.getFriendsData {
-            _userobserve.value = it
+            _userDataList.value = it
         }
     }
 

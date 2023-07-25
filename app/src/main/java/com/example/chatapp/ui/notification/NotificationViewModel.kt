@@ -16,14 +16,14 @@ class NotificationViewModel @Inject constructor(
     private val repository: ChatRepository
 ): ViewModel() {
 
-    private val _requestobserve = MutableLiveData<UiState<List<Request>>>()
-    val requestobserve: LiveData<UiState<List<Request>>>
-        get() = _requestobserve
+    private val _friendRequestDataList = MutableLiveData<UiState<List<Request>>>()
+    val friendRequestDataList: LiveData<UiState<List<Request>>>
+        get() = _friendRequestDataList
 
     fun getRequestData() = viewModelScope.launch {
-        _requestobserve.value = UiState.Loading
+        _friendRequestDataList.value = UiState.Loading
         repository.getRequestData {
-            _requestobserve.value = it
+            _friendRequestDataList.value = it
         }
     }
 

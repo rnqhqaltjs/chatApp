@@ -22,40 +22,42 @@ class MessageViewModel @Inject constructor(
     private val repository: ChatRepository
 ): ViewModel() {
 
-    private val _messageobserve = MutableLiveData<UiState<List<Message>>>()
-    val messageobserve: LiveData<UiState<List<Message>>>
-        get() = _messageobserve
+    private val _messageDataList = MutableLiveData<UiState<List<Message>>>()
+    val messageDataList: LiveData<UiState<List<Message>>>
+        get() = _messageDataList
 
-    private val _notifyobserve = MutableLiveData<UiState<String>>()
-    val notifyobserve: LiveData<UiState<String>>
-        get() = _notifyobserve
+    private val _sendImageLiveData = MutableLiveData<UiState<String>>()
+    val sendImageLiveData: LiveData<UiState<String>>
+        get() = _sendImageLiveData
 
-    private val _sendobserve = MutableLiveData<UiState<String>>()
-    val sendobserve: LiveData<UiState<String>>
-        get() = _sendobserve
+    private val _messageNotificationLiveData = MutableLiveData<UiState<String>>()
+    val messageNotificationLiveData: LiveData<UiState<String>>
+        get() = _messageNotificationLiveData
+
+
 
     fun sendMessage(message:String, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
         repository.sendMessage(message, receiverUid, time, userReceiver)
     }
 
     fun sendImageMessage(message: String, image: ByteArray?, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
-        _sendobserve.value = UiState.Loading
+        _sendImageLiveData.value = UiState.Loading
         repository.sendImageMessage(message, image, receiverUid, time, userReceiver){
-            _sendobserve.value = it
+            _sendImageLiveData.value = it
         }
     }
 
     fun getMessageData(receiverUid:String) = viewModelScope.launch {
-        _messageobserve.value = UiState.Loading
+        _messageDataList.value = UiState.Loading
         repository.getMessageData(receiverUid){
-            _messageobserve.value = it
+            _messageDataList.value = it
         }
     }
 
     fun sendNotification(message:String, userReceiver: User) = viewModelScope.launch {
-        _notifyobserve.value = UiState.Loading
+        _messageNotificationLiveData.value = UiState.Loading
         repository.sendNotification(message, userReceiver){
-            _notifyobserve.value = it
+            _messageNotificationLiveData.value = it
         }
     }
 
