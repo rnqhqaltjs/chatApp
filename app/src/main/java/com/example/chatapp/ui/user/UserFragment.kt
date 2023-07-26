@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,6 +59,7 @@ class UserFragment : Fragment() {
                 .setMessage("정말로 친구를 삭제하시겠습니까?")
                 .setPositiveButton("예") { _, _ ->
                     userViewModel.removeFriend(it.uid)
+                    userViewModel.getFriendsData()
                 }
                 .setNegativeButton("아니오") { _, _ ->
                 }
@@ -78,6 +80,19 @@ class UserFragment : Fragment() {
                 is UiState.Success -> {
                     binding.homeProgress.hide(requireActivity())
                     userlistadapter.submitList(state.data)
+                }
+            }
+        }
+
+        userViewModel.friendRemoveLiveData.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                }
+                is UiState.Failure -> {
+                    toast(state.error)
+                }
+                is UiState.Success -> {
+                    toast(state.data)
                 }
             }
         }
