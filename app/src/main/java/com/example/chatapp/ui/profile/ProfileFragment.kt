@@ -10,6 +10,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentProfileBinding
+import com.example.chatapp.util.UiState
+import com.example.chatapp.util.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -61,6 +63,18 @@ class ProfileFragment : Fragment() {
                     binding.textView.text = "친구 요청"
                 }
                 else -> {
+                }
+            }
+        }
+
+        profileViewModel.requestNotificationLiveData.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Loading -> {
+                }
+                is UiState.Failure -> {
+                    toast(state.error)
+                }
+                is UiState.Success -> {
                 }
             }
         }

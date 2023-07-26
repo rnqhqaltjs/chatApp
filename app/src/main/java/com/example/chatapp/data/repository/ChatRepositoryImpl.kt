@@ -304,7 +304,7 @@ class ChatRepositoryImpl(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun sendNotification(
+    override suspend fun sendMessageNotification(
         message:String,
         userReceiver: User,
         result: (UiState<String>) -> Unit
@@ -457,5 +457,40 @@ class ChatRepositoryImpl(
                     // 실패 시 실행
                 }
             })
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun friendRequestNotification(
+        message: String,
+        userReceiver: User,
+        result: (UiState<String>) -> Unit
+    ) {
+        try {
+            val userSender = suspendCancellableCoroutine { continuation ->
+                database.child("user").child(senderUid!!)
+                    .addListenerForSingleValueEvent(object: ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val user = snapshot.getValue(User::class.java)
+                            continuation.resume(user, null)
+                        }
+                        override fun onCancelled(error: DatabaseError) {
+                            continuation.resume(null, null)
+                        }
+                    })
+            }
+
+            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image)
+            val body = NotificationBody(userReceiver.token, data)
+
+            val response = RetrofitInstance.api.sendNotification(body)
+
+            if (response.isSuccessful) {
+                result.invoke(UiState.Success("친구 요청 성공"))
+            } else {
+                result.invoke(UiState.Failure("친구 요청 전송에 실패했습니다"))
+            }
+        } catch (e: Exception) {
+            result.invoke(UiState.Failure(e.message))
+        }
     }
 }

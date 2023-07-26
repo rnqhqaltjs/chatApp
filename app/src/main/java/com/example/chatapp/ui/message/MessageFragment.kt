@@ -77,7 +77,7 @@ class MessageFragment : Fragment() {
                     time.toString(),
                     user
                 )
-                messageViewModel.sendNotification(message, user)
+                messageViewModel.sendMessageNotification(message, user)
                 //입력값 초기화
                 binding.messageEdit.setText("")
             }
@@ -96,7 +96,7 @@ class MessageFragment : Fragment() {
                     user.uid,time.toString(),
                     user
                 )
-                messageViewModel.sendNotification("이미지를 전송하였습니다.", user)
+                messageViewModel.sendMessageNotification("이미지를 전송하였습니다.", user)
                 isPhotoSelectionOpen = false
                 Log.d("image", "success")
             }

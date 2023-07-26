@@ -34,8 +34,6 @@ class MessageViewModel @Inject constructor(
     val messageNotificationLiveData: LiveData<UiState<String>>
         get() = _messageNotificationLiveData
 
-
-
     fun sendMessage(message:String, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
         repository.sendMessage(message, receiverUid, time, userReceiver)
     }
@@ -54,9 +52,9 @@ class MessageViewModel @Inject constructor(
         }
     }
 
-    fun sendNotification(message:String, userReceiver: User) = viewModelScope.launch {
+    fun sendMessageNotification(message:String, userReceiver: User) = viewModelScope.launch {
         _messageNotificationLiveData.value = UiState.Loading
-        repository.sendNotification(message, userReceiver){
+        repository.sendMessageNotification(message, userReceiver){
             _messageNotificationLiveData.value = it
         }
     }
