@@ -7,6 +7,7 @@ data class NotificationBody(
     data class NotificationData(
         val name: String,
         val message: String,
-        val image: String
+        val image: String,
+        val type: Int
     )
 }

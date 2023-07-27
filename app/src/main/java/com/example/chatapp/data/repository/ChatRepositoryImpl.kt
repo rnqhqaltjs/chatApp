@@ -323,7 +323,7 @@ class ChatRepositoryImpl(
                     })
             }
 
-            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image)
+            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image, 0)
             val body = NotificationBody(userReceiver.token, data)
 
             val response = RetrofitInstance.api.sendNotification(body)
@@ -440,6 +440,7 @@ class ChatRepositoryImpl(
         database.child("friends").child(senderUid!!).child(receiverUid).removeValue()
         database.child("friends").child(receiverUid).child(senderUid!!).removeValue()
         database.child(("latestUsersAndMessages")).child(senderUid!!).child(receiverUid).removeValue()
+        database.child(("latestUsersAndMessages")).child(receiverUid).child(senderUid!!).removeValue()
     }
 
     override suspend fun getRequestCount(count: (Int) -> Unit) {
@@ -480,7 +481,7 @@ class ChatRepositoryImpl(
                     })
             }
 
-            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image)
+            val data = NotificationBody.NotificationData(userSender!!.name, message, userSender.image, 1)
             val body = NotificationBody(userReceiver.token, data)
 
             val response = RetrofitInstance.api.sendNotification(body)

@@ -33,13 +33,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val targetFragment = intent.getStringExtra("Fragment")
-        if (targetFragment != null) {
-            if (targetFragment == "MessageFragment") {
-                MessageFragment()
-            }
-        }
-
         setupJetpackNavigation()
         showRequestCountBadge()
         showUnreadMessageBadge()
