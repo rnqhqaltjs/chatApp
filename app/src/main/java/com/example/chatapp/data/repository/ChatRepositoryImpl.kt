@@ -80,7 +80,7 @@ class ChatRepositoryImpl(
                     })
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    result.invoke(UiState.Failure("유저 리스트를 불러오는데 실패했습니다"))
+                    result.invoke(UiState.Failure("친구 목록을 불러오는데 실패했습니다"))
                 }
             })
         } catch (e: Exception) {
@@ -436,17 +436,10 @@ class ChatRepositoryImpl(
         }
     }
 
-    override suspend fun removeFriend(receiverUid: String, result: (UiState<String>) -> Unit) {
-        try {
-            database.child("friends").child(senderUid!!).child(receiverUid).removeValue().addOnSuccessListener {
-                database.child("friends").child(receiverUid).child(senderUid!!).removeValue()
-                result.invoke(UiState.Success("친구 삭제 성공"))
-            }.addOnFailureListener {
-                result.invoke(UiState.Failure("친구를 삭제하는데 실패했습니다."))
-            }
-        } catch (e: Exception) {
-            result.invoke(UiState.Failure(e.message))
-        }
+    override suspend fun removeFriend(receiverUid: String) {
+        database.child("friends").child(senderUid!!).child(receiverUid).removeValue()
+        database.child("friends").child(receiverUid).child(senderUid!!).removeValue()
+        database.child(("latestUsersAndMessages")).child(senderUid!!).child(receiverUid).removeValue()
     }
 
     override suspend fun getRequestCount(count: (Int) -> Unit) {

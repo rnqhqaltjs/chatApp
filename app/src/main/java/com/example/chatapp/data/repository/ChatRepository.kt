@@ -22,7 +22,7 @@ interface ChatRepository {
     suspend fun getRequestData(result: (UiState<List<Request>>) -> Unit)
     suspend fun declineRequest(receiverUid: String)
     suspend fun acceptRequest(receiverUid: String)
-    suspend fun removeFriend(receiverUid: String, result: (UiState<String>) -> Unit)
+    suspend fun removeFriend(receiverUid: String)
     suspend fun getRequestCount(count: ((Int)->Unit))
     suspend fun friendRequestNotification(message:String, userReceiver: User, result: (UiState<String>) -> Unit)
 

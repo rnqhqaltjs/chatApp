@@ -60,6 +60,7 @@ class UserFragment : Fragment() {
                 .setPositiveButton("예") { _, _ ->
                     userViewModel.removeFriend(it.uid)
                     userViewModel.getFriendsData()
+                    toast("친구 삭제 완료")
                 }
                 .setNegativeButton("아니오") { _, _ ->
                 }
@@ -80,19 +81,6 @@ class UserFragment : Fragment() {
                 is UiState.Success -> {
                     binding.homeProgress.hide(requireActivity())
                     userlistadapter.submitList(state.data)
-                }
-            }
-        }
-
-        userViewModel.friendRemoveLiveData.observe(viewLifecycleOwner){ state ->
-            when(state){
-                is UiState.Loading -> {
-                }
-                is UiState.Failure -> {
-                    toast(state.error)
-                }
-                is UiState.Success -> {
-                    toast(state.data)
                 }
             }
         }

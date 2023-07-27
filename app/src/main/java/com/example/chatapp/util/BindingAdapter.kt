@@ -14,12 +14,13 @@ import com.example.chatapp.ui.profile.ProfileFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 
-//chat
+
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String) {
     view.load(url)
 }
 
+//chat
 @BindingAdapter("lastMessageTime")
 fun getLastMessageTimeString(view: TextView, time : String) {
     view.text = getLastMessageTimeString(time.toLong())
