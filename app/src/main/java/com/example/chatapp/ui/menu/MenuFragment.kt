@@ -59,6 +59,10 @@ class MenuFragment : Fragment() {
             startActivity(intent)
             activity?.finish()
         }
+
+        binding.settingsBtn.setOnClickListener {
+            toast("개발 중")
+        }
     }
 
     private fun observer() {
