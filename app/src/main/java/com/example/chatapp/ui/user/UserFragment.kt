@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
@@ -40,6 +41,11 @@ class UserFragment : Fragment() {
 
         userViewModel.getFriendsData()
         observer()
+
+        binding.findFriendTitle.setOnClickListener {
+            val action =  UserFragmentDirections.actionFragmentUserToFragmentFindFriend()
+            findNavController().navigate(action)
+        }
     }
 
     private fun recyclerview(){
@@ -81,6 +87,12 @@ class UserFragment : Fragment() {
                 is UiState.Success -> {
                     binding.homeProgress.hide(requireActivity())
                     userlistadapter.submitList(state.data)
+
+                    if(state.data.isEmpty()) {
+                        binding.findFriendTitle.visibility = View.VISIBLE
+                    } else {
+                        binding.findFriendTitle.visibility = View.GONE
+                    }
                 }
             }
         }

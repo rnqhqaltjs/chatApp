@@ -165,6 +165,7 @@ class ChatRepositoryImpl(
                                                             .child(receiverUid)
                                                             .setValue(latestUserMessageForSender)
                                                             .addOnSuccessListener {
+
                                                                 database.child(("latestUsersAndMessages")).child(receiverUid)
                                                                     .child(senderUid!!)
                                                                     .setValue(latestUserMessageForReceiver)

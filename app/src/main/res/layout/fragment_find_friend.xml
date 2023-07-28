@@ -11,7 +11,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="검색"
+        android:hint="이름으로 검색"
         android:padding="4dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tl_search" />
 
     <ProgressBar
-        android:id="@+id/find_friend__progress"
+        android:id="@+id/find_friend_progress"
         style="?android:attr/progressBarStyle"
         android:layout_width="36dp"
         android:layout_height="36dp"

@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_fragment_user_to_fragment_notification"
             app:destination="@id/fragment_notification" />
+        <action
+            android:id="@+id/action_fragment_user_to_fragment_find_friend"
+            app:destination="@id/fragment_find_friend" />
     </fragment>
     <fragment
         android:id="@+id/fragment_chat"
@@ -132,6 +135,8 @@
         <action
             android:id="@+id/action_fragment_find_friend_to_fragment_profile"
             app:destination="@id/fragment_profile" />
-
+        <action
+            android:id="@+id/action_fragment_find_friend_to_fragment_user"
+            app:destination="@id/fragment_user" />
     </fragment>
 </navigation>
