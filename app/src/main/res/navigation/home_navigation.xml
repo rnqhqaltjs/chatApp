@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/user_navigation"
+    android:label="@string/detail_photo"
     app:startDestination="@id/fragment_user">
     <fragment
         android:id="@+id/fragment_user"
@@ -59,7 +60,7 @@
         android:id="@+id/fragment_message"
         android:name="com.example.chatapp.ui.message.MessageFragment"
         android:label="fragment_message"
-        tools:layout="@layout/fragment_message" >
+        tools:layout="@layout/fragment_message">
         <action
             android:id="@+id/action_fragment_message_to_fragment_user"
             app:destination="@id/fragment_user" />
@@ -72,6 +73,9 @@
         <action
             android:id="@+id/action_fragment_message_to_fragment_profile"
             app:destination="@id/fragment_profile" />
+        <action
+            android:id="@+id/action_fragment_message_to_fragment_detail_photo"
+            app:destination="@id/fragment_detail_photo" />
     </fragment>
     <fragment
         android:id="@+id/fragment_profile"
@@ -91,8 +95,8 @@
     <fragment
         android:id="@+id/fragment_menu"
         android:name="com.example.chatapp.ui.menu.MenuFragment"
-        tools:layout="@layout/fragment_menu"
-        android:label="@string/menu" >
+        android:label="@string/menu"
+        tools:layout="@layout/fragment_menu">
         <action
             android:id="@+id/action_fragment_menu_to_fragment_chat"
             app:destination="@id/fragment_chat" />
@@ -128,7 +132,7 @@
         android:id="@+id/fragment_find_friend"
         android:name="com.example.chatapp.ui.findfriend.FindFriendFragment"
         android:label="@string/find_friend"
-        tools:layout="@layout/fragment_find_friend" >
+        tools:layout="@layout/fragment_find_friend">
         <action
             android:id="@+id/action_fragment_find_friend_to_fragment_menu"
             app:destination="@id/fragment_menu" />
@@ -138,5 +142,17 @@
         <action
             android:id="@+id/action_fragment_find_friend_to_fragment_user"
             app:destination="@id/fragment_user" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragment_detail_photo"
+        android:name="com.example.chatapp.ui.detailphoto.DetailPhotoFragment"
+        android:label="fragment_detail_photo"
+        tools:layout="@layout/fragment_detail_photo" >
+        <action
+            android:id="@+id/action_fragment_detail_photo_to_fragment_message"
+            app:destination="@id/fragment_message" />
+        <argument
+            android:name="message"
+            app:argType="com.example.chatapp.data.model.Message" />
     </fragment>
 </navigation>

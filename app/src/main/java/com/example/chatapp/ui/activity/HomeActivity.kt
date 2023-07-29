@@ -38,14 +38,26 @@ class HomeActivity : AppCompatActivity() {
         showUnreadMessageBadge()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.fragment_message ||
-                destination.id == R.id.fragment_profile ||
-                destination.id == R.id.fragment_edit_profile ||
-                destination.id == R.id.fragment_find_friend
-            ) {
-                binding.bottomNavigationView.visibility = View.GONE
-            } else {
-                binding.bottomNavigationView.visibility = View.VISIBLE
+            binding.bottomNavigationView.visibility =
+                if (destination.id == R.id.fragment_message ||
+                    destination.id == R.id.fragment_profile ||
+                    destination.id == R.id.fragment_edit_profile ||
+                    destination.id == R.id.fragment_find_friend ||
+                    destination.id == R.id.fragment_detail_photo
+                ) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
+
+            supportActionBar?.let {
+                it.apply {
+                    if (destination.id == R.id.fragment_detail_photo) {
+                        hide()
+                    } else {
+                        show()
+                    }
+                }
             }
         }
     }

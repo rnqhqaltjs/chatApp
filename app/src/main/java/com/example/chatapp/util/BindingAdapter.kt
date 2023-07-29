@@ -8,6 +8,7 @@ import androidx.databinding.BindingAdapter
 import androidx.navigation.findNavController
 import coil.load
 import com.example.chatapp.data.model.Chat
+import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.model.User
 import com.example.chatapp.ui.message.MessageFragmentDirections
 import com.example.chatapp.ui.profile.ProfileFragmentDirections
@@ -41,6 +42,14 @@ fun setChatMessageStyle(view: TextView, chat: Chat){
 fun setOnProfileImageClicked(view: ImageView, user: User) {
     view.setOnClickListener {
         val action = MessageFragmentDirections.actionFragmentMessageToFragmentProfile(user)
+        view.findNavController().navigate(action)
+    }
+}
+
+@BindingAdapter("onPhotoImageClicked")
+fun setOnPhotoImageClicked(view: ImageView, message: Message) {
+    view.setOnClickListener {
+        val action = MessageFragmentDirections.actionFragmentMessageToFragmentDetailPhoto(message)
         view.findNavController().navigate(action)
     }
 }

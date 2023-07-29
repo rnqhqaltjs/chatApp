@@ -76,6 +76,7 @@
             android:background="@drawable/round_corner_lightskyblue"
             android:padding="8dp"
             app:imageUrl="@{message.photoImage}"
+            app:onPhotoImageClicked="@{message}"
             tools:src="@tools:sample/avatars"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

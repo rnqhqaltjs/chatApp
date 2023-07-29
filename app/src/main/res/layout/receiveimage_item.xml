@@ -97,6 +97,7 @@
             android:padding="8dp"
             tools:src="@tools:sample/avatars"
             app:imageUrl="@{message.photoImage}"
+            app:onPhotoImageClicked="@{message}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/message_image"
             app:layout_constraintTop_toBottomOf="@+id/receive_message_date" />
