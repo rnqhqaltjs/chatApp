@@ -20,8 +20,8 @@ import com.example.chatapp.R
 import com.example.chatapp.data.model.User
 import com.example.chatapp.databinding.FragmentMessageBinding
 import com.example.chatapp.ui.activity.HomeActivity
+import com.example.chatapp.util.ImageUtils
 import com.example.chatapp.util.UiState
-import com.example.chatapp.util.convertFileToByteArray
 import com.example.chatapp.util.hide
 import com.example.chatapp.util.show
 import com.example.chatapp.util.toast
@@ -92,7 +92,7 @@ class MessageFragment : Fragment() {
 
                 messageViewModel.sendImageMessage(
                     "이미지를 전송하였습니다.",
-                    convertFileToByteArray(requireContext(),imageUri),
+                    ImageUtils.convertFileToByteArray(requireContext(),imageUri),
                     user.uid,time.toString(),
                     user
                 )

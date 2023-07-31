@@ -56,7 +56,7 @@ class EditProfileFragment : Fragment() {
             if(binding.profileName.text.isNotEmpty()){
                 editProfileViewModel.profileChange(
                     name = binding.profileName.text.toString(),
-                    image = convertFileToByteArray(requireContext(),imageUri)
+                    image = ImageUtils.convertFileToByteArray(requireContext(),imageUri)
                 )
             }
         }

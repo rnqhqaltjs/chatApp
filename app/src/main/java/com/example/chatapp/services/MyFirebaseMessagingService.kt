@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.chatapp.R
 import com.example.chatapp.ui.activity.HomeActivity
-import com.example.chatapp.util.getBitmapFromUrl
+import com.example.chatapp.util.ImageUtils
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -37,7 +37,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val message = remoteMessage.data["message"]!!
             val image = remoteMessage.data["image"]!!
             val type = remoteMessage.data["type"]!!.toInt()
-            val icon = getBitmapFromUrl(image)
+            val icon = ImageUtils.getBitmapFromUrl(image)
 
             when (type) {
                 0 -> sendMessageNotification(name, message, icon!!, type)

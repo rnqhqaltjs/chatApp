@@ -4,10 +4,11 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.net.Uri
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.chatapp.MyApplication
 import java.io.ByteArrayOutputStream
@@ -33,18 +34,6 @@ fun Fragment.toast(message: String?) {
 
 fun String.isValidEmail() =
     isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-
-fun convertFileToByteArray(context: Context, uri: Uri?): ByteArray? {
-    return if(uri!=null){
-        val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-        val bitmap = BitmapFactory.decodeStream(inputStream)
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        byteArrayOutputStream.toByteArray()
-    } else {
-        null
-    }
-}
 
 fun getLastMessageTimeString(lastTimeStamp: Long): String {           //마지막 메시지가 전송된 시각 구하기
     try {
@@ -91,17 +80,56 @@ fun getLastMessageTimeString(lastTimeStamp: Long): String {           //마지�
         return ""
     }
 }
-fun getBitmapFromUrl(urlString: String): Bitmap? {
-    return try {
-        val url = URL(urlString)
-        val connection = url.openConnection() as HttpURLConnection
-        connection.doInput = true
-        connection.connect()
-        val input = connection.inputStream
-        BitmapFactory.decodeStream(input)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
+
+object ImageUtils {
+    fun getBitmapFromUrl(urlString: String): Bitmap? {
+        return try {
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            connection.doInput = true
+            connection.connect()
+            val input = connection.inputStream
+            BitmapFactory.decodeStream(input)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun convertFileToByteArray(context: Context, uri: Uri?): ByteArray? {
+        return if (uri != null) {
+            val orientation = getOrientationFromExif(context, uri)
+            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
+            val imageBitmap = BitmapFactory.decodeStream(inputStream)
+            val rotatedBitmap = rotateBitmap(imageBitmap, orientation)
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            rotatedBitmap?.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+            byteArrayOutputStream.toByteArray()
+        } else {
+            null
+        }
+    }
+
+    private fun getOrientationFromExif(context: Context, uri: Uri): Int {
+        context.contentResolver.openInputStream(uri)?.use { inputStream ->
+            val exif = ExifInterface(inputStream)
+            return when (exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED)) {
+                ExifInterface.ORIENTATION_ROTATE_90 -> 90
+                ExifInterface.ORIENTATION_ROTATE_180 -> 180
+                ExifInterface.ORIENTATION_ROTATE_270 -> 270
+                else -> 0
+            }
+        }
+        return 0
+    }
+
+    private fun rotateBitmap(bitmap: Bitmap, degrees: Int): Bitmap? {
+        if (degrees != 0) {
+            val matrix = Matrix()
+            matrix.postRotate(degrees.toFloat())
+            return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+        }
+        return bitmap
     }
 }
 

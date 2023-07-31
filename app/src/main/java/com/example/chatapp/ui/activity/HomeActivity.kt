@@ -54,8 +54,10 @@ class HomeActivity : AppCompatActivity() {
                 it.apply {
                     if (destination.id == R.id.fragment_detail_photo) {
                         hide()
+                        window.statusBarColor = ContextCompat.getColor(this@HomeActivity, R.color.black)
                     } else {
                         show()
+                        window.statusBarColor = ContextCompat.getColor(this@HomeActivity, R.color.lsb)
                     }
                 }
             }

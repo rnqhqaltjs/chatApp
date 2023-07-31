@@ -52,7 +52,7 @@ class RegisterFragment : Fragment() {
                 registerViewModel.register(
                     binding.nameArea.text.toString(),
                     binding.emailArea.text.toString(),
-                    convertFileToByteArray(requireContext(),imageUri)!!,
+                    ImageUtils.convertFileToByteArray(requireContext(),imageUri)!!,
                     binding.passwordArea.text.toString()
                 )
             }
