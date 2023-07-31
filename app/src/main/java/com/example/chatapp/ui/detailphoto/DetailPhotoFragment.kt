@@ -38,6 +38,25 @@ class DetailPhotoFragment : Fragment() {
             findNavController().popBackStack()
         }
 
+        binding.exitPhotoView.bringToFront()
+        binding.downloadPhotoView.bringToFront()
+
+        var switch = false // 초기 상태는 버튼이 숨겨진 상태
+
+        binding.detailPhotoImage.setOnClickListener {
+            if (!switch) {
+                // 버튼이 숨겨진 상태일 때 클릭하면 보이도록 처리
+                binding.exitPhotoView.visibility = View.VISIBLE
+                binding.downloadPhotoView.visibility = View.VISIBLE
+                switch = true // 상태를 true로 변경
+            } else {
+                // 버튼이 보이는 상태일 때 클릭하면 숨기도록 처리
+                binding.exitPhotoView.visibility = View.GONE
+                binding.downloadPhotoView.visibility = View.GONE
+                switch = false // 상태를 false로 변경
+            }
+        }
+
     }
     override fun onDestroyView() {
         _binding = null
