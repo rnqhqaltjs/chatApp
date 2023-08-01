@@ -34,7 +34,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white"
-            android:visibility="@{viewModel.switch ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{viewModel.switch ? View.GONE : View.VISIBLE}"/>
 
         <ImageView
             android:id="@+id/download_photoView"
@@ -46,7 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white"
-            android:visibility="@{viewModel.switch ? View.VISIBLE : View.GONE}"/>
+            android:visibility="@{viewModel.switch ? View.GONE : View.VISIBLE}"/>
 
         <com.github.chrisbanes.photoview.PhotoView
             android:id="@+id/detail_photo_image"

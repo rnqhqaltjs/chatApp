@@ -26,7 +26,6 @@ class DetailPhotoViewModel @Inject constructor(
 
     val switch = ObservableBoolean(false)
 
-    // 클릭 이벤트 처리 메서드
     fun onDetailPhotoImageClick(currentSwitchState: Boolean) {
         switch.set(!currentSwitchState)
     }
