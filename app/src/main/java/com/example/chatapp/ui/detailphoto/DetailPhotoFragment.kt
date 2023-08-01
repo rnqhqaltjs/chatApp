@@ -6,17 +6,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
+import com.example.chatapp.R
 import com.example.chatapp.databinding.FragmentDetailPhotoBinding
+import com.example.chatapp.ui.profile.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailPhotoFragment : Fragment() {
     private var _binding: FragmentDetailPhotoBinding? = null
     private val binding get() = _binding!!
+    private val detailPhotoViewModel: DetailPhotoViewModel by viewModels()
     private val args by navArgs<DetailPhotoFragmentArgs>()
 
     override fun onCreateView(
@@ -24,39 +29,19 @@ class DetailPhotoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDetailPhotoBinding.inflate(inflater, container, false)
+        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_photo, container, false)
         return binding.root
     }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val message = args.message
-        binding.detailPhotoImage.load(message.photoImage)
-
-        binding.exitPhotoView.setOnClickListener {
-            findNavController().popBackStack()
-        }
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = detailPhotoViewModel
+        binding.message = args.message
 
         binding.exitPhotoView.bringToFront()
         binding.downloadPhotoView.bringToFront()
-
-        var switch = false // 초기 상태는 버튼이 숨겨진 상태
-
-        binding.detailPhotoImage.setOnClickListener {
-            if (!switch) {
-                // 버튼이 숨겨진 상태일 때 클릭하면 보이도록 처리
-                binding.exitPhotoView.visibility = View.VISIBLE
-                binding.downloadPhotoView.visibility = View.VISIBLE
-                switch = true // 상태를 true로 변경
-            } else {
-                // 버튼이 보이는 상태일 때 클릭하면 숨기도록 처리
-                binding.exitPhotoView.visibility = View.GONE
-                binding.downloadPhotoView.visibility = View.GONE
-                switch = false // 상태를 false로 변경
-            }
-        }
-
     }
     override fun onDestroyView() {
         _binding = null
