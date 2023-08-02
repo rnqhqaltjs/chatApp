@@ -30,10 +30,10 @@
             android:src="@drawable/ic_close_24"
             android:layout_marginTop="30dp"
             android:layout_marginStart="30dp"
-            android:onClick="@{viewModel::exitPhotoView}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white"
+            android:onClick="@{viewModel::exitPhotoView}"
             android:visibility="@{viewModel.switch ? View.GONE : View.VISIBLE}"/>
 
         <ImageView
@@ -46,6 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/white"
+            android:onClick="@{() -> viewModel.downloadImage(context, message)}"
             android:visibility="@{viewModel.switch ? View.GONE : View.VISIBLE}"/>
 
         <com.github.chrisbanes.photoview.PhotoView
