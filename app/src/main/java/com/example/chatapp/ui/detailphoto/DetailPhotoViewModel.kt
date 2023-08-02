@@ -1,17 +1,12 @@
 package com.example.chatapp.ui.detailphoto
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.view.View
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.ViewModel
 import androidx.navigation.findNavController
@@ -19,7 +14,6 @@ import com.example.chatapp.R
 import com.example.chatapp.data.model.Message
 import com.example.chatapp.data.repository.ChatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import javax.inject.Inject

@@ -2,7 +2,9 @@ package com.example.chatapp.services
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.media.RingtoneManager
 import android.os.Build
@@ -11,7 +13,9 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.chatapp.R
 import com.example.chatapp.ui.activity.HomeActivity
+import com.example.chatapp.ui.activity.MainActivity
 import com.example.chatapp.util.ImageUtils
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -33,6 +37,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //Log.d(TAG, "notify title: ${remoteMessage.notification?.title}")
         // 다른 기기에서 서버로 보냈을 때
         if(remoteMessage.data.isNotEmpty()){
+            val uid = remoteMessage.data["uid"]!!
             val name = remoteMessage.data["name"]!!
             val message = remoteMessage.data["message"]!!
             val image = remoteMessage.data["image"]!!
@@ -40,24 +45,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             val icon = ImageUtils.getBitmapFromUrl(image)
 
             when (type) {
-                0 -> sendMessageNotification(name, message, icon!!, type)
-                1 -> friendRequestNotification(name, message, icon!!, type)
+                0 -> sendMessageNotification(uid, name, message, icon!!, type)
+                1 -> friendRequestNotification(uid, name, message, icon!!, type)
                 else -> throw IllegalArgumentException("Invalid type: $type") // 0 또는 1 이외의 값이 들어오는 경우 예외 처리
             }
         }
     }
 
     /** 알림 생성 메서드 */
-    private fun friendRequestNotification(name: String, message: String, icon: Bitmap, type: Int){
+    private fun friendRequestNotification(uid: String, name: String, message: String, icon: Bitmap, type: Int){
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시
 //        val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
-        val pendingIntent = NavDeepLinkBuilder(this)
-            .setComponentName(HomeActivity::class.java)
-            .setGraph(R.navigation.home_navigation)
-            .setDestination(R.id.fragment_notification)
-//            .setArguments(args)
-            .createPendingIntent()
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val pendingIntent: PendingIntent = if (currentUserUid == null || currentUserUid != uid) {
+            NavDeepLinkBuilder(this)
+                .setComponentName(MainActivity::class.java)
+                .setGraph(R.navigation.auth_navigation)
+                .setDestination(R.id.loginFragment)
+                //            .setArguments(args)
+                .createPendingIntent()
+
+        } else {
+            NavDeepLinkBuilder(this)
+                .setComponentName(HomeActivity::class.java)
+                .setGraph(R.navigation.home_navigation)
+                .setDestination(R.id.fragment_notification)
+    //            .setArguments(args)
+                .createPendingIntent()
+        }
+
 
         // 알림 채널 이름
         val channelId = "my_channel"
@@ -86,16 +104,28 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(type, notificationBuilder.build())
     }
 
-    private fun sendMessageNotification(name: String, message: String, icon: Bitmap, type: Int){
+    private fun sendMessageNotification(uid: String, name: String, message: String, icon: Bitmap, type: Int){
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시
 //        val uniId: Int = (System.currentTimeMillis() / 7).toInt()
 
-        val pendingIntent = NavDeepLinkBuilder(this)
-            .setComponentName(HomeActivity::class.java)
-            .setGraph(R.navigation.home_navigation)
-            .setDestination(R.id.fragment_chat)
-//            .setArguments(args)
-            .createPendingIntent()
+        val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
+
+        val pendingIntent: PendingIntent = if (currentUserUid == null || currentUserUid != uid) {
+            NavDeepLinkBuilder(this)
+                .setComponentName(MainActivity::class.java)
+                .setGraph(R.navigation.auth_navigation)
+                .setDestination(R.id.loginFragment)
+                //            .setArguments(args)
+                .createPendingIntent()
+
+        } else {
+            NavDeepLinkBuilder(this)
+                .setComponentName(HomeActivity::class.java)
+                .setGraph(R.navigation.home_navigation)
+                .setDestination(R.id.fragment_chat)
+                //            .setArguments(args)
+                .createPendingIntent()
+        }
 
         // 알림 채널 이름
         val channelId = "my_channel"

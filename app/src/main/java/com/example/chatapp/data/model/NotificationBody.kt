@@ -5,6 +5,7 @@ data class NotificationBody(
     val data: NotificationData
 ) {
     data class NotificationData(
+        val uid: String,
         val name: String,
         val message: String,
         val image: String,
