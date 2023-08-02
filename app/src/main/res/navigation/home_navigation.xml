@@ -72,7 +72,9 @@
             app:destination="@id/fragment_chat" />
         <action
             android:id="@+id/action_fragment_message_to_fragment_profile"
-            app:destination="@id/fragment_profile" />
+            app:destination="@id/fragment_profile"
+            app:popUpTo="@id/fragment_message"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_fragment_message_to_fragment_detail_photo"
             app:destination="@id/fragment_detail_photo" />
@@ -87,7 +89,9 @@
             app:argType="com.example.chatapp.data.model.User" />
         <action
             android:id="@+id/action_fragment_profile_to_fragment_message"
-            app:destination="@id/fragment_message" />
+            app:destination="@id/fragment_message"
+            app:popUpTo="@id/fragment_profile"
+            app:popUpToInclusive="true"/>
         <action
             android:id="@+id/action_fragment_profile_to_fragment_find_friend"
             app:destination="@id/fragment_find_friend" />
