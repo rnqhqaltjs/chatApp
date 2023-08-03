@@ -23,7 +23,7 @@ class EditProfileFragment : Fragment() {
     private var _binding: FragmentEditProfileBinding? = null
     private val binding get() = _binding!!
     private val editProfileViewModel: EditProfileViewModel by viewModels ()
-    private lateinit var imageUri: Uri
+    private var imageUri: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,7 @@ class EditProfileFragment : Fragment() {
             if(binding.profileName.text.isNotEmpty()){
                 editProfileViewModel.profileChange(
                     name = binding.profileName.text.toString(),
-                    image = ImageUtils.convertFileToByteArray(requireContext(),imageUri)
+                    image = ImageUtils.convertFileToByteArray(requireContext(), imageUri)
                 )
             }
         }
@@ -77,7 +77,6 @@ class EditProfileFragment : Fragment() {
         }
 
     private fun observer(){
-
         editProfileViewModel.profileLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -98,13 +97,16 @@ class EditProfileFragment : Fragment() {
         editProfileViewModel.profileUpdateLiveData.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Loading -> {
+                    binding.saveButton.text = ""
                     binding.profileProgress.show(requireActivity())
                 }
                 is UiState.Failure -> {
+                    binding.saveButton.text = "저장"
                     binding.profileProgress.hide(requireActivity())
                     toast(state.error)
                 }
                 is UiState.Success -> {
+                    binding.saveButton.text = "저장"
                     binding.profileProgress.hide(requireActivity())
                     toast(state.data)
                 }
