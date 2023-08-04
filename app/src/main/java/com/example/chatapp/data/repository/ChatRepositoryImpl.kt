@@ -324,7 +324,7 @@ class ChatRepositoryImpl(
                     })
             }
 
-            val data = NotificationBody.NotificationData(userReceiver.uid, userSender!!.name, message, userSender.image, 0)
+            val data = NotificationBody.NotificationData(userSender!!, userReceiver.uid, message, 0)
             val body = NotificationBody(userReceiver.token, data)
 
             val response = RetrofitInstance.api.sendNotification(body)
@@ -482,7 +482,7 @@ class ChatRepositoryImpl(
                     })
             }
 
-            val data = NotificationBody.NotificationData(userReceiver.uid, userSender!!.name, message, userSender.image, 1)
+            val data = NotificationBody.NotificationData(userSender!!, userReceiver.uid, message, 1)
             val body = NotificationBody(userReceiver.token, data)
 
             val response = RetrofitInstance.api.sendNotification(body)
