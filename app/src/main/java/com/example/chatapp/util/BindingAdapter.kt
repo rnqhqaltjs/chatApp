@@ -2,6 +2,7 @@ package com.example.chatapp.util
 
 import android.graphics.Color
 import android.graphics.Typeface
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -28,12 +29,23 @@ fun getLastMessageTimeString(view: TextView, time : String) {
 }
 
 @BindingAdapter("chatMessageStyle")
-fun setChatMessageStyle(view: TextView, chat: Chat){
+fun setChatMessageStyle(view: TextView, chat: Chat) {
     val currentUser = FirebaseAuth.getInstance().currentUser
 
     if (chat.message.sendId != currentUser?.uid && !chat.message.seen) {
         view.setTextColor(Color.parseColor("#99CCFF"))
         view.setTypeface(null, Typeface.BOLD)
+    }
+}
+
+@BindingAdapter("onMessageSeenNotify")
+fun setOnMessageSeenNotify(view: ImageView, chat: Chat) {
+    val currentUser = FirebaseAuth.getInstance().currentUser
+
+    if (chat.message.sendId != currentUser?.uid && !chat.message.seen) {
+        view.visibility = View.VISIBLE
+    } else {
+        view.visibility = View.GONE
     }
 }
 

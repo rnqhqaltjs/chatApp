@@ -76,7 +76,7 @@
             android:id="@+id/newmessagenotify"
             android:layout_width="12dp"
             android:layout_height="12dp"
-            android:visibility="@{chat.message.seen ? View.GONE : View.VISIBLE}"
+            app:onMessageSeenNotify="@{chat}"
             android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toBottomOf="@+id/chat_lastmessage"
             app:layout_constraintEnd_toEndOf="@+id/chat_lastmessage"

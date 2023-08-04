@@ -291,7 +291,7 @@ class ChatRepositoryImpl(
 
                     for (postSnapshot in snapshot.children) {
                         val chat = postSnapshot.getValue(Chat::class.java)
-                        if(!chat!!.message.seen) {
+                        if(chat!!.message.sendId != senderUid && !chat.message.seen) {
                             unreadMessageCount++
                         }
                     }
