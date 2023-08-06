@@ -13,7 +13,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.chatapp.R
 import com.example.chatapp.databinding.ActivityHomeBinding
-import com.example.chatapp.ui.message.MessageFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
