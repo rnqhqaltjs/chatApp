@@ -12,4 +12,4 @@ ListAdapter diffutil
 
 ### Chat
 
-<img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/user.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/chat.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/menu.png" width="20%" height="20%">
+<img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/user.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/chats.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/menu.png" width="20%" height="20%">
