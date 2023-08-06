@@ -47,7 +47,7 @@ class MessageViewModel @Inject constructor(
     }
 
     fun sendMessage(message: String, receiverUid: String, userReceiver: User) = viewModelScope.launch {
-        repository.sendMessage(message, receiverUid, currentTime.toString(), userReceiver)
+        repository.sendMessage(message, receiverUid, currentTime.value!!, userReceiver)
     }
 
     fun sendImageMessage(
@@ -57,7 +57,7 @@ class MessageViewModel @Inject constructor(
         userReceiver: User
     ) = viewModelScope.launch {
         _sendImageLiveData.value = UiState.Loading
-        repository.sendImageMessage(message, image, receiverUid, currentTime.toString(), userReceiver){
+        repository.sendImageMessage(message, image, receiverUid, currentTime.value!!, userReceiver){
             _sendImageLiveData.value = it
         }
     }
