@@ -1,7 +1,5 @@
 package com.example.chatapp.ui.message
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import androidx.databinding.ObservableInt
 import androidx.lifecycle.LiveData
@@ -13,6 +11,7 @@ import com.example.chatapp.data.model.User
 import com.example.chatapp.data.repository.ChatRepository
 import com.example.chatapp.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,13 +33,31 @@ class MessageViewModel @Inject constructor(
     val messageNotificationLiveData: LiveData<UiState<String>>
         get() = _messageNotificationLiveData
 
-    fun sendMessage(message:String, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
-        repository.sendMessage(message, receiverUid, time, userReceiver)
+    private val _currentTime = MutableLiveData<String>()
+    private val currentTime: LiveData<String>
+        get() = _currentTime
+
+    init {
+        viewModelScope.launch {
+            while (true) {
+                _currentTime.value = System.currentTimeMillis().toString()
+                delay(1000)
+            }
+        }
     }
 
-    fun sendImageMessage(message: String, image: ByteArray?, receiverUid: String, time: String, userReceiver: User) = viewModelScope.launch {
+    fun sendMessage(message: String, receiverUid: String, userReceiver: User) = viewModelScope.launch {
+        repository.sendMessage(message, receiverUid, currentTime.toString(), userReceiver)
+    }
+
+    fun sendImageMessage(
+        message: String,
+        image: ByteArray?,
+        receiverUid: String,
+        userReceiver: User
+    ) = viewModelScope.launch {
         _sendImageLiveData.value = UiState.Loading
-        repository.sendImageMessage(message, image, receiverUid, time, userReceiver){
+        repository.sendImageMessage(message, image, receiverUid, currentTime.toString(), userReceiver){
             _sendImageLiveData.value = it
         }
     }

@@ -34,7 +34,6 @@ class MessageFragment : Fragment() {
     private val args by navArgs<MessageFragmentArgs>()
     private val messageViewModel: MessageViewModel by viewModels()
     lateinit var messageListAdapter: MessageListAdapter
-    private val time = System.currentTimeMillis()
     private lateinit var imageUri: Uri
     private lateinit var user: User
     private var isPhotoSelectionOpen = false
@@ -74,7 +73,6 @@ class MessageFragment : Fragment() {
                 messageViewModel.sendMessage(
                     message,
                     user.uid,
-                    time.toString(),
                     user
                 )
                 messageViewModel.sendMessageNotification(message, user)
@@ -93,7 +91,7 @@ class MessageFragment : Fragment() {
                 messageViewModel.sendImageMessage(
                     "이미지를 전송하였습니다.",
                     ImageUtils.convertFileToByteArray(requireContext(),imageUri),
-                    user.uid,time.toString(),
+                    user.uid,
                     user
                 )
                 messageViewModel.sendMessageNotification("이미지를 전송하였습니다.", user)
