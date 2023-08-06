@@ -8,7 +8,7 @@ ListAdapter diffutil
 ## ScreenShots
 
 ### Auth
-<img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/login.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/register.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/password_search.png" width="20%" height="20%">
+<img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/login.png" width="30%" height="30%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/register.png" width="20%" height="30%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/password_search.png" width="30%" height="30%">
 
 ### Chat
 
