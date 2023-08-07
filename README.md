@@ -21,13 +21,14 @@
 ## Technologies
 
 [Kotlin](https://kotlinlang.org/)  
-MVVM(https://developer.android.com/topic/architecture?hl=ko)  
-Navigation(https://developer.android.com/jetpack/androidx/releases/navigation?hl=ko)  
-Coroutines(https://developer.android.com/kotlin/coroutines?hl=ko)  
-LiveData(https://developer.android.com/topic/libraries/architecture/livedata?hl=ko)  
-DataBinding(https://developer.android.com/topic/libraries/data-binding?hl=ko)  
-Datastore(https://developer.android.com/topic/libraries/architecture/datastore?hl=ko)  
-Firebase  
+[MVVM](https://developer.android.com/topic/architecture?hl=ko)  
+[Navigation](https://developer.android.com/jetpack/androidx/releases/navigation?hl=ko)  
+[Coroutines](https://developer.android.com/kotlin/coroutines?hl=ko)  
+[LiveData](https://developer.android.com/topic/libraries/architecture/livedata?hl=ko)  
+[DataBinding](https://developer.android.com/topic/libraries/data-binding?hl=ko)  
+[Datastore](https://developer.android.com/topic/libraries/architecture/datastore?hl=ko)  
+[Firebase](https://firebase.google.com/?hl=ko)  
+*[Realtime Database](https://firebase.google.com/docs/database?hl=ko)
 Dagger2  
 Hilt  
 Coil  
