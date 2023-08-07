@@ -1,9 +1,9 @@
 # chatApp
-MVVM  
-safeArgs  
-DataStore  
-Firebase Auth, RealtimeDataBase, Storage  
-ListAdapter diffutil
+
+## Introduction
+
+개발 공부를 위해 만든 채팅앱 입니다. MVVM패턴을 적용시켜 제작하였습니다.
+
 
 ## ScreenShots
 
@@ -17,3 +17,17 @@ ListAdapter diffutil
 <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/profile.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/messages.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/friend_search.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/edit_profile.png" width="20%" height="20%">
 
 <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/detail_photo.png" width="20%" height="20%"> <img src = "https://github.com/rnqhqaltjs/chatApp/blob/master/github_images/fcm_notifications.png" width="20%" height="20%">
+
+## Technologies
+
+[Kotlin](https://kotlinlang.org/)
+MVVM
+Coroutines
+LiveData
+DataBinding
+Datastore
+Firebase
+Dagger2
+Hilt
+Coil
+Retrofit2
