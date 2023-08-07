@@ -20,14 +20,14 @@
 
 ## Technologies
 
-[Kotlin](https://kotlinlang.org/)
-MVVM
-Coroutines
-LiveData
-DataBinding
-Datastore
-Firebase
-Dagger2
-Hilt
-Coil
-Retrofit2
+[Kotlin](https://kotlinlang.org/)  
+MVVM  
+Coroutines  
+LiveData  
+DataBinding  
+Datastore  
+Firebase  
+Dagger2  
+Hilt  
+Coil  
+Retrofit2  
