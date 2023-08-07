@@ -31,8 +31,10 @@
   * [Authentication](https://firebase.google.com/docs/auth?hl=ko)  
   * [Realtime Database](https://firebase.google.com/docs/database?hl=ko)  
   * [Cloud Storage](https://firebase.google.com/products/storage?hl=ko)
-  * [FCM](https://firebase.google.com/docs/cloud-messaging?hl=ko)  
-Dagger2  
-Hilt  
-Coil  
-Retrofit2  
+  * [FCM](https://firebase.google.com/docs/cloud-messaging?hl=ko)
+[Dagger2](https://dagger.dev/dev-guide/)  
+[Hilt](https://dagger.dev/hilt/)  
+[Coil](https://coil-kt.github.io/coil/)  
+[Retrofit2](https://square.github.io/retrofit/)
+
+
