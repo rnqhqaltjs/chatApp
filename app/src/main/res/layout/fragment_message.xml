@@ -30,22 +30,21 @@
         <EditText
             android:id="@+id/message_edit"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:background="@android:color/transparent"
-            android:ems="10"
             android:onTextChanged="@{viewmodel::onTextChanged}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/send_btn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/send_btn" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <View
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="1dp"
             android:background="@color/lightgray"
-            app:layout_constraintBottom_toBottomOf="@+id/message_recyclerView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/message_recyclerView" />
 
         <ImageView
             android:id="@+id/send_btn"
@@ -56,19 +55,21 @@
             android:visibility="@{viewmodel.sendBtnVisibility}"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"/>
 
         <ImageView
             android:id="@+id/send_image_btn"
             android:layout_width="50dp"
             android:layout_height="55dp"
-            android:src="@drawable/ic_photo_24"
             android:background="@color/lsb"
-            android:visibility="@{viewmodel.sendImageBtnVisibility}"
             android:padding="10dp"
-            app:tint="@color/white"
+            android:src="@drawable/ic_photo_24"
+            android:visibility="@{viewmodel.sendImageBtnVisibility}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            app:tint="@color/white" />
 
         <ProgressBar
             android:id="@+id/message_progress"

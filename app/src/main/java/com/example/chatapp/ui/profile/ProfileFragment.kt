@@ -45,21 +45,21 @@ class ProfileFragment : Fragment() {
         profileViewModel.friendRequestStatus.observe(viewLifecycleOwner) { success ->
             when (success) {
                 "pending" -> {
-                    binding.friendRequestBtn.visibility = View.GONE
+                    binding.friendRequestBtn.visibility = View.INVISIBLE
                     binding.requestCancelBtn.visibility = View.VISIBLE
-                    binding.profileMessageBtn.visibility = View.GONE
+                    binding.profileMessageBtn.visibility = View.INVISIBLE
                     binding.textView.text = "요청 취소"
                 }
                 "friend" -> {
-                    binding.friendRequestBtn.visibility = View.GONE
-                    binding.requestCancelBtn.visibility = View.GONE
+                    binding.friendRequestBtn.visibility = View.INVISIBLE
+                    binding.requestCancelBtn.visibility = View.INVISIBLE
                     binding.profileMessageBtn.visibility = View.VISIBLE
                     binding.textView.text = "1:1 채팅"
                 }
                 "nothing" -> {
                     binding.friendRequestBtn.visibility = View.VISIBLE
-                    binding.requestCancelBtn.visibility = View.GONE
-                    binding.profileMessageBtn.visibility = View.GONE
+                    binding.requestCancelBtn.visibility = View.INVISIBLE
+                    binding.profileMessageBtn.visibility = View.INVISIBLE
                     binding.textView.text = "친구 요청"
                 }
                 else -> {
