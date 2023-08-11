@@ -60,6 +60,7 @@
             app:chatMessageStyle="@{chat}"
             android:textSize="14sp"
             android:maxLines="1"
+            android:ellipsize="end"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/chat_image"
             app:layout_constraintTop_toBottomOf="@id/chat_name" />
