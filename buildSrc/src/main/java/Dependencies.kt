@@ -8,7 +8,7 @@ object Dependencies {
 
     const val RETROFIT = "com.squareup.retrofit2:retrofit:${Versions.RETROFIT}"
     const val RETROFIT_CONVERTER_JSON =
-        "com.squareup.retrofit2:converter-moshi:${Versions.RETROFIT}"
+        "com.squareup.retrofit2:converter-gson:${Versions.RETROFIT}"
 
     const val MOSHI = "com.squareup.moshi:moshi:${Versions.MOSHI}"
     const val MOSHI_KAPT = "com.squareup.moshi:moshi-kotlin-codegen:${Versions.MOSHI}"
@@ -68,7 +68,7 @@ object Dependencies {
     const val HILT_EXTENSION_KAPT = "androidx.hilt:hilt-compiler:${Versions.HILT_EXTENSION}"
 
     const val SPLASHSCREEN = "androidx.core:core-splashscreen:${Versions.SPLASHSCREEN}"
-    const val PHOTOVIEW = "androidx.core:core-splashscreen:${Versions.PHOTOVIEW}"
-    const val TEDPERMISSION = "androidx.core:core-splashscreen:${Versions.TEDPERMISSION}"
+    const val PHOTOVIEW = "com.github.chrisbanes:PhotoView:${Versions.PHOTOVIEW}"
+    const val TEDPERMISSION = "io.github.ParkSangGwon:tedpermission-normal:${Versions.TEDPERMISSION}"
 
 }
